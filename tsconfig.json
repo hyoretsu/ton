@@ -1,0 +1,30 @@
+{
+ "compilerOptions": {
+  "allowJs": true,
+  "allowSyntheticDefaultImports": true,
+  "baseUrl": "./src",
+  "emitDecoratorMetadata": true,
+  "esModuleInterop": true,
+  "experimentalDecorators": true,
+  "forceConsistentCasingInFileNames": true,
+  "isolatedModules": true,
+  "jsx": "react-native",
+  "lib": ["es6"],
+  "module": "commonjs",
+  "moduleResolution": "node",
+  "noEmit": true,
+  "noFallthroughCasesInSwitch": true,
+  "noImplicitAny": true,
+  "paths": {
+   "@api": ["data/services/api"],
+   "@components/*": ["ui/components/*"],
+   "@styles/*": ["ui/styles/*"]
+  },
+  "resolveJsonModule": true,
+  "skipLibCheck": true,
+  "strict": true,
+  "target": "esnext",
+  "typeRoots": ["node_modules/@types", "src/data/@types"]
+ },
+ "include": ["src/**/*", "tmp"]
+}

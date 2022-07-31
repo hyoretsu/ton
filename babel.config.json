@@ -1,0 +1,18 @@
+{
+ "presets": [["module:metro-react-native-babel-preset", { "useTransformReactJSXExperimental": true }]],
+ "plugins": [
+  ["@babel/transform-react-jsx", { "runtime": "automatic" }],
+  [
+   "module-resolver",
+   {
+    "root": ["./src"],
+    "extensions": [".js", ".json", ".ts", ".tsx"],
+    "alias": {
+     "@api": ["./src/data/services/api"],
+     "@components": ["./src/ui/components"],
+     "@styles": ["./src/ui/styles"]
+    }
+   }
+  ]
+ ]
+}

@@ -1,0 +1,7 @@
+{
+ "name": "eOdontologia",
+ "displayName": "e-Odontologia",
+ "android": {
+  "enableDangerousExperimentalLeanBuilds": true
+ }
+}

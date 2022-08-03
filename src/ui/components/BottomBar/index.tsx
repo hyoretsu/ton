@@ -15,7 +15,7 @@ const BottomBar: React.FC = () => {
 
  return (
   <Container>
-   <Button onPress={() => console.log('Diary')} isCurrentScreen={onDiary}>
+   <Button onPress={() => navigate('Diary')} isCurrentScreen={onDiary}>
     <Icon name="archive" size={30} color={onDiary ? highlightColor : '#000'} />
     <ButtonText>Diário</ButtonText>
    </Button>

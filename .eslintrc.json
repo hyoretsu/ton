@@ -21,6 +21,7 @@
    }
   ],
   "import/no-duplicates": "off",
+  "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
   "no-unused-expressions": ["off", { "allowShortCircuit": true }],
   "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
   "no-use-before-define": "off",

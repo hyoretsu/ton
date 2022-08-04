@@ -6,17 +6,19 @@ import BottomBar from '@components/BottomBar';
 
 import {
  Container,
+ DailyMissionText,
  Mission,
- MissionProgress,
- MissionProgressColor,
- MissionProgressText,
- MissionText,
+ MissionTitle,
+ ProgressBar,
+ ProgressBarColor,
+ ProgressBarText,
 } from '@styles/Diary';
 
 interface Objective {
  id: string;
  text: string;
  quantity: number;
+ isDaily: boolean;
 }
 
 type Progress = Record<string, number>;
@@ -33,6 +35,7 @@ const Diary: React.FC = () => {
     id: String(index),
     text: choices[random(1)],
     quantity: 3,
+    isDaily: [true, false][random(1)],
    })),
   );
 
@@ -53,13 +56,14 @@ const Diary: React.FC = () => {
      showsVerticalScrollIndicator={false}
      renderItem={({ item: objective }) => (
       <Mission>
-       <MissionText>{objective.text}</MissionText>
-       <MissionProgress>
-        <MissionProgressColor progress={progress[objective.id] / objective.quantity} />
-        <MissionProgressText>
+       <MissionTitle>{objective.text}</MissionTitle>
+       {objective.isDaily && <DailyMissionText>Missão diária</DailyMissionText>}
+       <ProgressBar>
+        <ProgressBarColor progress={progress[objective.id] / objective.quantity} />
+        <ProgressBarText>
          {progress[objective.id]} / {objective.quantity}
-        </MissionProgressText>
-       </MissionProgress>
+        </ProgressBarText>
+       </ProgressBar>
       </Mission>
      )}
      contentContainerStyle={{ padding: 20, paddingBottom: 0 }}

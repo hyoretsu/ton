@@ -9,6 +9,11 @@ export const Container = styled.View`
  flex: 1;
 `;
 
+export const DailyMissionText = styled.Text`
+ font-size: 15px;
+ color: #fffa;
+`;
+
 export const Mission = styled.View`
  flex-direction: column;
 
@@ -16,27 +21,28 @@ export const Mission = styled.View`
 
  border: 2px #0006;
  border-radius: 20px;
- padding: 12px 16px;
+ padding: 8px 16px 16px;
  margin-bottom: 20px;
 `;
 
-export const MissionText = styled.Text`
+export const MissionTitle = styled.Text`
  font-size: 20px;
 `;
 
-export const MissionProgress = styled.View`
+export const ProgressBar = styled.View`
  position: relative;
  align-items: center;
  justify-content: center;
 
  width: 100%;
  height: 28px;
- background-color: #0215;
+ background-color: #0004;
 
  border-radius: 20px;
  margin-top: 40px;
 `;
-export const MissionProgressColor = styled.View<MissionProgressProps>`
+
+export const ProgressBarColor = styled.View<MissionProgressProps>`
  position: absolute;
  left: 0;
 
@@ -45,13 +51,8 @@ export const MissionProgressColor = styled.View<MissionProgressProps>`
  background-color: #0f0;
 
  border-radius: 20px;
- /* ${({ progress }) =>
-  progress !== 1 && {
-   'border-top-right-radius': 0,
-   'border-bottom-right-radius': 0,
-  }} */
 `;
 
-export const MissionProgressText = styled.Text`
+export const ProgressBarText = styled.Text`
  font-size: 16px;
 `;

@@ -12,6 +12,7 @@ import {
  ProgressBar,
  ProgressBarColor,
  ProgressBarText,
+ ProgressSign,
 } from '@styles/Diary';
 
 interface Objective {
@@ -47,6 +48,13 @@ const Diary: React.FC = () => {
   }
  }, []);
 
+ const handlePlusMinus = (action: string, id: string): void => {
+  setProgress(old => ({
+   ...old,
+   [id]: old[id] + (action === 'plus' ? 1 : -1),
+  }));
+ };
+
  return (
   <>
    <Container>
@@ -60,9 +68,15 @@ const Diary: React.FC = () => {
        {objective.isDaily && <DailyMissionText>Missão diária</DailyMissionText>}
        <ProgressBar>
         <ProgressBarColor progress={progress[objective.id] / objective.quantity} />
+        {progress[objective.id] > 0 && (
+         <ProgressSign sign="minus" onPress={() => handlePlusMinus('minus', objective.id)} />
+        )}
         <ProgressBarText>
          {progress[objective.id]} / {objective.quantity}
         </ProgressBarText>
+        {progress[objective.id] < objective.quantity && (
+         <ProgressSign sign="plus" onPress={() => handlePlusMinus('plus', objective.id)} />
+        )}
        </ProgressBar>
       </Mission>
      )}

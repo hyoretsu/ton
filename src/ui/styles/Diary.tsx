@@ -1,8 +1,13 @@
 import { ViewProps } from 'react-native';
+import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
 interface MissionProgressProps extends ViewProps {
  progress: number;
+}
+interface ProgressSignProps extends RectButtonProps {
+ sign: string;
 }
 
 export const Container = styled.View`
@@ -21,7 +26,7 @@ export const Mission = styled.View`
 
  border: 2px #0006;
  border-radius: 20px;
- padding: 8px 16px 16px;
+ padding: 8px 16px 12px;
  margin-bottom: 20px;
 `;
 
@@ -55,4 +60,26 @@ export const ProgressBarColor = styled.View<MissionProgressProps>`
 
 export const ProgressBarText = styled.Text`
  font-size: 16px;
+`;
+
+export const ProgressSign = styled(RectButton).attrs((props: ProgressSignProps) => ({
+ children: <Icon name={props.sign} size={20} />,
+}))<ProgressSignProps>`
+ position: absolute;
+
+ ${({ sign }) =>
+  sign === 'plus'
+   ? {
+      right: 0,
+      paddingRight: 4,
+      paddingVertical: 2,
+     }
+   : {
+      left: 0,
+      paddingLeft: 4,
+      paddingVertical: 2,
+     }}
+
+ border: 2px #0006;
+ border-radius: 20px;
 `;

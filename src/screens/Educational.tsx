@@ -1,6 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { FlatList } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
 
 import BottomBar from '@components/BottomBar';
@@ -28,24 +27,18 @@ const Educational: React.FC = () => {
 
  return (
   <>
-   <Container>
-    <FlatList
-     data={contents}
-     keyExtractor={content => content.id}
-     showsVerticalScrollIndicator={false}
-     renderItem={({ item: content }) => (
-      <ContentBox>
-       <ContentButton onPress={() => navigate('Chat')}>
-        <ContentTitle>{content.title}</ContentTitle>
-        <ContentDateIcon>
-         <ContentDate>16/07/2022</ContentDate>
-         <Icon name="chevron-right" size={30} color="#0009" />
-        </ContentDateIcon>
-       </ContentButton>
-      </ContentBox>
-     )}
-     contentContainerStyle={{ padding: 20, paddingBottom: 0 }}
-    />
+   <Container showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 20, paddingBottom: 0 }}>
+    {contents.map(content => (
+     <ContentBox key={content.id}>
+      <ContentButton onPress={() => navigate('Chat')}>
+       <ContentTitle>{content.title}</ContentTitle>
+       <ContentDateIcon>
+        <ContentDate>16/07/2022</ContentDate>
+        <Icon name="chevron-right" size={30} color="#0009" />
+       </ContentDateIcon>
+      </ContentButton>
+     </ContentBox>
+    ))}
    </Container>
 
    <BottomBar />

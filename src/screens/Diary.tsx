@@ -1,6 +1,5 @@
 import { random } from 'data/utils';
 import { useEffect, useState } from 'react';
-import { FlatList } from 'react-native-gesture-handler';
 
 import BottomBar from '@components/BottomBar';
 
@@ -57,31 +56,25 @@ const Diary: React.FC = () => {
 
  return (
   <>
-   <Container>
-    <FlatList
-     data={objectives}
-     keyExtractor={objective => objective.id}
-     showsVerticalScrollIndicator={false}
-     renderItem={({ item: objective }) => (
-      <Mission>
-       <MissionTitle>{objective.text}</MissionTitle>
-       {objective.isDaily && <DailyMissionText>Missão diária</DailyMissionText>}
-       <ProgressBar>
-        <ProgressBarColor progress={progress[objective.id] / objective.quantity} />
-        {progress[objective.id] > 0 && (
-         <ProgressSign sign="minus" onPress={() => handlePlusMinus('minus', objective.id)} />
-        )}
-        <ProgressBarText>
-         {progress[objective.id]} / {objective.quantity}
-        </ProgressBarText>
-        {progress[objective.id] < objective.quantity && (
-         <ProgressSign sign="plus" onPress={() => handlePlusMinus('plus', objective.id)} />
-        )}
-       </ProgressBar>
-      </Mission>
-     )}
-     contentContainerStyle={{ padding: 20, paddingBottom: 0 }}
-    />
+   <Container showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 20, paddingBottom: 0 }}>
+    {objectives.map(objective => (
+     <Mission key={objective.id}>
+      <MissionTitle>{objective.text}</MissionTitle>
+      {objective.isDaily && <DailyMissionText>Missão diária</DailyMissionText>}
+      <ProgressBar>
+       <ProgressBarColor progress={progress[objective.id] / objective.quantity} />
+       {progress[objective.id] > 0 && (
+        <ProgressSign sign="minus" onPress={() => handlePlusMinus('minus', objective.id)} />
+       )}
+       <ProgressBarText>
+        {progress[objective.id]} / {objective.quantity}
+       </ProgressBarText>
+       {progress[objective.id] < objective.quantity && (
+        <ProgressSign sign="plus" onPress={() => handlePlusMinus('plus', objective.id)} />
+       )}
+      </ProgressBar>
+     </Mission>
+    ))}
    </Container>
 
    <BottomBar />

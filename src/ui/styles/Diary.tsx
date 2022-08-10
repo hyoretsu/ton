@@ -1,5 +1,5 @@
 import { ViewProps } from 'react-native';
-import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
+import { RectButton, RectButtonProps, ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
@@ -10,7 +10,7 @@ interface ProgressSignProps extends RectButtonProps {
  sign: string;
 }
 
-export const Container = styled.View`
+export const Container = styled(ScrollView)`
  flex: 1;
 `;
 

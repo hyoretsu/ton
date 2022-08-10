@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
@@ -12,6 +13,8 @@ interface Content {
 }
 
 const Educational: React.FC = () => {
+ const { navigate } = useNavigation();
+
  const [contents, setContents] = useState<Content[]>([]);
 
  useEffect(() => {
@@ -32,7 +35,7 @@ const Educational: React.FC = () => {
      showsVerticalScrollIndicator={false}
      renderItem={({ item: content }) => (
       <ContentBox>
-       <ContentButton onPress={() => console.log('Chat')}>
+       <ContentButton onPress={() => navigate('Chat')}>
         <ContentTitle>{content.title}</ContentTitle>
         <ContentDateIcon>
          <ContentDate>16/07/2022</ContentDate>

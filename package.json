@@ -1,6 +1,6 @@
 {
  "name": "e-odontologia",
- "version": "0.2.1",
+ "version": "0.3.0",
  "description": "App de monitoramento odontológico de crianças com câncer.",
  "keywords": [
   "acompanhamento",
@@ -97,6 +97,9 @@
   "typescript": "^4.7.4"
  },
  "overrides": {
-  "@types/react": "^18.0.0"
+  "@types/react": "^18.0.0",
+  "eslint": "^8.19.0",
+  "react": "18.2.0",
+  "react-native": "0.69.1"
  }
 }

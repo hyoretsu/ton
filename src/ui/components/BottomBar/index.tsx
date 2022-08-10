@@ -25,7 +25,7 @@ const BottomBar: React.FC = () => {
     <ButtonText>Educação</ButtonText>
    </Button>
 
-   <Button onPress={() => console.log('Chat')} isCurrentScreen={onChat}>
+   <Button onPress={() => navigate('Chat')} isCurrentScreen={onChat}>
     <Icon name="message-square" size={30} color={onChat ? highlightColor : '#000'} />
     <ButtonText>Chat</ButtonText>
    </Button>

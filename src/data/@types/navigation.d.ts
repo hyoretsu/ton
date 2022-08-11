@@ -1,8 +1,8 @@
 import { RootStackParamList } from 'routes';
 
-interface RouteParams<Name, T> {
+interface RouteParams<Params> {
  route: {
-  params: Record<Name, T>;
+  params?: Params;
  };
 }
 

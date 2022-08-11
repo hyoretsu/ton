@@ -1,12 +1,12 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import Chat from 'screens/Chat';
+import Chat, { ChatParams } from 'screens/Chat';
 import Diary from 'screens/Diary';
 import Educational from 'screens/Educational';
 import SignIn from 'screens/SignIn';
 import SignUp from 'screens/SignUp';
 
 export type RootStackParamList = {
- Chat: undefined;
+ Chat?: ChatParams;
  Diary: undefined;
  Educational: undefined;
  SignIn: undefined;

@@ -30,7 +30,7 @@ const Educational: React.FC = () => {
    <Container showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 20, paddingBottom: 0 }}>
     {contents.map(content => (
      <ContentBox key={content.id}>
-      <ContentButton onPress={() => navigate('Chat')}>
+      <ContentButton onPress={() => navigate('Chat', { content: content.title })}>
        <ContentTitle>{content.title}</ContentTitle>
        <ContentDateIcon>
         <ContentDate>16/07/2022</ContentDate>

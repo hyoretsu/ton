@@ -1,11 +1,14 @@
 import { RouteParams } from 'data/@types/navigation';
+import { wait } from 'data/utils';
 import { format } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
 import BottomBar from '@components/BottomBar';
 
 import { Container, MessageView, MessageTime, MessageText } from '@styles/Chat';
+
+import answers from 'assets/messages.json';
 
 interface Message {
  sender: string;
@@ -20,6 +23,24 @@ export interface ChatParams {
 const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
  const [messages, setMessages] = useState<Message[]>([]);
 
+ const answer = useCallback(async (message: string) => {
+  // @ts-ignore
+  const responses: string[] = answers[message];
+
+  responses.forEach(async (response, i) => {
+   await wait(2000 * (i + 1));
+
+   setMessages(old => [
+    ...old,
+    {
+     sender: 'system',
+     body: response,
+     time: new Date(),
+    },
+   ]);
+  });
+ }, []);
+
  useEffect(() => {
   if (route.params) {
    setMessages([
@@ -29,8 +50,10 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
      time: new Date(),
     },
    ]);
+
+   answer(route.params.content);
   }
- }, [route]);
+ }, [answer, route]);
 
  return (
   <>

@@ -41,3 +41,12 @@ export const range = (start: number, stop = 0, step = 1): number[] => {
 
  return Array.from({ length }, (_, index) => start + step * index);
 };
+
+/**
+ * @param	time - Time to wait in ms.
+ */
+export const wait = async (time: number): Promise<any> => {
+ return new Promise(res => {
+  setTimeout(res, time);
+ });
+};

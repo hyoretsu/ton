@@ -9,7 +9,6 @@ const BottomBar: React.FC = () => {
 
  const onDiary = route.name === 'Diary';
  const onEducational = route.name === 'Educational';
- const onChat = route.name === 'Chat';
  const onProfile = route.name === 'Profile';
  const highlightColor = '#8099ce';
 
@@ -25,9 +24,9 @@ const BottomBar: React.FC = () => {
     <ButtonText>Educação</ButtonText>
    </Button>
 
-   <Button onPress={() => navigate('Chat')} isCurrentScreen={onChat}>
-    <Icon name="message-square" size={30} color={onChat ? highlightColor : '#000'} />
-    <ButtonText>Chat</ButtonText>
+   <Button onPress={() => navigate('CheckupBegin')}>
+    <Icon name="clipboard" size={30} color="#000" />
+    <ButtonText>Exame</ButtonText>
    </Button>
 
    <Button onPress={() => console.log('Profile')} isCurrentScreen={onProfile}>

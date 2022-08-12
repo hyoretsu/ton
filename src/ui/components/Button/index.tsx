@@ -6,9 +6,9 @@ interface ButtonProps extends RectButtonProperties {
  fill?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ fill = false, children, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({ fill = false, children, style, ...rest }) => {
  return (
-  <Container style={fill && { paddingBottom: 16, paddingTop: 16, width: '100%' }} {...rest}>
+  <Container style={[fill && { paddingBottom: 16, paddingTop: 16, width: '100%' }, style]} {...rest}>
    <ButtonText>{children}</ButtonText>
   </Container>
  );

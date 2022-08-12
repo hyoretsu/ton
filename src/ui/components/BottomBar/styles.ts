@@ -2,7 +2,7 @@ import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
 interface ButtonProps extends RectButtonProps {
- isCurrentScreen: boolean;
+ isCurrentScreen?: boolean;
 }
 
 export const Container = styled.View`

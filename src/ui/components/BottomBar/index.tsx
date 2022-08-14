@@ -1,3 +1,4 @@
+import { useStorage } from '@contexts/storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -5,6 +6,7 @@ import { Button, ButtonText, Container } from './styles';
 
 const BottomBar: React.FC = () => {
  const { navigate } = useNavigation();
+ const { checkupProgress } = useStorage();
  const route = useRoute();
 
  const onDiary = route.name === 'Diary';
@@ -24,7 +26,7 @@ const BottomBar: React.FC = () => {
     <ButtonText>Educação</ButtonText>
    </Button>
 
-   <Button onPress={() => navigate('CheckupBegin')}>
+   <Button onPress={() => (checkupProgress ? navigate('CheckupInstructions') : navigate('CheckupBegin'))}>
     <Icon name="clipboard" size={30} color="#000" />
     <ButtonText>Exame</ButtonText>
    </Button>

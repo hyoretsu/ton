@@ -1,3 +1,4 @@
+import { StorageProvider } from '@contexts/storage';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { LogBox } from 'react-native';
@@ -15,7 +16,9 @@ const App: React.FC = () => {
   <NavigationContainer>
    <StatusBar barStyle="light-content" backgroundColor="#8295f2" />
    <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#8295f2' }}>
-    <Routes />
+    <StorageProvider>
+     <Routes />
+    </StorageProvider>
    </GestureHandlerRootView>
   </NavigationContainer>
  );

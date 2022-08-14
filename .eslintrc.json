@@ -12,6 +12,7 @@
  },
  "plugins": ["prettier"],
  "rules": {
+  "default-case": "off",
   "import/extensions": [
    "error",
    "ignorePackages",

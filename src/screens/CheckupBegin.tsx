@@ -1,4 +1,6 @@
+import { useStorage } from '@contexts/storage';
 import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
 
 import BackButton from '@components/BackButton';
 import Button from '@components/Button';
@@ -7,6 +9,11 @@ import { Container, Instructions, TextBody, Title } from '@styles/Checkup';
 
 const CheckupWelcome: React.FC = () => {
  const { navigate } = useNavigation();
+ const { storeValue } = useStorage();
+
+ useEffect(() => {
+  storeValue('checkupProgress', 0);
+ }, [storeValue]);
 
  return (
   <>

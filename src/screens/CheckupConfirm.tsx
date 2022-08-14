@@ -1,3 +1,4 @@
+import { useStorage } from '@contexts/storage';
 import { useNavigation } from '@react-navigation/native';
 import { RouteParams } from 'data/@types/navigation';
 
@@ -11,10 +12,12 @@ export interface CheckupConfirmParams {
 
 const CheckupConfirm: React.FC<RouteParams<CheckupConfirmParams>> = ({ route }) => {
  const { goBack, navigate } = useNavigation();
+ const { checkupProgress, storeValue } = useStorage();
 
- const handleYes = (): void => {
+ const handleYes = async (): Promise<void> => {
   console.log(route.params?.filePath);
 
+  await storeValue('checkupProgress', checkupProgress + 1);
   navigate('CheckupInstructions');
  };
 

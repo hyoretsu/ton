@@ -10,6 +10,7 @@
     "alias": {
      "@api": ["./src/data/services/api"],
      "@components": ["./src/ui/components"],
+     "@contexts": ["./src/data/contexts"],
      "@styles": ["./src/ui/styles"]
     }
    }

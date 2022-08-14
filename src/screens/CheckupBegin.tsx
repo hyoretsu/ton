@@ -25,6 +25,7 @@ const CheckupWelcome: React.FC = () => {
      <Instructions style={{ paddingHorizontal: 28 }}>
       Após tirar a foto, ambas serão mostradas lado a lado para checar se está boa.
      </Instructions>
+     <Instructions>Vamos lá?</Instructions>
     </TextBody>
 
     <Button

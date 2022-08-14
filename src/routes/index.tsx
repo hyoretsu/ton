@@ -1,6 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import Chat, { ChatParams } from 'screens/Chat';
 import CheckupBegin from 'screens/CheckupBegin';
+import CheckupCamera from 'screens/CheckupCamera';
+import CheckupConfirm, { CheckupConfirmParams } from 'screens/CheckupConfirm';
 import CheckupInstructions from 'screens/CheckupInstructions';
 import Diary from 'screens/Diary';
 import Educational from 'screens/Educational';
@@ -10,6 +12,8 @@ import SignUp from 'screens/SignUp';
 export type RootStackParamList = {
  Chat?: ChatParams;
  CheckupBegin: undefined;
+ CheckupCamera: undefined;
+ CheckupConfirm: CheckupConfirmParams;
  CheckupInstructions: undefined;
  Diary: undefined;
  Educational: undefined;
@@ -27,6 +31,8 @@ const Routes: React.FC = () => (
  >
   <App.Screen name="Chat" component={Chat} />
   <App.Screen name="CheckupBegin" component={CheckupBegin} />
+  <App.Screen name="CheckupCamera" component={CheckupCamera} />
+  <App.Screen name="CheckupConfirm" component={CheckupConfirm} />
   <App.Screen name="CheckupInstructions" component={CheckupInstructions} />
   <App.Screen name="Diary" component={Diary} />
   <App.Screen name="Educational" component={Educational} />

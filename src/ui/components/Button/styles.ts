@@ -7,7 +7,6 @@ export const Container = styled(RectButton)`
  background: #3d6;
 
  border-radius: 10px;
- padding: 12px 24px;
 `;
 
 export const ButtonText = styled.Text`

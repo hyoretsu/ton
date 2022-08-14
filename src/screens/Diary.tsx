@@ -1,4 +1,3 @@
-import { random } from 'data/utils';
 import { useEffect, useState } from 'react';
 
 import BottomBar from '@components/BottomBar';
@@ -14,40 +13,23 @@ import {
  ProgressSign,
 } from '@styles/Diary';
 
-interface Objective {
- id: string;
- text: string;
- quantity: number;
- isDaily: boolean;
-}
+import objectives from 'assets/objectives.json';
 
 type Progress = Record<string, number>;
 
 const Diary: React.FC = () => {
- const [objectives, setObjectives] = useState<Objective[]>([]);
  const [progress, setProgress] = useState<Progress>({});
 
  useEffect(() => {
-  const choices = ['Escovar os dentes', 'Passar fio denta dasda s da dasdasasdasdl'];
-
-  setObjectives(
-   Array.from({ length: 10 }, (_, index) => ({
-    id: String(index),
-    text: choices[random(1)],
-    quantity: 3,
-    isDaily: [true, false][random(1)],
-   })),
-  );
-
-  for (let i = 0; i < 10; i++) {
+  objectives.forEach(objective => {
    setProgress(old => ({
     ...old,
-    [i]: Math.round(Math.random() * 3),
+    [objective.id]: 0,
    }));
-  }
+  });
  }, []);
 
- const handlePlusMinus = (action: string, id: string): void => {
+ const handlePlusMinus = (action: string, id: number): void => {
   setProgress(old => ({
    ...old,
    [id]: old[id] + (action === 'plus' ? 1 : -1),

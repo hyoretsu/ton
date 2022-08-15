@@ -1,6 +1,6 @@
 {
   "name": "e-odontologia",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "App de monitoramento odontológico de crianças com câncer.",
   "keywords": [
     "acompanhamento",
@@ -25,6 +25,7 @@
     "android_build": "cd android && ./gradlew assembleRelease && cd ../",
     "android_manual": "mkdir -p android/app/src/main/assets && touch $_/index.android.bundle && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/ && ./android/gradlew assembleDebug",
     "ios": "react-native run-ios && npm run start",
+    "prepare": "husky install",
     "start": "react-native start",
     "test": "jest --coverage"
   },

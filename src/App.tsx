@@ -8,20 +8,20 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Routes from './routes';
 
 const App: React.FC = () => {
- LogBox.ignoreLogs([
-  "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
- ]);
+  LogBox.ignoreLogs([
+    "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
+  ]);
 
- return (
-  <NavigationContainer>
-   <StatusBar barStyle="light-content" backgroundColor="#8295f2" />
-   <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#8295f2' }}>
-    <StorageProvider>
-     <Routes />
-    </StorageProvider>
-   </GestureHandlerRootView>
-  </NavigationContainer>
- );
+  return (
+    <NavigationContainer>
+      <StatusBar barStyle="light-content" backgroundColor="#8295f2" />
+      <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#8295f2' }}>
+        <StorageProvider>
+          <Routes />
+        </StorageProvider>
+      </GestureHandlerRootView>
+    </NavigationContainer>
+  );
 };
 
 export default App;

@@ -7,34 +7,34 @@ import Button from '@components/Button';
 import { ConfirmationPrompt, ConfirmationText, Container, Photo } from '@styles/CheckupConfirm';
 
 export interface CheckupConfirmParams {
- filePath: string | undefined;
+  filePath: string | undefined;
 }
 
 const CheckupConfirm: React.FC<RouteParams<CheckupConfirmParams>> = ({ route }) => {
- const { goBack, navigate } = useNavigation();
- const { checkupProgress, storeValue } = useStorage();
+  const { goBack, navigate } = useNavigation();
+  const { checkupProgress, storeValue } = useStorage();
 
- const handleYes = async (): Promise<void> => {
-  console.log(route.params?.filePath);
+  const handleYes = async (): Promise<void> => {
+    console.log(route.params?.filePath);
 
-  await storeValue('checkupProgress', checkupProgress + 1);
-  navigate('CheckupInstructions');
- };
+    await storeValue('checkupProgress', checkupProgress + 1);
+    navigate('CheckupInstructions');
+  };
 
- return (
-  <Container>
-   <ConfirmationText>A foto está boa?</ConfirmationText>
-   <Photo source={{ uri: `file://${route.params?.filePath}` }} />
-   <ConfirmationPrompt>
-    <Button padding={[16, 32]} onPress={goBack} style={{ marginRight: 24 }}>
-     Não
-    </Button>
-    <Button padding={[16, 32]} onPress={handleYes} style={{ marginLeft: 24 }}>
-     Sim
-    </Button>
-   </ConfirmationPrompt>
-  </Container>
- );
+  return (
+    <Container>
+      <ConfirmationText>A foto está boa?</ConfirmationText>
+      <Photo source={{ uri: `file://${route.params?.filePath}` }} />
+      <ConfirmationPrompt>
+        <Button padding={[16, 32]} onPress={goBack} style={{ marginRight: 24 }}>
+          Não
+        </Button>
+        <Button padding={[16, 32]} onPress={handleYes} style={{ marginLeft: 24 }}>
+          Sim
+        </Button>
+      </ConfirmationPrompt>
+    </Container>
+  );
 };
 
 export default CheckupConfirm;

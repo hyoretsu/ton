@@ -1,0 +1,32 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": ["airbnb-base", "@shared/eslint"],
+  "rules": {
+    "camelcase": "off",
+    "class-methods-use-this": "off",
+    "no-prototype-builtins": "off",
+    "no-restricted-syntax": "off",
+    "no-underscore-dangle": "off",
+    "no-useless-constructor": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "rules": {
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "interface",
+            "format": ["PascalCase"],
+            "custom": {
+              "regex": "^I[A-Z]",
+              "match": true
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

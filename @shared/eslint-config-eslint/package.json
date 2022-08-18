@@ -1,0 +1,18 @@
+{
+  "name": "@shared/eslint-config-eslint",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "peerDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "@typescript-eslint/parser": "^5.33.1",
+    "eslint": "^8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^3.4.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-import-helpers": "^1.2.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
+  }
+}

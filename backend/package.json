@@ -1,0 +1,70 @@
+{
+  "name": "backend",
+  "private": true,
+  "scripts": {
+    "build": "babel src --extensions .ts --out-dir dist --copy-files --no-copy-ignored --source-maps",
+    "dev": "tsnd -r tsconfig-paths/register --inspect --no-notify --respawn -T -I /node_modules/ src/shared/infra/http/server.ts",
+    "start": "npm run build && node dist/shared/infra/http/server.js",
+    "test": "jest --passWithNoTests",
+    "prepare": "cd .. && husky install ./backend/.husky && chmod ug+x ./backend/.husky/*"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "yarn test --bail --findRelatedTests --passWithNoTests"
+    ]
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "celebrate": "^15.0.1",
+    "cors": "^2.8.5",
+    "date-fns": "^2.28.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-async-errors": "^3.1.1",
+    "ioredis": "^5.2.1",
+    "mongodb": "^3.6.0",
+    "multer": "1.4.5-lts.1",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "rate-limiter-flexible": "^2.3.7",
+    "redis": "^4.2.0",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.21.4",
+    "sequelize-typescript": "^2.1.3",
+    "tsyringe": "^4.7.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.9",
+    "@babel/core": "^7.18.9",
+    "@babel/node": "^7.18.9",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.18.9",
+    "@babel/preset-env": "^7.18.9",
+    "@babel/preset-typescript": "^7.18.6",
+    "@jest/types": "^28.1.3",
+    "@shared/eslint-config-eslint": "workspace:^1.0.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/hapi__joi": "^17.1.8",
+    "@types/jest": "^28.1.6",
+    "@types/multer": "^1.4.7",
+    "@types/node": "^18.7.5",
+    "@types/uuid": "^8.3.4",
+    "@types/validator": "^13.7.5",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "babel-plugin-transform-typescript-metadata": "^0.3.2",
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "husky": "^8.0.0",
+    "jest": "^28.1.3",
+    "prettier": "^2.7.1",
+    "ts-jest": "^28.0.7",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.0.0",
+    "typescript": "^4.7.4"
+  }
+}

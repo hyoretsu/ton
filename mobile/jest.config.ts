@@ -1,6 +1,7 @@
-import type { Config } from '@jest/types';
+/* eslint-disable import/no-extraneous-dependencies */
+import { Config } from 'jest';
 
-const config: Config.InitialOptions = {
+const config: Config = {
   collectCoverageFrom: [
     'src/data/hooks/*.tsx',
     'src/pages/**/*.tsx',

@@ -1,6 +1,6 @@
 *.log
-/.env
-/tmp/
+.env
+tmp/
 
 # Android/IntelliJ
 build/
@@ -19,7 +19,7 @@ buck-out/
 *.jsbundle
 
 # CocoaPods
-/ios/Pods/
+ios/Pods/
 
 # Fastlane
 **/fastlane/report.xml
@@ -28,10 +28,10 @@ buck-out/
 **/fastlane/test_output
 
 # Local env files
-/.env.local
-/.env.development.local
-/.env.test.local
-/.env.production.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Node.js
 node_modules/
@@ -40,10 +40,7 @@ node_modules/
 .DS_Store
 
 # Testing
-/coverage/
-
-# Visual Studio Code
-.vscode/
+coverage/
 
 # Xcode
 build/

@@ -1,0 +1,21 @@
+{
+  "extends": "../@shared/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "jsx": "react-native",
+    "noEmit": true,
+    "paths": {
+      "@api": ["data/services/api"],
+      "@components/*": ["ui/components/*"],
+      "@contexts/*": ["data/contexts/*"],
+      "@styles/*": ["ui/styles/*"]
+    },
+    "target": "esnext",
+    "typeRoots": [
+      "../node_modules/@types",
+      "./node_modules/@types",
+      "./src/data/@types"
+    ]
+  },
+  "include": ["src/**/*", "tmp"]
+}

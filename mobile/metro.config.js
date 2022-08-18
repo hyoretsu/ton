@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   transformer: {
     getTransformOptions: async () => ({
@@ -7,4 +9,5 @@ module.exports = {
       },
     }),
   },
+  watchFolders: [path.resolve(`${__dirname}/..`)],
 };

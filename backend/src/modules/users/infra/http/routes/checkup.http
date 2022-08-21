@@ -1,0 +1,9 @@
+POST http://localhost:3333/checkup HTTP/1.1
+Content-Type: multipart/form-data; boundary=12345
+
+--12345
+Content-Disposition: form-data; name="Boca de frente"; filename="test.png"
+Content-Type: image/png
+
+< ./tmp/test.png
+--12345--

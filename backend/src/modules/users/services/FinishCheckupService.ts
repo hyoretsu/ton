@@ -4,6 +4,7 @@ import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
   photos: Express.Multer.File[];
+  userId: string;
 }
 
 @injectable()
@@ -13,11 +14,12 @@ export default class FinishCheckupService {
     private usersRepository: IUsersRepository,
   ) {}
 
-  public async execute({ photos }: IRequest): Promise<void> {
+  public async execute({ photos, userId }: IRequest): Promise<void> {
     photos.forEach(async photo => {
       await this.usersRepository.registerPhoto({
         category: photo.fieldname,
         fileName: photo.filename,
+        patientId: userId,
       });
     });
   }

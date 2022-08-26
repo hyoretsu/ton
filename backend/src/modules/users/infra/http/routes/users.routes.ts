@@ -13,6 +13,7 @@ usersRouter.post(
       birthDate: Joi.date().required(),
       chartNumber: Joi.string().required(),
       city: Joi.string().required(),
+      doctorId: Joi.string().required(),
       email: Joi.string().email().required(),
       name: Joi.string().required(),
       neoplasia: Joi.string().required(),

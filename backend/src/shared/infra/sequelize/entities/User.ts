@@ -1,8 +1,10 @@
 import {
   BeforeCreate,
+  BelongsTo,
   Column,
   CreatedAt,
   DataType,
+  ForeignKey,
   HasMany,
   Model,
   PrimaryKey,
@@ -22,6 +24,7 @@ export interface ICreateUserDTO {
   birthDate: Date;
   city: string;
   neoplasia?: string;
+  doctorId?: string;
   chartNumber?: string;
 }
 
@@ -58,8 +61,18 @@ export default class User extends Model<User, ICreateUserDTO> {
   @Column
   neoplasia?: string;
 
+  @ForeignKey(() => User)
+  @Column
+  doctorId: string;
+
+  @BelongsTo(() => User)
+  doctor?: User;
+
   @Column
   chartNumber?: string;
+
+  @HasMany(() => User)
+  patients?: User[];
 
   @CreatedAt
   createdAt: Date;

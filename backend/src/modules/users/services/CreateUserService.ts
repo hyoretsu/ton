@@ -20,7 +20,10 @@ export default class CreateUserService {
   public async execute({
     birthDate,
     chartNumber,
+    doctorId,
     email,
+    name,
+    parentName,
     password,
     phoneNumber,
     ...rest
@@ -47,7 +50,10 @@ export default class CreateUserService {
     const user = await this.usersRepository.create({
       birthDate,
       chartNumber,
+      doctorId,
       email,
+      name,
+      parentName,
       password,
       phoneNumber,
       ...rest,

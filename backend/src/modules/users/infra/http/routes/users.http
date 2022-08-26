@@ -5,6 +5,7 @@ Content-Type: application/json
   "birthDate": "Sat Aug 20 2022 21:27:06 GMT-0300 (Brasilia Standard Time)",
   "chartNumber": "123",
   "city": "João Pessoa",
+  "doctorId": "91e0ce13-1c52-4d20-8fce-32edb3d7adbf",
   "email": "hyoretsu@gmail.com",
   "name": "Aran",
   "neoplasia": "Câncer",

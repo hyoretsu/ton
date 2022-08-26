@@ -13,3 +13,13 @@ Content-Type: application/json
   "password": "segredo",
   "phoneNumber": "83996133794"
 }
+
+#####
+
+POST http://localhost:3333/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "hyoretsu@gmail.com",
+  "password": "segredo"
+}

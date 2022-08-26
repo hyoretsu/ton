@@ -10,7 +10,10 @@ export default class UsersRepository implements IUsersRepository {
   }
 
   public async findByEmail(email: string): Promise<User | null> {
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({
+      include: [{ model: User, as: 'patients' }],
+      where: { email },
+    });
 
     return user;
   }

@@ -1,0 +1,8 @@
+POST http://localhost:3333/objectives HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "Teste",
+    "goal": "3",
+    "isDaily": true
+}

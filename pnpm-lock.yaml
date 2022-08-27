@@ -72,7 +72,6 @@ importers:
       multer: 1.4.5-lts.1
       pg: ^8.7.3
       pg-hstore: ^2.3.4
-      prettier: ^2.7.1
       rate-limiter-flexible: ^2.3.7
       redis: ^4.2.0
       reflect-metadata: ^0.1.13
@@ -132,7 +131,6 @@ importers:
       eslint-plugin-import: 2.26.0_eslint@8.23.0
       husky: 8.0.1
       jest: 28.1.3_@types+node@18.7.13
-      prettier: 2.7.1
       ts-jest: 28.0.8_ilrng7qnyp5azbzz2jd3tvxp6a
       ts-node-dev: 2.0.0_hwinnrf7y5nyyzygpj45jmvjia
       tsconfig-paths: 4.1.0

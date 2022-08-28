@@ -8,6 +8,12 @@ export default class ObjectivesRepository implements IObjectivesRepository {
     return objective;
   }
 
+  public async findAll(): Promise<Objective[]> {
+    const objectives = await Objective.findAll();
+
+    return objectives;
+  }
+
   public async findById(id: string): Promise<Objective | null> {
     const objective = await Objective.findByPk(id);
 

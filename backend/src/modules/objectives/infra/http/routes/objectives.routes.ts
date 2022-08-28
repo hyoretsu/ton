@@ -8,6 +8,7 @@ const objectivesRouter = Router();
 const objectivesController = new ObjectivesController();
 const progressController = new ProgressController();
 
+objectivesRouter.get('/', objectivesController.show);
 objectivesRouter.post(
   '/',
   celebrate({

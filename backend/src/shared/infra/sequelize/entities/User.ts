@@ -14,6 +14,7 @@ import {
 import { v4 as uuid } from 'uuid';
 
 import DentalPhoto from './DentalPhoto';
+import Progress from './Progress';
 
 export interface ICreateUserDTO {
   name: string;
@@ -73,6 +74,9 @@ export default class User extends Model<User, ICreateUserDTO> {
 
   @HasMany(() => User)
   patients?: User[];
+
+  @HasMany(() => Progress)
+  progresses?: Progress[];
 
   @CreatedAt
   createdAt: Date;

@@ -1,4 +1,6 @@
 import DentalPhoto, { IRegisterPhotoDTO } from '@entities/DentalPhoto';
+import Objective from '@entities/Objective';
+import Progress from '@entities/Progress';
 import User, { ICreateUserDTO } from '@entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
@@ -11,9 +13,18 @@ export default class UsersRepository implements IUsersRepository {
 
   public async findByEmail(email: string): Promise<User | null> {
     const user = await User.findOne({
-      include: [{ model: User, as: 'patients' }],
+      include: [
+        { model: User, as: 'patients' },
+        { model: Progress, attributes: ['progress'], include: [Objective] },
+      ],
       where: { email },
     });
+
+    return user;
+  }
+
+  public async findById(id: string): Promise<User | null> {
+    const user = await User.findByPk(id);
 
     return user;
   }

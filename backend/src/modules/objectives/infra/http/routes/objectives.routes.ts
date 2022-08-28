@@ -2,9 +2,11 @@ import { celebrate, Joi } from 'celebrate';
 import { Router } from 'express';
 
 import ObjectivesController from '../controllers/ObjectivesController';
+import ProgressController from '../controllers/ProgressController';
 
 const objectivesRouter = Router();
 const objectivesController = new ObjectivesController();
+const progressController = new ProgressController();
 
 objectivesRouter.post(
   '/',
@@ -16,6 +18,18 @@ objectivesRouter.post(
     },
   }),
   objectivesController.create,
+);
+
+objectivesRouter.post(
+  '/progress',
+  celebrate({
+    body: {
+      objectiveId: Joi.string().required(),
+      userId: Joi.string().required(),
+      progress: Joi.number().required(),
+    },
+  }),
+  progressController.create,
 );
 
 export default objectivesRouter;

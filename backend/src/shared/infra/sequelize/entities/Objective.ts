@@ -1,5 +1,17 @@
-import { BeforeCreate, Column, CreatedAt, DataType, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import {
+  BeforeCreate,
+  Column,
+  CreatedAt,
+  DataType,
+  HasMany,
+  Model,
+  PrimaryKey,
+  Table,
+  UpdatedAt,
+} from 'sequelize-typescript';
 import { v4 as uuid } from 'uuid';
+
+import Progress from './Progress';
 
 export interface ICreateObjectiveDTO {
   title: string;
@@ -21,6 +33,9 @@ export default class Objective extends Model<Objective, ICreateObjectiveDTO> {
 
   @Column
   isDaily: boolean;
+
+  @HasMany(() => Progress)
+  progress?: Progress[];
 
   @CreatedAt
   createdAt: Date;

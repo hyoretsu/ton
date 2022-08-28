@@ -7,4 +7,10 @@ export default class ObjectivesRepository implements IObjectivesRepository {
 
     return objective;
   }
+
+  public async findById(id: string): Promise<Objective | null> {
+    const objective = await Objective.findByPk(id);
+
+    return objective;
+  }
 }

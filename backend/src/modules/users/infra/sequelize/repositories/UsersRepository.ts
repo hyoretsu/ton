@@ -11,6 +11,14 @@ export default class UsersRepository implements IUsersRepository {
     return user;
   }
 
+  public async findAllPatients(): Promise<User[]> {
+    let users = await User.findAll();
+
+    users = users.filter(user => user.doctorId != null);
+
+    return users;
+  }
+
   public async findByEmail(email: string): Promise<User | null> {
     const user = await User.findOne({
       include: [

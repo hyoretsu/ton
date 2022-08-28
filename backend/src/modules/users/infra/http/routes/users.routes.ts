@@ -8,6 +8,7 @@ const usersRouter = Router();
 const usersController = new UsersController();
 const sessionsController = new SessionsController();
 
+usersRouter.get('/', usersController.show);
 usersRouter.post(
   '/',
   celebrate({

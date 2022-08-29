@@ -17,7 +17,7 @@ const config: Config = {
   roots: ['<rootDir>/src'],
   setupFilesAfterEnv: [
     '@testing-library/jest-native/extend-expect',
-    './node_modules/react-native-gesture-handler/jestSetup.js',
+    '../node_modules/react-native-gesture-handler/jestSetup.js',
     '<rootDir>/jest.setup.ts',
   ],
   testMatch: ['<rootDir>/src/__tests__/**/*.spec.{ts,tsx}'],

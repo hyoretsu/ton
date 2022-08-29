@@ -3,7 +3,6 @@ import { Formik } from 'formik';
 import { useRef, useState } from 'react';
 import { Image, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Feather';
 import * as Yup from 'yup';
 
 import Button from '@components/Button';
@@ -12,8 +11,6 @@ import OpacityFilter from '@components/OpacityFilter';
 
 import {
   Container,
-  CreateAccount,
-  CreateAccountText,
   ForgotPassword,
   ForgotPasswordModal,
   ForgotPasswordModalText,
@@ -80,24 +77,19 @@ const SignIn: React.FC = () => {
                     ref={passwordRef}
                     secureTextEntry
                   />
+
+                  <ForgotPassword onPress={forgotPassword} activeOpacity={0.7}>
+                    <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
+                  </ForgotPassword>
                 </FormFields>
 
                 <Button onPress={() => handleSubmit()} fill>
                   Entrar
                 </Button>
-
-                <ForgotPassword onPress={forgotPassword} activeOpacity={0.7}>
-                  <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
-                </ForgotPassword>
               </Form>
             )}
           </Formik>
         </Container>
-
-        <CreateAccount onPress={() => navigate('SignUp')}>
-          <Icon name="log-in" size={20} color="#FFF" />
-          <CreateAccountText>Criar uma conta</CreateAccountText>
-        </CreateAccount>
 
         {forgotPasswordModalVisible && (
           <OpacityFilter>

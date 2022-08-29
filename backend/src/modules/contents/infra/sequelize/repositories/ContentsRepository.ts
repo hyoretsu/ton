@@ -9,6 +9,12 @@ export default class ContentsRepository implements IContentsRepository {
     return content;
   }
 
+  public async findAll(): Promise<Content[]> {
+    const contents = await Content.findAll({ include: [ContentMessage] });
+
+    return contents;
+  }
+
   public async registerMessage(data: ICreateContentMessageDTO): Promise<ContentMessage> {
     const content = await ContentMessage.create(data);
 

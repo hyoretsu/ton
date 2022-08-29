@@ -1,8 +1,12 @@
+GET http://localhost:3333/contents HTTP/1.1
+
+#####
+
 POST http://localhost:3333/contents HTTP/1.1
 Content-Type: application/json
 
 {
   "condition": 0,
-  "messages": ["Olá"],
+  "messages": ["Olá", "E aí?", "Tá funcionando?"],
   "title": "Testando"
 }

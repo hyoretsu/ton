@@ -6,6 +6,7 @@ import ContentsController from '../controllers/ContentsController';
 const contentsRouter = Router();
 const contentsController = new ContentsController();
 
+contentsRouter.get('/', contentsController.show);
 contentsRouter.post(
   '/',
   celebrate({

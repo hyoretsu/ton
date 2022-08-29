@@ -1,0 +1,8 @@
+POST http://localhost:3333/contents HTTP/1.1
+Content-Type: application/json
+
+{
+  "condition": 0,
+  "messages": ["Olá"],
+  "title": "Testando"
+}

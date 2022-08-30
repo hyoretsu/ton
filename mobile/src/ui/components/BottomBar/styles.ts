@@ -16,7 +16,7 @@ export const Container = styled.View`
 `;
 
 export const Button = styled(RectButton)<ButtonProps>`
-  flex: 0.25;
+  flex: 0.2;
   justify-content: center;
   align-items: center;
 

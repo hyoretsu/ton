@@ -9,6 +9,7 @@ const BottomBar: React.FC = () => {
   const { checkupProgress } = useStorage();
   const route = useRoute();
 
+  const onChat = route.name === 'Chat';
   const onDiary = route.name === 'Diary';
   const onEducational = route.name === 'Educational';
   const onProfile = route.name === 'Profile';
@@ -31,9 +32,14 @@ const BottomBar: React.FC = () => {
         <ButtonText>Exame</ButtonText>
       </Button>
 
+      <Button onPress={() => navigate('Chat')} isCurrentScreen={onChat}>
+        <Icon name="message-square" size={30} color={onChat ? highlightColor : '#000'} />
+        <ButtonText>Chat</ButtonText>
+      </Button>
+
       <Button onPress={() => console.log('Profile')} isCurrentScreen={onProfile}>
         <Icon name="user" size={30} color={onProfile ? highlightColor : '#000'} />
-        <ButtonText>Dados</ButtonText>
+        <ButtonText>Perfil</ButtonText>
       </Button>
     </Container>
   );

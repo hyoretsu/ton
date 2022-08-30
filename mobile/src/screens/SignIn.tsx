@@ -25,6 +25,7 @@ import logoImg from 'assets/logo.png';
 const SignIn: React.FC = () => {
   const { navigate, replace } = useNavigation<NavProps<'Educational'>>();
 
+  const [forgotMessage, setForgotMessage] = useState('');
   const [forgotPasswordModalVisible, setModalVisibility] = useState(false);
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
@@ -34,8 +35,16 @@ const SignIn: React.FC = () => {
     replace('Educational');
   };
 
-  // Todo: send temporary password to email
-  const forgotPassword = (): void => {
+  const forgotPassword = (emailError: string | undefined): void => {
+    if (emailError === 'email is a required field') {
+      setForgotMessage('Por favor, escreva um e-mail.');
+    } else if (emailError === 'email must be a valid email') {
+      setForgotMessage('Por favor, corrija seu e-mail.');
+    } else {
+      setForgotMessage('Uma senha temporária foi enviada para o seu email.');
+      // Todo: send temporary password to email
+    }
+
     setModalVisibility(true);
   };
 
@@ -55,7 +64,7 @@ const SignIn: React.FC = () => {
               password: Yup.string().required(),
             })}
           >
-            {({ errors, handleChange, handleSubmit }) => (
+            {({ errors, handleChange, handleSubmit, validateField }) => (
               <Form>
                 <FormFields>
                   <Input
@@ -78,7 +87,13 @@ const SignIn: React.FC = () => {
                     secureTextEntry
                   />
 
-                  <ForgotPassword onPress={forgotPassword} activeOpacity={0.7}>
+                  <ForgotPassword
+                    onPress={() => {
+                      validateField('email');
+                      forgotPassword(errors.email);
+                    }}
+                    activeOpacity={0.7}
+                  >
                     <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
                   </ForgotPassword>
                 </FormFields>
@@ -94,7 +109,7 @@ const SignIn: React.FC = () => {
         {forgotPasswordModalVisible && (
           <OpacityFilter>
             <ForgotPasswordModal>
-              <ForgotPasswordModalText>Uma senha temporária foi enviada para o seu email.</ForgotPasswordModalText>
+              <ForgotPasswordModalText>{forgotMessage}</ForgotPasswordModalText>
               <Button onPress={() => setModalVisibility(false)}>Entendi</Button>
             </ForgotPasswordModal>
           </OpacityFilter>

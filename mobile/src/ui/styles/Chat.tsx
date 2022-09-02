@@ -1,4 +1,6 @@
 import { ViewProps } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/AntDesign';
 import styled from 'styled-components/native';
 
 interface MessageProps extends ViewProps {
@@ -11,8 +13,11 @@ export const Container = styled.View`
 `;
 
 export const MessageView = styled.View<MessageProps>`
+  flex-direction: row;
+  align-items: center;
+
   min-width: 30%;
-  max-width: 65%;
+  max-width: 73%;
   background-color: #a3bee9;
 
   border: 1px #000;
@@ -41,6 +46,13 @@ export const MessageTime = styled.Text`
   align-self: flex-end;
 
   font-size: 12px;
+`;
+
+export const MessageSpeaker = styled(TouchableOpacity).attrs({ children: <Icon name="sound" size={20} /> })`
+  flex: 1;
+  justify-content: center;
+
+  margin-left: 8px;
 `;
 
 export const DateSection = styled.View`

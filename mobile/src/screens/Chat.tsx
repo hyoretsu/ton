@@ -1,8 +1,10 @@
 import { RouteParams } from 'data/@types/navigation';
 import { wait } from 'data/utils';
 import { format } from 'date-fns';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import Tts from 'react-native-tts';
 import Icon from 'react-native-vector-icons/Feather';
 
 import BottomBar from '@components/BottomBar';
@@ -18,6 +20,7 @@ import {
   DateSection,
   DateSectionMark,
   DateSectionText,
+  MessageSpeaker,
 } from '@styles/Chat';
 
 import answers from 'assets/messages.json';
@@ -42,10 +45,19 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
   const [currentMessage, setCurrentMessage] = useState('');
   const [dates, setDates] = useState<DateDict>({});
 
-  const answer = useCallback(
-    async (message: string) => {
+  useEffect(() => {
+    if (route.params) {
+      setMessages([
+        {
+          id: '0',
+          sender: 'user',
+          body: route.params.content,
+          time: new Date(),
+        },
+      ]);
+
       // @ts-ignore
-      const responses: string[] = answers[message];
+      const responses: string[] = answers[route.params.content];
 
       responses.forEach(async (response, i) => {
         await wait(2000 * (i + 1));
@@ -53,31 +65,27 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
         setMessages(old => [
           ...old,
           {
-            id: String(messages.length - 1),
+            id: String(old.length),
             sender: 'system',
             body: response,
             time: new Date(),
           },
         ]);
       });
-    },
-    [messages],
-  );
-
-  useEffect(() => {
-    if (route.params) {
-      setMessages([
-        {
-          id: String(messages.length - 1),
-          sender: 'user',
-          body: route.params.content,
-          time: new Date(),
-        },
-      ]);
-
-      answer(route.params.content);
     }
-  }, [answer, messages, route]);
+
+    Tts.getInitStatus().then(
+      () => {
+        Tts.setDefaultLanguage('pt-BR');
+        Tts.setDefaultRate(0.45);
+      },
+      err => {
+        if (err.code === 'no_engine') {
+          Tts.requestInstallEngine();
+        }
+      },
+    );
+  }, [route.params]);
 
   useEffect(() => {
     messages.forEach(message => {
@@ -124,8 +132,11 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
           renderItem={({ item: message, index }) => (
             <>
               <MessageView sender={message.sender} style={index === messages.length - 1 && { marginBottom: 0 }}>
-                <MessageText>{message.body}</MessageText>
-                <MessageTime>{format(message.time, 'HH:mm')}</MessageTime>
+                <View>
+                  <MessageText>{message.body}</MessageText>
+                  <MessageTime>{format(message.time, 'HH:mm')}</MessageTime>
+                </View>
+                {message.sender === 'system' && <MessageSpeaker onPress={() => Tts.speak(message.body)} />}
               </MessageView>
               {Object.keys(dates).includes(message.id) && (
                 <DateSection>

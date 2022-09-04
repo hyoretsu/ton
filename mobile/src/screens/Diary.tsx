@@ -1,4 +1,7 @@
 import { useStorage } from '@contexts/storage';
+import notifee from '@notifee/react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
 
 import BottomBar from '@components/BottomBar';
 
@@ -16,11 +19,21 @@ import {
 import objectives from 'assets/objectives.json';
 
 const Diary: React.FC = () => {
+  const { navigate } = useNavigation();
   const { objectiveProgress, storeValue } = useStorage();
 
   const handlePlusMinus = (action: string, id: number): void => {
     storeValue('objectiveProgress', [id, objectiveProgress[id] + (action === 'plus' ? 1 : -1)]);
   };
+
+  useEffect(() => {
+    notifee.getInitialNotification().then(notification => {
+      if (notification) {
+        // @ts-ignore
+        navigate('Chat', { content: notification.notification.body });
+      }
+    });
+  }, [navigate]);
 
   return (
     <>

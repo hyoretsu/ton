@@ -21,6 +21,10 @@
       <string>SimpleLineIcons.ttf</string>
       <string>Zocial.ttf</string>
     </array>
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+      <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    </array>
     <key>NSCameraUsageDescription</key>
     <string>$(PRODUCT_NAME) needs access to your Camera.</string>
     <key>CFBundleDevelopmentRegion</key>

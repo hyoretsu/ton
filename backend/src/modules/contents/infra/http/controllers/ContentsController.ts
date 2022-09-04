@@ -18,7 +18,7 @@ export default class ContentsController {
   public async show(req: Request, res: Response): Promise<Response> {
     const listContentsService = container.resolve(ListContentsService);
 
-    const content = await listContentsService.execute();
+    const content = await listContentsService.execute(req.headers.authorization);
 
     return res.json(content);
   }

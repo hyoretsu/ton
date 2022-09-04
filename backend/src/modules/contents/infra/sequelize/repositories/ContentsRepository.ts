@@ -1,3 +1,5 @@
+import { Op } from 'sequelize';
+
 import Content, { ICreateContentDTO } from '@entities/Content';
 import ContentMessage, { ICreateContentMessageDTO } from '@entities/ContentMessage';
 import IContentsRepository from '@modules/contents/repositories/IContentsRepository';
@@ -7,6 +9,19 @@ export default class ContentsRepository implements IContentsRepository {
     const content = await Content.create(data);
 
     return content;
+  }
+
+  public async filter(treatmentProgress: number): Promise<Content[]> {
+    const contents = await Content.findAll({
+      where: {
+        condition: {
+          [Op.lte]: treatmentProgress,
+        },
+      },
+      include: [ContentMessage],
+    });
+
+    return contents;
   }
 
   public async findAll(): Promise<Content[]> {

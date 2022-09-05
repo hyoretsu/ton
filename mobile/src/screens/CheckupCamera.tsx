@@ -49,7 +49,7 @@ const CheckupCamera: React.FC = () => {
 
   const device = useCameraDevices().back;
 
-  if (device === undefined)
+  if (device === undefined) {
     return (
       <ActivityIndicator
         size={80}
@@ -61,6 +61,7 @@ const CheckupCamera: React.FC = () => {
         }}
       />
     );
+  }
 
   return (
     <>

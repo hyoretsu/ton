@@ -11,12 +11,10 @@ export interface CheckupConfirmParams {
 }
 
 const CheckupConfirm: React.FC<RouteParams<CheckupConfirmParams>> = ({ route }) => {
-  const { goBack, navigate } = useNavigation();
+  const { navigate } = useNavigation();
   const { checkupProgress, storeValue } = useStorage();
 
   const handleYes = async (): Promise<void> => {
-    console.log(route.params?.filePath);
-
     await storeValue('checkupProgress', checkupProgress + 1);
     navigate('CheckupInstructions');
   };
@@ -26,7 +24,7 @@ const CheckupConfirm: React.FC<RouteParams<CheckupConfirmParams>> = ({ route }) 
       <ConfirmationText>A foto está boa?</ConfirmationText>
       <Photo source={{ uri: `file://${route.params?.filePath}` }} />
       <ConfirmationPrompt>
-        <Button padding={[16, 32]} onPress={goBack} style={{ marginRight: 24 }}>
+        <Button padding={[16, 32]} onPress={() => navigate('CheckupInstructions')} style={{ marginRight: 24 }}>
           Não
         </Button>
         <Button padding={[16, 32]} onPress={handleYes} style={{ marginLeft: 24 }}>

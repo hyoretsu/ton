@@ -15,6 +15,15 @@ const CheckupConfirm: React.FC<RouteParams<CheckupConfirmParams>> = ({ route }) 
   const { checkupProgress, storeValue } = useStorage();
 
   const handleYes = async (): Promise<void> => {
+    // Since there are 10 steps to the checkup
+    if (checkupProgress === 9) {
+      await storeValue('checkupProgress', 0);
+
+      navigate('Symptoms');
+
+      return;
+    }
+
     await storeValue('checkupProgress', checkupProgress + 1);
     navigate('CheckupInstructions');
   };

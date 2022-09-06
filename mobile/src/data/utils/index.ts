@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 /**
  * When providing a single parameter, it acts like `random(max)`
  */

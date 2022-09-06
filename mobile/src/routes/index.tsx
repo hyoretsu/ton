@@ -8,6 +8,7 @@ import Diary from 'screens/Diary';
 import Educational from 'screens/Educational';
 import SignIn from 'screens/SignIn';
 import SignUp from 'screens/SignUp';
+import Symptoms from 'screens/Symptoms';
 
 export type RootStackParamList = {
   Chat?: ChatParams;
@@ -19,6 +20,7 @@ export type RootStackParamList = {
   Educational: undefined;
   SignIn: undefined;
   SignUp: undefined;
+  Symptoms: undefined;
 };
 
 const App = createStackNavigator<RootStackParamList>();
@@ -38,6 +40,7 @@ const Routes: React.FC = () => (
     <App.Screen name="Educational" component={Educational} />
     <App.Screen name="SignIn" component={SignIn} />
     <App.Screen name="SignUp" component={SignUp} />
+    <App.Screen name="Symptoms" component={Symptoms} />
   </App.Navigator>
 );
 

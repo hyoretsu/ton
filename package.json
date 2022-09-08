@@ -4,6 +4,7 @@
   "workspaces": [
     "@shared/*",
     "backend",
+    "frontend",
     "mobile"
   ],
   "scripts": {

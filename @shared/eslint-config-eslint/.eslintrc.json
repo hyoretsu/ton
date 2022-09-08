@@ -10,7 +10,7 @@
   "parserOptions": {
     "sourceType": "module"
   },
-  "plugins": ["prettier"],
+  "plugins": ["import", "import-helpers", "prettier"],
   "rules": {
     "default-case": "off",
     "import-helpers/order-imports": [
@@ -20,11 +20,12 @@
         "groups": [
           "module",
           "/^@components/",
-          "/^@api/",
+          ["/^@hooks/", "/^@utils/", "/^@api/"],
+          "/^@assets/",
           "/^@styles/",
           "/assets/",
           ["/^@config/", "/^@entities/", "/^@modules/", "/^@shared/"],
-          ["parent", "sibling"]
+          ["/^@public/", "parent", "sibling"]
         ],
         "alphabetize": {
           "order": "asc"
@@ -65,7 +66,7 @@
       "parserOptions": {
         "ecmaVersion": "latest"
       },
-      "plugins": ["@typescript-eslint", "import-helpers"],
+      "plugins": ["@typescript-eslint"],
       "rules": {
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "off",
@@ -77,13 +78,15 @@
             "tsx": "never"
           }
         ]
+      },
+      "settings": {
+        "import/resolver": {
+          "typescript": {}
+        }
       }
     }
   ],
   "settings": {
-    "import/resolver": {
-      "typescript": {}
-    },
     "node": {
       "extensions": [".js", ".jsx", ".ts", ".tsx"]
     }

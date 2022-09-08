@@ -6,6 +6,15 @@
     "backend",
     "mobile"
   ],
+  "scripts": {
+    "prepare": "husky install && chmod ug+x .husky/*"
+  },
+  "lint-staged": {
+    "**/*.(ts|tsx)": [
+      "eslint --fix",
+      "yarn test --bail --findRelatedTests --passWithNoTests"
+    ]
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",

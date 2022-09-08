@@ -6,15 +6,8 @@
     "android_build": "cd android && ./gradlew assembleRelease && cd ../",
     "android_manual": "mkdir -p android/app/src/main/assets && touch $_/index.android.bundle && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/ && ./android/gradlew assembleDebug",
     "ios": "react-native run-ios",
-    "prepare": "cd .. && husky install ./mobile/.husky && chmod ug+x ./mobile/.husky/*",
     "start": "react-native start",
     "test": "jest --coverage"
-  },
-  "lint-staged": {
-    "src/**/*.(ts|tsx)": [
-      "eslint --fix",
-      "yarn test --bail --findRelatedTests --passWithNoTests"
-    ]
   },
   "dependencies": {
     "@babel/preset-env": "^7.18.10",
@@ -69,14 +62,11 @@
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-native": "^4.0.0",
-    "husky": "^8.0.1",
-    "jest": "^28.1.3",
     "jsc-android": "^250230.2.1",
     "metro-react-native-babel-preset": "^0.71.3",
     "prettier": "^2.7.1",
     "react-native-gradle-plugin": "^0.0.7",
     "react-test-renderer": "^18.0.0",
-    "ts-jest": "^28.0.8",
     "typescript": "^4.7.4"
   }
 }

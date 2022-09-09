@@ -37,7 +37,7 @@ const BottomBar: React.FC = () => {
         <ButtonText>Chat</ButtonText>
       </Button>
 
-      <Button onPress={() => console.log('Profile')} isCurrentScreen={onProfile}>
+      <Button onPress={() => navigate('Profile')} isCurrentScreen={onProfile}>
         <Icon name="user" size={30} color={onProfile ? highlightColor : '#000'} />
         <ButtonText>Perfil</ButtonText>
       </Button>

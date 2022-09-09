@@ -6,6 +6,7 @@ import CheckupConfirm, { CheckupConfirmParams } from 'screens/CheckupConfirm';
 import CheckupInstructions from 'screens/CheckupInstructions';
 import Diary from 'screens/Diary';
 import Educational from 'screens/Educational';
+import Profile from 'screens/Profile';
 import SignIn from 'screens/SignIn';
 import Symptoms from 'screens/Symptoms';
 
@@ -17,6 +18,7 @@ export type RootStackParamList = {
   CheckupInstructions: undefined;
   Diary: undefined;
   Educational: undefined;
+  Profile: undefined;
   SignIn: undefined;
   Symptoms: undefined;
 };
@@ -36,6 +38,7 @@ const Routes: React.FC = () => (
     <App.Screen name="CheckupInstructions" component={CheckupInstructions} />
     <App.Screen name="Diary" component={Diary} />
     <App.Screen name="Educational" component={Educational} />
+    <App.Screen name="Profile" component={Profile} />
     <App.Screen name="SignIn" component={SignIn} />
     <App.Screen name="Symptoms" component={Symptoms} />
   </App.Navigator>

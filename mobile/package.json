@@ -3,8 +3,9 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "android_build": "cd android && ./gradlew assembleRelease && cd ../",
-    "android_manual": "mkdir -p android/app/src/main/assets && touch $_/index.android.bundle && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/ && ./android/gradlew assembleDebug",
+    "android:apk": "cd ./android && ./gradlew assembleRelease && cd ../",
+    "android:bundle": "cd ./android && ./gradlew bundleRelease && cd ../",
+    "android:debug": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/ && cd ./android && ./gradlew assembleDebug && cd ../",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest --coverage"

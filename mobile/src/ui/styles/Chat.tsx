@@ -16,8 +16,7 @@ export const MessageView = styled.View<MessageProps>`
   flex-direction: row;
   align-items: center;
 
-  min-width: 30%;
-  max-width: 73%;
+  max-width: 76%;
   background-color: #a3bee9;
 
   border: 1px #000;

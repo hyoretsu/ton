@@ -1,3 +1,4 @@
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
@@ -25,7 +26,7 @@ export const FormFields = styled.View`
   margin: 48px 0;
 `;
 
-export const ForgotPassword = styled.TouchableOpacity`
+export const ForgotPassword = styled(TouchableOpacity)`
   margin: 8px auto 0;
 `;
 

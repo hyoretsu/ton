@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import { useRef, useState } from 'react';
-import { Image, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { Image } from 'react-native';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 
 import Button from '@components/Button';
@@ -49,73 +49,71 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined} enabled>
-      <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flex: 1 }}>
-        <Container>
-          <Title>e-Odontologia</Title>
+    <ScrollView>
+      <Container>
+        <Title>e-Odontologia</Title>
 
-          <Image source={logoImg} style={{ width: 200, height: 200 }} />
+        <Image source={logoImg} style={{ width: 200, height: 200 }} />
 
-          <Formik
-            initialValues={{ email: '', password: '' }}
-            onSubmit={login}
-            validationSchema={Yup.object().shape({
-              email: Yup.string().email().required(),
-              password: Yup.string().required(),
-            })}
-          >
-            {({ errors, handleChange, handleSubmit, validateField }) => (
-              <Form>
-                <FormFields>
-                  <Input
-                    placeholder="E-mail"
-                    icon="mail"
-                    onChangeText={handleChange('email')}
-                    onSubmitEditing={() => passwordRef.current?.focus()}
-                    isErrored={errors.email}
-                    type="email-address"
-                    ref={emailRef}
-                  />
-                  <Input
-                    placeholder="Senha"
-                    icon="lock"
-                    onChangeText={handleChange('password')}
-                    onSubmitEditing={() => handleSubmit()}
-                    isErrored={errors.password}
-                    returnKeyType="send"
-                    ref={passwordRef}
-                    secureTextEntry
-                  />
+        <Formik
+          initialValues={{ email: '', password: '' }}
+          onSubmit={login}
+          validationSchema={Yup.object().shape({
+            email: Yup.string().email().required(),
+            password: Yup.string().required(),
+          })}
+        >
+          {({ errors, handleChange, handleSubmit, validateField }) => (
+            <Form>
+              <FormFields>
+                <Input
+                  placeholder="E-mail"
+                  icon="mail"
+                  onChangeText={handleChange('email')}
+                  onSubmitEditing={() => passwordRef.current?.focus()}
+                  isErrored={errors.email}
+                  type="email-address"
+                  ref={emailRef}
+                />
+                <Input
+                  placeholder="Senha"
+                  icon="lock"
+                  onChangeText={handleChange('password')}
+                  onSubmitEditing={() => handleSubmit()}
+                  isErrored={errors.password}
+                  returnKeyType="send"
+                  ref={passwordRef}
+                  secureTextEntry
+                />
 
-                  <ForgotPassword
-                    onPress={() => {
-                      validateField('email');
-                      forgotPassword(errors.email);
-                    }}
-                    activeOpacity={0.7}
-                  >
-                    <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
-                  </ForgotPassword>
-                </FormFields>
+                <ForgotPassword
+                  onPress={() => {
+                    validateField('email');
+                    forgotPassword(errors.email);
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
+                </ForgotPassword>
+              </FormFields>
 
-                <Button onPress={() => handleSubmit()} fill>
-                  Entrar
-                </Button>
-              </Form>
-            )}
-          </Formik>
-        </Container>
+              <Button onPress={() => handleSubmit()} style={{ marginBottom: 24 }} fill>
+                Entrar
+              </Button>
+            </Form>
+          )}
+        </Formik>
+      </Container>
 
-        {forgotPasswordModalVisible && (
-          <OpacityFilter>
-            <ForgotPasswordModal>
-              <ForgotPasswordModalText>{forgotMessage}</ForgotPasswordModalText>
-              <Button onPress={() => setModalVisibility(false)}>Entendi</Button>
-            </ForgotPasswordModal>
-          </OpacityFilter>
-        )}
-      </ScrollView>
-    </KeyboardAvoidingView>
+      {forgotPasswordModalVisible && (
+        <OpacityFilter>
+          <ForgotPasswordModal>
+            <ForgotPasswordModalText>{forgotMessage}</ForgotPasswordModalText>
+            <Button onPress={() => setModalVisibility(false)}>Entendi</Button>
+          </ForgotPasswordModal>
+        </OpacityFilter>
+      )}
+    </ScrollView>
   );
 };
 

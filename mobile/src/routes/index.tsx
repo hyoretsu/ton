@@ -27,8 +27,8 @@ const App = createStackNavigator<RootStackParamList>();
 
 const Routes: React.FC = () => (
   <App.Navigator
-    // initialRouteName="SignIn"
-    initialRouteName="Diary"
+    initialRouteName="SignIn"
+    // initialRouteName="Diary"
     screenOptions={{ cardStyle: { backgroundColor: '#c4d3f2' }, headerShown: false }}
   >
     <App.Screen name="Chat" component={Chat} />

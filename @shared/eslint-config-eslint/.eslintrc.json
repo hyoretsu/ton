@@ -81,14 +81,27 @@
       },
       "settings": {
         "import/resolver": {
-          "typescript": {}
+          "typescript": {
+            "project": [
+              "tsconfig.json",
+              "backend/tsconfig.json",
+              "frontend/tsconfig.json",
+              "mobile/tsconfig.json"
+            ]
+          },
+          "node": {
+            "project": [
+              "tsconfig.json",
+              "backend/tsconfig.json",
+              "frontend/tsconfig.json",
+              "mobile/tsconfig.json"
+            ]
+          }
+        },
+        "node": {
+          "extensions": [".js", ".jsx", ".ts", ".tsx"]
         }
       }
     }
-  ],
-  "settings": {
-    "node": {
-      "extensions": [".js", ".jsx", ".ts", ".tsx"]
-    }
-  }
+  ]
 }

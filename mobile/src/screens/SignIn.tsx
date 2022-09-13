@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '@contexts/auth';
 import { Formik } from 'formik';
 import { useRef, useState } from 'react';
 import { Image } from 'react-native';
@@ -9,39 +9,53 @@ import Button from '@components/Button';
 import Input from '@components/Input';
 import OpacityFilter from '@components/OpacityFilter';
 
+import api from '@api';
+
 import {
   Container,
   ForgotPassword,
-  ForgotPasswordModal,
-  ForgotPasswordModalText,
   ForgotPasswordText,
   Form,
   FormFields,
+  Modal,
+  ModalText,
   Title,
 } from '@styles/SignIn';
 
 import logoImg from 'assets/logo.png';
 
-const SignIn: React.FC = () => {
-  const { navigate, replace } = useNavigation<NavProps<'Educational'>>();
+interface FormTypes {
+  email: string;
+  password: string;
+}
 
-  const [forgotMessage, setForgotMessage] = useState('');
-  const [forgotPasswordModalVisible, setModalVisibility] = useState(false);
+const SignIn: React.FC = () => {
+  const { finishLogin } = useAuth();
+
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalVisible, setModalVisibility] = useState(false);
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
 
-  // Todo: validate and login
-  const login = (): void => {
-    replace('Educational');
+  const login = async (credentials: FormTypes): Promise<void> => {
+    try {
+      const res = await api.post('/users/login', credentials);
+
+      await finishLogin(res.data);
+    } catch {
+      setModalMessage('E-mail e/ou senha incorretos.');
+
+      setModalVisibility(true);
+    }
   };
 
   const forgotPassword = (emailError: string | undefined): void => {
     if (emailError === 'email is a required field') {
-      setForgotMessage('Por favor, escreva um e-mail.');
+      setModalMessage('Por favor, escreva um e-mail.');
     } else if (emailError === 'email must be a valid email') {
-      setForgotMessage('Por favor, corrija seu e-mail.');
+      setModalMessage('Por favor, corrija seu e-mail.');
     } else {
-      setForgotMessage('Uma senha temporária foi enviada para o seu email.');
+      setModalMessage('Uma senha temporária foi enviada para o seu email.');
       // Todo: send temporary password to email
     }
 
@@ -105,12 +119,12 @@ const SignIn: React.FC = () => {
         </Formik>
       </Container>
 
-      {forgotPasswordModalVisible && (
+      {modalVisible && (
         <OpacityFilter>
-          <ForgotPasswordModal>
-            <ForgotPasswordModalText>{forgotMessage}</ForgotPasswordModalText>
+          <Modal>
+            <ModalText>{modalMessage}</ModalText>
             <Button onPress={() => setModalVisibility(false)}>Entendi</Button>
-          </ForgotPasswordModal>
+          </Modal>
         </OpacityFilter>
       )}
     </ScrollView>

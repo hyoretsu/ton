@@ -224,6 +224,7 @@ importers:
       axios: ^0.27.2
       babel-jest: ^28.1.3
       babel-plugin-module-resolver: ^4.1.0
+      backend: workspace:*
       date-fns: ^2.29.2
       eslint: ^8.22.0
       eslint-config-airbnb: ^19.0.4
@@ -264,6 +265,7 @@ importers:
       '@react-spring/native': 9.5.2_277xbvfj4enh6kc62265yd46zq
       '@types/react': 18.0.17
       axios: 0.27.2
+      backend: link:../backend
       date-fns: 2.29.2
       formik: 2.2.9_react@18.2.0
       react: 18.2.0

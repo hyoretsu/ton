@@ -1,3 +1,4 @@
+import { AuthProvider } from '@contexts/auth';
 import { StorageProvider } from '@contexts/storage';
 import notifee, { AndroidStyle } from '@notifee/react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -57,10 +58,12 @@ const App: React.FC = () => {
 
   return (
     <NavigationContainer>
-      <StatusBar barStyle="light-content" backgroundColor="#8295f2" />
-      <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#8295f2' }}>
+      <StatusBar barStyle="dark-content" backgroundColor="#c4d3f2" />
+      <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#c4d3f2' }}>
         <StorageProvider>
-          <Routes />
+          <AuthProvider>
+            <Routes />
+          </AuthProvider>
         </StorageProvider>
       </GestureHandlerRootView>
     </NavigationContainer>

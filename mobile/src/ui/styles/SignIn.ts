@@ -35,17 +35,17 @@ export const ForgotPasswordText = styled.Text`
   color: #fff;
 `;
 
-export const ForgotPasswordModal = styled.View`
+export const Modal = styled.View`
   align-items: center;
 
   width: 60%;
   background-color: #c4d3f2;
 
   border-radius: 15px;
-  padding: 12px 0 16px;
+  padding: 16px 4px;
 `;
 
-export const ForgotPasswordModalText = styled.Text`
+export const ModalText = styled.Text`
   font-size: 16px;
   text-align: center;
 

@@ -14,7 +14,7 @@ Content-Type: application/json
   "name": "Aran",
   "neoplasia": "Câncer",
   "parentName": "Betto",
-  "password": "Aran%12345",
+  "password": "segredo",
   "phoneNumber": "83996133794"
 }
 

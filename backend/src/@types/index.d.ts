@@ -1,3 +1,4 @@
+import Message from '@entities/Message';
 import User from '@entities/User';
 
-export { User };
+export { Message, User };

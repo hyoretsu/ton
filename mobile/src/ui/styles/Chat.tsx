@@ -1,18 +1,13 @@
-import { ViewProps } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
 import styled from 'styled-components/native';
-
-interface MessageProps extends ViewProps {
-  sender: string;
-}
 
 export const Container = styled.View`
   flex: 1;
   flex-direction: column-reverse;
 `;
 
-export const MessageView = styled.View<MessageProps>`
+export const MessageView = styled.View`
   flex-direction: row;
   align-items: center;
 
@@ -23,17 +18,6 @@ export const MessageView = styled.View<MessageProps>`
   border-radius: 12px;
   padding: 8px;
   margin-bottom: 12px;
-
-  ${({ sender }) =>
-    sender === 'system'
-      ? {
-          marginLeft: 16,
-          marginRight: 'auto',
-        }
-      : {
-          marginLeft: 'auto',
-          marginRight: 16,
-        }}
 `;
 
 export const MessageText = styled.Text`

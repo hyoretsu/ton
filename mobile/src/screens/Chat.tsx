@@ -1,13 +1,19 @@
+import { useAuth } from '@contexts/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Message } from 'backend';
 import { RouteParams } from 'data/@types/navigation';
 import { wait } from 'data/utils';
 import { format } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Tts from 'react-native-tts';
 import Icon from 'react-native-vector-icons/Feather';
+import { io, Socket } from 'socket.io-client';
 
 import BottomBar from '@components/BottomBar';
+
+import api from '@api';
 
 import {
   Container,
@@ -25,13 +31,6 @@ import {
 
 import answers from 'assets/messages.json';
 
-interface Message {
-  id: string;
-  sender: string;
-  body: string;
-  time: Date;
-}
-
 interface DateDict {
   [id: string]: string;
 }
@@ -41,18 +40,39 @@ export interface ChatParams {
 }
 
 const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
+  const { user } = useAuth();
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [dates, setDates] = useState<DateDict>({});
+  const [socket, setSocket] = useState<Socket>(null as unknown as Socket);
+
+  const updateMessages = useCallback(() => {
+    api.get('/messages').then(({ data }) => {
+      setMessages(data);
+      AsyncStorage.setItem('@eOdontologia:messages', JSON.stringify(data));
+    });
+  }, []);
 
   useEffect(() => {
+    AsyncStorage.getItem('@eOdontologia:messages').then(storedMessages => {
+      if (storedMessages) {
+        setMessages(JSON.parse(storedMessages));
+      }
+
+      updateMessages();
+    });
+
+    setSocket(io('http://192.168.0.11:3332'));
+
     if (route.params) {
       setMessages([
         {
           id: '0',
-          sender: 'user',
+          senderId: 'user',
           body: route.params.content,
-          time: new Date(),
+          recipientId: 'system',
+          createdAt: new Date(),
         },
       ]);
 
@@ -66,9 +86,10 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
           ...old,
           {
             id: String(old.length),
-            sender: 'system',
+            senderId: 'system',
             body: response,
-            time: new Date(),
+            recipientId: 'user',
+            createdAt: new Date(),
           },
         ]);
       });
@@ -85,35 +106,43 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
         }
       },
     );
-  }, [route.params]);
+  }, [route.params, updateMessages]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on('chat', () => updateMessages());
+  }, [socket, updateMessages]);
 
   useEffect(() => {
     messages.forEach(message => {
-      const formattedDate = format(message.time, 'dd/MM/yyyy');
+      const formattedDate = format(new Date(message.createdAt), 'dd/MM/yyyy');
 
-      if (!Object.values(dates).includes(formattedDate)) {
-        setDates(old => ({
+      setDates(old => {
+        if (Object.values(old).includes(formattedDate)) {
+          return old;
+        }
+
+        return {
           ...old,
           [message.id]: formattedDate,
-        }));
-      }
+        };
+      });
     });
-  }, [dates, messages]);
+  }, [messages]);
 
-  const sendMessage = (): void => {
+  const sendMessage = async (): Promise<void> => {
     if (currentMessage) {
-      setMessages(old => [
-        ...old,
-        {
-          id: String(messages.length - 1),
-          sender: 'user',
-          body: currentMessage,
-          time: new Date(),
-        },
-      ]);
-    }
+      const { data: newMessage } = await api.post('/messages', {
+        body: currentMessage,
+        recipientId: user.doctorId,
+      });
 
-    setCurrentMessage('');
+      setMessages(old => [...old, newMessage]);
+      AsyncStorage.setItem('@eOdontologia:messages', JSON.stringify(messages));
+
+      setCurrentMessage('');
+    }
   };
 
   return (
@@ -131,12 +160,25 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
           showsVerticalScrollIndicator={false}
           renderItem={({ item: message, index }) => (
             <>
-              <MessageView sender={message.sender} style={index === messages.length - 1 && { marginBottom: 0 }}>
+              <MessageView
+                style={[
+                  index === messages.length - 1 && { marginBottom: 0 },
+                  message.senderId !== user.id
+                    ? {
+                        marginLeft: 16,
+                        marginRight: 'auto',
+                      }
+                    : {
+                        marginLeft: 'auto',
+                        marginRight: 16,
+                      },
+                ]}
+              >
                 <View>
                   <MessageText>{message.body}</MessageText>
-                  <MessageTime>{format(message.time, 'HH:mm')}</MessageTime>
+                  <MessageTime>{format(new Date(message.createdAt), 'HH:mm')}</MessageTime>
                 </View>
-                {message.sender === 'system' && <MessageSpeaker onPress={() => Tts.speak(message.body)} />}
+                {message.senderId !== user.id && <MessageSpeaker onPress={() => Tts.speak(message.body)} />}
               </MessageView>
               {Object.keys(dates).includes(message.id) && (
                 <DateSection>

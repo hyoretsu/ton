@@ -4,6 +4,8 @@ import '@modules/users/providers';
 
 import ContentsRepository from '@modules/contents/infra/sequelize/repositories/ContentsRepository';
 import IContentsRepository from '@modules/contents/repositories/IContentsRepository';
+import MessagesRepository from '@modules/messages/infra/sequelize/repositories/MessagesRepository';
+import IMessagesRepository from '@modules/messages/repositories/IMessagesRepository';
 import ObjectivesRepository from '@modules/objectives/infra/sequelize/repositories/ObjectivesRepository';
 import ProgressRepository from '@modules/objectives/infra/sequelize/repositories/ProgressRepository';
 import IObjectivesRepository from '@modules/objectives/repositories/IObjectivesRepository';
@@ -12,6 +14,7 @@ import UsersRepository from '@modules/users/infra/sequelize/repositories/UsersRe
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 container.registerSingleton<IContentsRepository>('ContentsRepository', ContentsRepository);
+container.registerSingleton<IMessagesRepository>('MessagesRepository', MessagesRepository);
 container.registerSingleton<IObjectivesRepository>('ObjectivesRepository', ObjectivesRepository);
 container.registerSingleton<IProgressRepository>('ProgressRepository', ProgressRepository);
 container.registerSingleton<IUsersRepository>('UsersRepository', UsersRepository);

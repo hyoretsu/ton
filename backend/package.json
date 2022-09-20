@@ -5,8 +5,7 @@
   "scripts": {
     "build": "babel src --extensions .ts --out-dir dist --copy-files --no-copy-ignored --source-maps",
     "dev": "tsnd -r tsconfig-paths/register --inspect --no-notify --respawn -T -I /node_modules/ src/shared/infra/http/server.ts",
-    "start": "npm run build && node dist/shared/infra/http/server.js",
-    "test": "jest --passWithNoTests"
+    "start": "npm run build && node dist/shared/infra/http/server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

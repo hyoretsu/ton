@@ -4,8 +4,7 @@
   "scripts": {
     "build": "next build",
     "dev": "NODE_OPTIONS='--inspect' node server.js",
-    "export": "next export",
-    "test": "jest --coverage --watchAll false --passWithNoTests"
+    "export": "next export"
   },
   "dependencies": {
     "axios": "^0.27.2",

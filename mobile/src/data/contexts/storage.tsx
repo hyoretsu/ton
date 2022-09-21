@@ -1,14 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import objectives from 'assets/objectives.json';
-
 type Keys = 'checkupProgress' | 'objectiveProgress';
-type ObjectiveProgress = Record<string, number>;
 
 interface StorageContext {
   checkupProgress: number;
-  objectiveProgress: ObjectiveProgress;
   storeValue: (key: Keys, value: any) => Promise<void>;
 }
 
@@ -16,7 +12,6 @@ const StorageContext = createContext<StorageContext>({} as StorageContext);
 
 export const StorageProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [checkupProgress, setCheckupProgress] = useState(0);
-  const [objectiveProgress, setObjectiveProgress] = useState<ObjectiveProgress>({});
 
   useEffect(() => {
     AsyncStorage.getItem('@eOdontologia:checkupProgress').then(storedProgress => {
@@ -28,13 +23,6 @@ export const StorageProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
       setCheckupProgress(Number(storedProgress));
     });
-
-    objectives.forEach(objective => {
-      setObjectiveProgress(old => ({
-        ...old,
-        [objective.id]: 0,
-      }));
-    });
   }, [checkupProgress]);
 
   const storeValue = useCallback(async (key: Keys, value: any) => {
@@ -43,20 +31,10 @@ export const StorageProvider: React.FC<PropsWithChildren> = ({ children }) => {
         await AsyncStorage.setItem(`@eOdontologia:${key}`, JSON.stringify(value));
         setCheckupProgress(value);
         break;
-
-      case 'objectiveProgress':
-        setObjectiveProgress(old => ({
-          ...old,
-          [value[0]]: value[1],
-        }));
-        break;
     }
   }, []);
 
-  const storage: StorageContext = useMemo(
-    () => ({ checkupProgress, objectiveProgress, storeValue }),
-    [checkupProgress, objectiveProgress, storeValue],
-  );
+  const storage: StorageContext = useMemo(() => ({ checkupProgress, storeValue }), [checkupProgress, storeValue]);
 
   return <StorageContext.Provider value={storage}>{children}</StorageContext.Provider>;
 };

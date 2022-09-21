@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
+import ListProgressesService from '@modules/objectives/services/ListProgressesService';
 import UpdateProgressService from '@modules/objectives/services/UpdateProgressService';
 
 export default class ProgressController {
@@ -9,8 +10,18 @@ export default class ProgressController {
 
     const updateProgressService = container.resolve(UpdateProgressService);
 
-    const progres = await updateProgressService.execute(body);
+    const progress = await updateProgressService.execute({ ...body, userId: req.user.id });
 
-    return res.json(progres);
+    return res.json(progress);
+  }
+
+  public async show(req: Request, res: Response): Promise<Response> {
+    const { id: userId } = req.user;
+
+    const listProgressesService = container.resolve(ListProgressesService);
+
+    const progresses = await listProgressesService.execute(userId);
+
+    return res.json(progresses);
   }
 }

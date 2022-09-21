@@ -1,6 +1,8 @@
 import { celebrate, Joi } from 'celebrate';
 import { Router } from 'express';
 
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
+
 import ObjectivesController from '../controllers/ObjectivesController';
 import ProgressController from '../controllers/ProgressController';
 
@@ -21,12 +23,13 @@ objectivesRouter.post(
   objectivesController.create,
 );
 
+objectivesRouter.get('/progress', ensureAuthenticated, progressController.show);
 objectivesRouter.post(
   '/progress',
+  ensureAuthenticated,
   celebrate({
     body: {
       objectiveId: Joi.string().required(),
-      userId: Joi.string().required(),
       progress: Joi.number().required(),
     },
   }),

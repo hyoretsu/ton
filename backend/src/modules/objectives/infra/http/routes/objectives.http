@@ -11,9 +11,9 @@ Content-Type: application/json
 
 POST http://localhost:3333/objectives/progress HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjIzMjM4MjIsImV4cCI6MTY2MjkyODYyMiwic3ViIjoiOTFlMGNlMTMtMWM1Mi00ZDIwLThmY2UtMzJlZGIzZDdhZGJmIn0.7GyNOBasbsOW6ok5-C89AHIKUCTA82dQKhACJMJMEtU
 
 {
-    "userId": "91e0ce13-1c52-4d20-8fce-32edb3d7adbf",
     "objectiveId": "3462dd30-6ca7-486f-a2f8-daddc850a4ec",
     "progress": 1
 }

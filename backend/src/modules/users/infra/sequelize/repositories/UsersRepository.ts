@@ -48,4 +48,10 @@ export default class UsersRepository implements IUsersRepository {
 
     return photo;
   }
+
+  public async update(user: User, updatedInfo: Partial<User>): Promise<User> {
+    const updatedUser = await user.update(updatedInfo);
+
+    return updatedUser;
+  }
 }

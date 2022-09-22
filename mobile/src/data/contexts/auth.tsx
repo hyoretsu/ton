@@ -12,6 +12,7 @@ export interface AuthInfo {
 interface AuthContextData {
   finishLogin(credentials: AuthInfo): Promise<void>;
   signOut(): void;
+  updateUser(user: User): Promise<void>;
   user: User;
   loading: boolean;
 }
@@ -51,9 +52,15 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setData({} as User);
   }, []);
 
+  const updateUser = useCallback(async (user: User) => {
+    await AsyncStorage.setItem('@eOdontologia:user', JSON.stringify(user));
+
+    setData(user);
+  }, []);
+
   const authData = useMemo(
-    () => ({ finishLogin, signOut, user: data, loading }),
-    [finishLogin, signOut, data, loading],
+    () => ({ finishLogin, signOut, updateUser, user: data, loading }),
+    [finishLogin, signOut, updateUser, data, loading],
   );
 
   return <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>;

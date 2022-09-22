@@ -3,6 +3,7 @@ import { Router } from 'express';
 
 import SessionsController from '../controllers/SessionsController';
 import UsersController from '../controllers/UsersController';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const usersRouter = Router();
 const usersController = new UsersController();
@@ -28,6 +29,19 @@ usersRouter.post(
     },
   }),
   usersController.create,
+);
+usersRouter.patch(
+  '/',
+  ensureAuthenticated,
+  celebrate({
+    body: {
+      city: Joi.string(),
+      email: Joi.string(),
+      password: Joi.string(),
+      phoneNumber: Joi.string().regex(/\d{2}9?\d{8}/),
+    },
+  }),
+  usersController.update,
 );
 usersRouter.post(
   '/login',

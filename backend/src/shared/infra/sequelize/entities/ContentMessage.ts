@@ -16,7 +16,7 @@ import Content from './Content';
 
 export interface ICreateContentMessageDTO {
   contentId: string;
-  message: string;
+  body: string;
 }
 
 @Table
@@ -33,7 +33,7 @@ export default class ContentMessage extends Model<ContentMessage, ICreateContent
   content: Content;
 
   @Column
-  message: string;
+  body: string;
 
   @CreatedAt
   createdAt: Date;

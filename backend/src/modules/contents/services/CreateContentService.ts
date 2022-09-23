@@ -18,10 +18,10 @@ export default class CreateContentService {
   public async execute({ messages, ...contentInfo }: IRequest): Promise<Content> {
     const content = await this.contentsRepository.create(contentInfo);
 
-    messages.forEach(async message => {
+    messages.forEach(async body => {
       await this.contentsRepository.registerMessage({
         contentId: content.id,
-        message,
+        body,
       });
     });
 

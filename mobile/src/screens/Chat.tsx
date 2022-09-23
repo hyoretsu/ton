@@ -2,7 +2,6 @@ import { useAuth } from '@contexts/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Message } from 'backend';
 import { RouteParams } from 'data/@types/navigation';
-import { wait } from 'data/utils';
 import { format } from 'date-fns';
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
@@ -29,8 +28,6 @@ import {
   MessageSpeaker,
 } from '@styles/Chat';
 
-import answers from 'assets/messages.json';
-
 interface DateDict {
   [id: string]: string;
 }
@@ -54,59 +51,52 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     });
   }, []);
 
+  const sendMessage = useCallback(
+    async (message: string) => {
+      if (message) {
+        await api.post('/messages', {
+          body: message,
+          recipientId: user.doctorId,
+        });
+
+        setCurrentMessage('');
+      }
+    },
+    [user],
+  );
+
+  // Init
   useEffect(() => {
-    AsyncStorage.getItem('@eOdontologia:messages').then(storedMessages => {
-      if (storedMessages) {
-        setMessages(JSON.parse(storedMessages));
+    const execute = async (): Promise<void> => {
+      AsyncStorage.getItem('@eOdontologia:messages').then(storedMessages => {
+        if (storedMessages) {
+          setMessages(JSON.parse(storedMessages));
+        }
+
+        updateMessages();
+      });
+
+      setSocket(io('http://192.168.0.11:3332'));
+
+      if (route.params) {
+        sendMessage(route.params.content);
       }
 
-      updateMessages();
-    });
-
-    setSocket(io('http://192.168.0.11:3332'));
-
-    if (route.params) {
-      setMessages([
-        {
-          id: '0',
-          senderId: 'user',
-          body: route.params.content,
-          recipientId: 'system',
-          createdAt: new Date(),
+      Tts.getInitStatus().then(
+        () => {
+          Tts.setDefaultLanguage('pt-BR');
+          Tts.setDefaultRate(0.45);
         },
-      ]);
+        err => {
+          if (err.code === 'no_engine') {
+            Tts.requestInstallEngine();
+          }
+        },
+      );
+    };
 
-      // @ts-ignore
-      const responses: string[] = answers[route.params.content];
-
-      responses.forEach(async (response, i) => {
-        await wait(2000 * (i + 1));
-
-        setMessages(old => [
-          ...old,
-          {
-            id: String(old.length),
-            senderId: 'system',
-            body: response,
-            recipientId: 'user',
-            createdAt: new Date(),
-          },
-        ]);
-      });
-    }
-
-    Tts.getInitStatus().then(
-      () => {
-        Tts.setDefaultLanguage('pt-BR');
-        Tts.setDefaultRate(0.45);
-      },
-      err => {
-        if (err.code === 'no_engine') {
-          Tts.requestInstallEngine();
-        }
-      },
-    );
-  }, [route.params, updateMessages]);
+    execute();
+  }, [route.params, sendMessage, updateMessages]);
 
   useEffect(() => {
     if (!socket) return;
@@ -131,26 +121,12 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     });
   }, [messages]);
 
-  const sendMessage = async (): Promise<void> => {
-    if (currentMessage) {
-      const { data: newMessage } = await api.post('/messages', {
-        body: currentMessage,
-        recipientId: user.doctorId,
-      });
-
-      setMessages(old => [...old, newMessage]);
-      AsyncStorage.setItem('@eOdontologia:messages', JSON.stringify(messages));
-
-      setCurrentMessage('');
-    }
-  };
-
   return (
     <>
       <Container>
         <InputView>
           <UserInput onChangeText={setCurrentMessage} value={currentMessage} />
-          <MessageSend onPress={sendMessage}>
+          <MessageSend onPress={() => sendMessage(currentMessage)}>
             <Icon name="send" size={28} style={{ left: -1, top: 1 }} />
           </MessageSend>
         </InputView>

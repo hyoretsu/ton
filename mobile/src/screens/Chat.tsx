@@ -4,7 +4,7 @@ import { Message } from 'backend';
 import { RouteParams } from 'data/@types/navigation';
 import { format } from 'date-fns';
 import { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Tts from 'react-native-tts';
 import Icon from 'react-native-vector-icons/Feather';
@@ -42,13 +42,14 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [dates, setDates] = useState<DateDict>({});
+  const [loading, setLoading] = useState(true);
   const [socket, setSocket] = useState<Socket>(null as unknown as Socket);
 
-  const updateMessages = useCallback(() => {
-    api.get('/messages').then(({ data }) => {
-      setMessages(data);
-      AsyncStorage.setItem('@eOdontologia:messages', JSON.stringify(data));
-    });
+  const updateMessages = useCallback(async () => {
+    const { data } = await api.get('/messages');
+
+    setMessages(data);
+    AsyncStorage.setItem('@eOdontologia:messages', JSON.stringify(data));
   }, []);
 
   const sendMessage = useCallback(
@@ -68,13 +69,13 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
   // Init
   useEffect(() => {
     const execute = async (): Promise<void> => {
-      AsyncStorage.getItem('@eOdontologia:messages').then(storedMessages => {
-        if (storedMessages) {
-          setMessages(JSON.parse(storedMessages));
-        }
+      const storedMessages = await AsyncStorage.getItem('@eOdontologia:messages');
+      if (storedMessages) {
+        setMessages(JSON.parse(storedMessages));
+      }
 
-        updateMessages();
-      });
+      await updateMessages();
+      setLoading(false);
 
       setSocket(io('http://192.168.0.11:3332'));
 
@@ -123,51 +124,57 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
 
   return (
     <>
-      <Container>
-        <InputView>
-          <UserInput onChangeText={setCurrentMessage} value={currentMessage} />
-          <MessageSend onPress={() => sendMessage(currentMessage)}>
-            <Icon name="send" size={28} style={{ left: -1, top: 1 }} />
-          </MessageSend>
-        </InputView>
+      {loading ? (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" color="#0006" />
+        </View>
+      ) : (
+        <Container>
+          <InputView>
+            <UserInput onChangeText={setCurrentMessage} value={currentMessage} />
+            <MessageSend onPress={() => sendMessage(currentMessage)}>
+              <Icon name="send" size={28} style={{ left: -1, top: 1 }} />
+            </MessageSend>
+          </InputView>
 
-        <FlatList
-          data={messages}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item: message, index }) => (
-            <>
-              <MessageView
-                style={[
-                  index === messages.length - 1 && { marginBottom: 0 },
-                  message.senderId !== user.id
-                    ? {
-                        marginLeft: 16,
-                        marginRight: 'auto',
-                      }
-                    : {
-                        marginLeft: 'auto',
-                        marginRight: 16,
-                      },
-                ]}
-              >
-                <View>
-                  <MessageText>{message.body}</MessageText>
-                  <MessageTime>{format(new Date(message.createdAt), 'HH:mm')}</MessageTime>
-                </View>
-                {message.senderId !== user.id && <MessageSpeaker onPress={() => Tts.speak(message.body)} />}
-              </MessageView>
-              {Object.keys(dates).includes(message.id) && (
-                <DateSection>
-                  <DateSectionMark />
-                  <DateSectionText>{dates[message.id]}</DateSectionText>
-                </DateSection>
-              )}
-            </>
-          )}
-          inverted
-          contentContainerStyle={{ flexDirection: 'column-reverse', paddingBottom: 12 }}
-        />
-      </Container>
+          <FlatList
+            data={messages}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item: message, index }) => (
+              <>
+                <MessageView
+                  style={[
+                    index === messages.length - 1 && { marginBottom: 0 },
+                    message.senderId !== user.id
+                      ? {
+                          marginLeft: 16,
+                          marginRight: 'auto',
+                        }
+                      : {
+                          marginLeft: 'auto',
+                          marginRight: 16,
+                        },
+                  ]}
+                >
+                  <View>
+                    <MessageText>{message.body}</MessageText>
+                    <MessageTime>{format(new Date(message.createdAt), 'HH:mm')}</MessageTime>
+                  </View>
+                  {message.senderId !== user.id && <MessageSpeaker onPress={() => Tts.speak(message.body)} />}
+                </MessageView>
+                {Object.keys(dates).includes(message.id) && (
+                  <DateSection>
+                    <DateSectionMark />
+                    <DateSectionText>{dates[message.id]}</DateSectionText>
+                  </DateSection>
+                )}
+              </>
+            )}
+            inverted
+            contentContainerStyle={{ flexDirection: 'column-reverse', paddingBottom: 12 }}
+          />
+        </Container>
+      )}
 
       <BottomBar />
     </>

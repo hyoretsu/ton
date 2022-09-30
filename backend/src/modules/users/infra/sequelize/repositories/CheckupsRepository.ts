@@ -10,6 +10,18 @@ export default class CheckupsRepository implements ICheckupsRepository {
     return checkup;
   }
 
+  public async findCheckups(patientId: string): Promise<Checkup[]> {
+    const checkups = await Checkup.findAll({ where: { patientId } });
+
+    return checkups;
+  }
+
+  public async findPhoto({ category, checkupId }: Record<string, string>): Promise<DentalPhoto> {
+    const photo = await DentalPhoto.findOne({ where: { category, checkupId } });
+
+    return photo;
+  }
+
   public async registerAnswer(data: ICreateCheckupAnswerDTO): Promise<CheckupAnswer> {
     const answer = await CheckupAnswer.create(data);
 

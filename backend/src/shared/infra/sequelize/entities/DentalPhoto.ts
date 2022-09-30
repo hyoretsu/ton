@@ -17,7 +17,7 @@ import Checkup from './Checkup';
 export interface IRegisterPhotoDTO {
   fileName: string;
   category: string;
-  patientId: string;
+  checkupId: string;
 }
 
 @Table

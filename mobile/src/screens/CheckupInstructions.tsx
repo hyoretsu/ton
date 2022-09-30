@@ -1,16 +1,19 @@
 import { useStorage } from '@contexts/storage';
 import { useNavigation } from '@react-navigation/native';
+import { DentalPhoto } from 'backend';
 import { useEffect, useState } from 'react';
 import { BackHandler } from 'react-native';
 
 import Button from '@components/Button';
+
+import api from '@api';
 
 import { Container, Example, Instructions, Body, Title } from '@styles/Checkup';
 
 import checkup from 'assets/checkup.json';
 
 const CheckupInstructions: React.FC = () => {
-  const [example, setExample] = useState('');
+  const [example, setExample] = useState<DentalPhoto>({});
 
   const { instructions, titles } = checkup;
   const { navigate } = useNavigation();
@@ -19,7 +22,7 @@ const CheckupInstructions: React.FC = () => {
   const checkupLength = Object.entries(checkupProgress).length;
 
   useEffect(() => {
-    setExample('https://i.pinimg.com/originals/2e/c6/b5/2ec6b5e14fe0cba0cb0aa5d2caeeccc6.jpg');
+    api.post('/checkup/photos/find', { category: titles[checkupLength] }).then(({ data }) => setExample(data));
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       navigate('Diary');
@@ -27,14 +30,14 @@ const CheckupInstructions: React.FC = () => {
     });
 
     return () => backHandler.remove();
-  }, [navigate]);
+  }, [checkupLength, navigate, titles]);
 
   return (
     <Container>
       <Title>{titles[checkupLength]}</Title>
       <Instructions>{instructions[checkupLength]}</Instructions>
       <Body>
-        {example && <Example source={{ uri: example }} />}
+        {example && <Example source={{ uri: `http://192.168.0.11:3333/files/${example.fileName}` }} />}
 
         <Button onPress={() => navigate('CheckupCamera')} style={{ marginTop: 16, marginBottom: 12 }}>
           Tirar foto

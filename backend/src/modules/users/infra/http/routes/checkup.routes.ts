@@ -24,5 +24,15 @@ checkupRouter.post(
   }),
   checkupController.create,
 );
+checkupRouter.post(
+  '/photos/find',
+  ensureAuthenticated,
+  celebrate({
+    body: {
+      category: Joi.string().required(),
+    },
+  }),
+  checkupController.show,
+);
 
 export default checkupRouter;

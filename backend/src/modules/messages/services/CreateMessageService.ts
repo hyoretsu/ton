@@ -44,11 +44,9 @@ export default class CreateMessageService {
 
     io.emit('chat');
 
-    const contents = await this.contentsRepository.findAll();
-    const chosenContent = contents.map(content => content.title).indexOf(body);
-
-    if (chosenContent >= 0) {
-      const answers = contents[chosenContent].messages.map(msg => msg.body);
+    const foundContent = await this.contentsRepository.findByTitle(body);
+    if (foundContent) {
+      const answers = foundContent.messages.map(msg => msg.body);
 
       answers.forEach(async (answer, i) => {
         await new Promise(res => {

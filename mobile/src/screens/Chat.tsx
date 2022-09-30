@@ -86,7 +86,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
       Tts.getInitStatus().then(
         () => {
           Tts.setDefaultLanguage('pt-BR');
-          Tts.setDefaultRate(0.45);
+          Tts.setDefaultRate(0.5);
         },
         err => {
           if (err.code === 'no_engine') {

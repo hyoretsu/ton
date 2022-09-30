@@ -18,16 +18,24 @@ export default class ContentsRepository implements IContentsRepository {
           [Op.lte]: treatmentProgress,
         },
       },
-      include: [ContentMessage],
     });
 
     return contents;
   }
 
   public async findAll(): Promise<Content[]> {
-    const contents = await Content.findAll({ include: [ContentMessage] });
+    const contents = await Content.findAll();
 
     return contents;
+  }
+
+  public async findByTitle(title: string): Promise<Content | null> {
+    const content = await Content.findOne({
+      where: { title },
+      include: [ContentMessage],
+    });
+
+    return content;
   }
 
   public async registerMessage(data: ICreateContentMessageDTO): Promise<ContentMessage> {

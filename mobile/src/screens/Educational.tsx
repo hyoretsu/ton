@@ -1,4 +1,5 @@
 import { useAuth } from '@contexts/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { Content } from 'backend';
 import { addWeeks, format } from 'date-fns';
@@ -19,9 +20,15 @@ const Educational: React.FC = () => {
 
   useEffect(() => {
     const execute = async (): Promise<void> => {
+      const storedContent = await AsyncStorage.getItem('@eOdontologia:contents');
+      if (storedContent) {
+        setContents(JSON.parse(storedContent));
+      }
+
       const { data } = await api.get('/contents');
 
       setContents(data);
+      await AsyncStorage.setItem('@eOdontologia:contents', JSON.stringify(data));
     };
 
     execute();

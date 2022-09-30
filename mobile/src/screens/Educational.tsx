@@ -1,28 +1,30 @@
+import { useAuth } from '@contexts/auth';
 import { useNavigation } from '@react-navigation/native';
+import { Content } from 'backend';
+import { addWeeks, format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 
 import BottomBar from '@components/BottomBar';
 
+import api from '@api';
+
 import { Container, ContentBox, ContentButton, ContentDate, ContentTitle, ContentDateIcon } from '@styles/Educational';
 
-interface Content {
-  id: string;
-  title: string;
-}
-
 const Educational: React.FC = () => {
+  const { user } = useAuth();
   const { navigate } = useNavigation();
 
   const [contents, setContents] = useState<Content[]>([]);
 
   useEffect(() => {
-    setContents(
-      Array.from({ length: 10 }, (_, index) => ({
-        id: String(index),
-        title: 'Por que o acompanhamento odontológico é importante para o tratamento do cancer?',
-      })),
-    );
+    const execute = async (): Promise<void> => {
+      const { data } = await api.get('/contents');
+
+      setContents(data);
+    };
+
+    execute();
   }, []);
 
   return (
@@ -33,7 +35,7 @@ const Educational: React.FC = () => {
             <ContentButton onPress={() => navigate('Chat', { content: content.title })}>
               <ContentTitle>{content.title}</ContentTitle>
               <ContentDateIcon>
-                <ContentDate>16/07/2022</ContentDate>
+                <ContentDate>{format(addWeeks(new Date(user.createdAt), content.condition), 'dd/MM/yyyy')}</ContentDate>
                 <Icon name="chevron-right" size={30} color="#0009" />
               </ContentDateIcon>
             </ContentButton>

@@ -10,9 +10,12 @@ import ObjectivesRepository from '@modules/objectives/infra/sequelize/repositori
 import ProgressRepository from '@modules/objectives/infra/sequelize/repositories/ProgressRepository';
 import IObjectivesRepository from '@modules/objectives/repositories/IObjectivesRepository';
 import IProgressRepository from '@modules/objectives/repositories/IProgressRepository';
+import CheckupsRepository from '@modules/users/infra/sequelize/repositories/CheckupsRepository';
 import UsersRepository from '@modules/users/infra/sequelize/repositories/UsersRepository';
+import ICheckupsRepository from '@modules/users/repositories/ICheckupsRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
+container.registerSingleton<ICheckupsRepository>('CheckupsRepository', CheckupsRepository);
 container.registerSingleton<IContentsRepository>('ContentsRepository', ContentsRepository);
 container.registerSingleton<IMessagesRepository>('MessagesRepository', MessagesRepository);
 container.registerSingleton<IObjectivesRepository>('ObjectivesRepository', ObjectivesRepository);

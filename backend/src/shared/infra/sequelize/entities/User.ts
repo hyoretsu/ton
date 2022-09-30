@@ -13,6 +13,7 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuid } from 'uuid';
 
+import Checkup from './Checkup';
 import DentalPhoto from './DentalPhoto';
 import Message from './Message';
 import Progress from './Progress';
@@ -57,8 +58,8 @@ export default class User extends Model<User, ICreateUserDTO> {
   @Column
   city: string;
 
-  @HasMany(() => DentalPhoto)
-  dentalPhotos: DentalPhoto[];
+  @HasMany(() => Checkup)
+  checkups: Checkup[];
 
   @Column
   neoplasia?: string;

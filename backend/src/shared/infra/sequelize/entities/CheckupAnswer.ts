@@ -14,23 +14,17 @@ import { v4 as uuid } from 'uuid';
 
 import Checkup from './Checkup';
 
-export interface IRegisterPhotoDTO {
-  fileName: string;
-  category: string;
-  patientId: string;
+export interface ICreateCheckupAnswerDTO {
+  checkupId: string;
+  question: string;
+  answer: number;
 }
 
 @Table
-export default class DentalPhoto extends Model<DentalPhoto, IRegisterPhotoDTO> {
+export default class CheckupAnswer extends Model<CheckupAnswer, ICreateCheckupAnswerDTO> {
   @PrimaryKey
   @Column(DataType.UUID)
   id: string;
-
-  @Column
-  fileName: string;
-
-  @Column
-  category: string;
 
   @ForeignKey(() => Checkup)
   @Column
@@ -39,6 +33,12 @@ export default class DentalPhoto extends Model<DentalPhoto, IRegisterPhotoDTO> {
   @BelongsTo(() => Checkup)
   checkup: Checkup;
 
+  @Column
+  question: string;
+
+  @Column
+  answer: number;
+
   @CreatedAt
   createdAt: Date;
 
@@ -46,7 +46,7 @@ export default class DentalPhoto extends Model<DentalPhoto, IRegisterPhotoDTO> {
   updatedAt: Date;
 
   @BeforeCreate
-  static generateId(instance: DentalPhoto) {
+  static generateId(instance: CheckupAnswer) {
     instance.id = uuid();
   }
 }

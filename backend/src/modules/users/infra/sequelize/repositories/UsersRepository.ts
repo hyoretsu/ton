@@ -1,4 +1,3 @@
-import DentalPhoto, { IRegisterPhotoDTO } from '@entities/DentalPhoto';
 import Objective from '@entities/Objective';
 import Progress from '@entities/Progress';
 import User, { ICreateUserDTO } from '@entities/User';
@@ -41,12 +40,6 @@ export default class UsersRepository implements IUsersRepository {
     const user = await User.findOne({ where: { phoneNumber } });
 
     return user;
-  }
-
-  public async registerPhoto(data: IRegisterPhotoDTO): Promise<DentalPhoto> {
-    const photo = await DentalPhoto.create(data);
-
-    return photo;
   }
 
   public async update(user: User, updatedInfo: Partial<User>): Promise<User> {

@@ -6,6 +6,8 @@ import Button from '@components/Button';
 
 import { ConfirmationPrompt, ConfirmationText, Container, Photo } from '@styles/CheckupConfirm';
 
+import checkup from 'assets/checkup.json';
+
 export interface CheckupConfirmParams {
   filePath: string | undefined;
 }
@@ -15,17 +17,19 @@ const CheckupConfirm: React.FC<RouteParams<CheckupConfirmParams>> = ({ route }) 
   const { checkupProgress, storeValue } = useStorage();
 
   const handleYes = async (): Promise<void> => {
+    const checkupLength = Object.keys(checkupProgress).length;
+
+    await storeValue('checkupProgress', {
+      ...checkupProgress,
+      [checkup.titles[checkupLength]]: route.params?.filePath,
+    });
+
     // Since there are 10 steps to the checkup
-    if (checkupProgress === 9) {
-      await storeValue('checkupProgress', 0);
-
+    if (checkupLength === 10 - 1) {
       navigate('Symptoms');
-
-      return;
+    } else {
+      navigate('CheckupInstructions');
     }
-
-    await storeValue('checkupProgress', checkupProgress + 1);
-    navigate('CheckupInstructions');
   };
 
   return (

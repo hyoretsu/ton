@@ -1,30 +1,27 @@
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Messages', {
+    await queryInterface.createTable('CheckupAnswers', {
       id: {
         type: Sequelize.UUID,
         primaryKey: true,
         allowNull: false,
       },
-      senderId: {
+      checkupId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: 'Users',
+          model: 'Checkups',
           key: 'id',
         },
       },
-      body: {
+      question: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      recipientId: {
-        type: Sequelize.UUID,
+      answer: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -38,6 +35,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Messages');
+    await queryInterface.dropTable('CheckupAnswers');
   },
 };

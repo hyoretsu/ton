@@ -27,7 +27,19 @@ const BottomBar: React.FC = () => {
         <ButtonText>Educação</ButtonText>
       </Button>
 
-      <Button onPress={() => (checkupProgress ? navigate('CheckupInstructions') : navigate('CheckupBegin'))}>
+      <Button
+        onPress={() => {
+          const checkupLength = Object.entries(checkupProgress).length;
+
+          if (checkupLength === 10) {
+            navigate('Symptoms');
+          } else if (checkupLength > 0) {
+            navigate('CheckupInstructions');
+          } else {
+            navigate('CheckupBegin');
+          }
+        }}
+      >
         <Icon name="clipboard" size={30} color="#000" />
         <ButtonText>Exame</ButtonText>
       </Button>

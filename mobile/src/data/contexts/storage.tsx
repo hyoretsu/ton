@@ -4,26 +4,26 @@ import { createContext, PropsWithChildren, useCallback, useContext, useEffect, u
 type Keys = 'checkupProgress' | 'objectiveProgress';
 
 interface StorageContext {
-  checkupProgress: number;
+  checkupProgress: Record<string, string>;
   storeValue: (key: Keys, value: any) => Promise<void>;
 }
 
 const StorageContext = createContext<StorageContext>({} as StorageContext);
 
 export const StorageProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [checkupProgress, setCheckupProgress] = useState(0);
+  const [checkupProgress, setCheckupProgress] = useState({});
 
   useEffect(() => {
     AsyncStorage.getItem('@eOdontologia:checkupProgress').then(storedProgress => {
       if (!storedProgress) {
-        AsyncStorage.setItem('@eOdontologia:checkupProgress', String(0));
+        AsyncStorage.setItem('@eOdontologia:checkupProgress', JSON.stringify({}));
 
         return;
       }
 
-      setCheckupProgress(Number(storedProgress));
+      setCheckupProgress(JSON.parse(storedProgress));
     });
-  }, [checkupProgress]);
+  }, []);
 
   const storeValue = useCallback(async (key: Keys, value: any) => {
     switch (key) {

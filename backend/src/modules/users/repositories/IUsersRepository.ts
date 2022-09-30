@@ -7,6 +7,5 @@ export default interface IUsersRepository {
   findByEmail(email: string): Promise<User | null>;
   findById(id: string): Promise<User | null>;
   findByPhone(phoneNumber: string): Promise<User | null>;
-  registerPhoto(data: IRegisterPhotoDTO): Promise<DentalPhoto>;
   update(user: User, updatedInfo: Partial<User>): Promise<User>;
 }

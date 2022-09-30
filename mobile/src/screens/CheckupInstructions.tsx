@@ -16,6 +16,8 @@ const CheckupInstructions: React.FC = () => {
   const { navigate } = useNavigation();
   const { checkupProgress } = useStorage();
 
+  const checkupLength = Object.entries(checkupProgress).length;
+
   useEffect(() => {
     setExample('https://i.pinimg.com/originals/2e/c6/b5/2ec6b5e14fe0cba0cb0aa5d2caeeccc6.jpg');
 
@@ -29,8 +31,8 @@ const CheckupInstructions: React.FC = () => {
 
   return (
     <Container>
-      <Title>{titles[checkupProgress]}</Title>
-      <Instructions>{instructions[checkupProgress]}</Instructions>
+      <Title>{titles[checkupLength]}</Title>
+      <Instructions>{instructions[checkupLength]}</Instructions>
       <Body>
         {example && <Example source={{ uri: example }} />}
 

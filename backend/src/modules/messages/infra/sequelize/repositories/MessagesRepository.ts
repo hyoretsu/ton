@@ -18,6 +18,7 @@ export default class MessagesRepository implements IMessagesRepository {
           senderId: userId,
         },
       },
+      order: [['createdAt', 'ASC']],
     });
 
     return messages;

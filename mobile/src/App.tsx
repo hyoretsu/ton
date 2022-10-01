@@ -52,6 +52,8 @@ const App: React.FC = () => {
               },
             },
           });
+
+          await AsyncStorage.setItem('@eOdontologia:contents', JSON.stringify(contents));
         }
 
         BackgroundFetch.finish(taskId);

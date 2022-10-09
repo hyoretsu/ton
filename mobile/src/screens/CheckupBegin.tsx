@@ -23,16 +23,15 @@ const CheckupWelcome: React.FC = () => {
         <Title>Exame oral</Title>
 
         <TextBody>
+          <Instructions>Olá,</Instructions>
+          <Instructions>Vamos agora checar a saúde da boca do seu filho?</Instructions>
           <Instructions>
-            Agora, você irá tirar várias fotos da boca do(a) paciente para que possamos checar a saúde de seus dentes.
+            Para isto, vamos precisar que você tire algumas fotos da boca dele, seguindo as instruções que vão aparecer
+            na tela e o exemplo que será mostrado.
           </Instructions>
-          <Instructions>
-            Na próxima tela, haverá instruções para tirar a foto e um exemplo de como ela deve ser tirada.
-          </Instructions>
-          <Instructions style={{ paddingHorizontal: 28 }}>
-            Após tirar a foto, ambas serão mostradas lado a lado para checar se está boa.
-          </Instructions>
+          <Instructions>Após tirar cada foto, você poderá conferir se realmente ficou boa.</Instructions>
           <Instructions>Vamos lá?</Instructions>
+          <Instructions>Antes de tirar as fotos, gire a tela do seu celular.</Instructions>
         </TextBody>
 
         <Button

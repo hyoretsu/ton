@@ -24,8 +24,8 @@ const CheckupConfirm: React.FC<RouteParams<CheckupConfirmParams>> = ({ route }) 
       [checkup.titles[checkupLength]]: route.params?.filePath,
     });
 
-    // Since there are 10 steps in the checkup and we counted its size before the 10th being stored
-    if (checkupLength === 10 - 1) {
+    // Since there are 8 steps in the checkup and we counted its size before the 8th being stored
+    if (checkupLength === 8 - 1) {
       navigate('Symptoms');
     } else {
       navigate('CheckupInstructions');

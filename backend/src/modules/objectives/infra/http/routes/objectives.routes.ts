@@ -10,17 +10,30 @@ const objectivesRouter = Router();
 const objectivesController = new ObjectivesController();
 const progressController = new ProgressController();
 
-objectivesRouter.get('/', objectivesController.show);
+objectivesRouter.get('/', ensureAuthenticated, objectivesController.show);
 objectivesRouter.post(
   '/',
+  ensureAuthenticated,
   celebrate({
     body: {
       title: Joi.string().required(),
       goal: Joi.number().required(),
+      time: Joi.number(),
       isDaily: Joi.boolean().required(),
     },
   }),
   objectivesController.create,
+);
+objectivesRouter.put(
+  '/',
+  ensureAuthenticated,
+  celebrate({
+    body: {
+      info: Joi.object().required(),
+      objectiveId: Joi.string().uuid().required(),
+    },
+  }),
+  objectivesController.update,
 );
 
 objectivesRouter.get('/progress', ensureAuthenticated, progressController.show);

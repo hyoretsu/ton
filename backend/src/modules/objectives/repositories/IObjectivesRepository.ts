@@ -4,4 +4,5 @@ export default interface IObjectivesRepository {
   create(data: ICreateObjectiveDTO): Promise<Objective>;
   findAll(): Promise<Objective[]>;
   findById(id: string): Promise<Objective | null>;
+  update(objective: Objective, updatedInfo: Partial<Objective>): Promise<Objective>;
 }

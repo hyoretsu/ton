@@ -16,6 +16,7 @@ import Progress from './Progress';
 export interface ICreateObjectiveDTO {
   title: string;
   goal: string;
+  time?: number;
   isDaily: boolean;
 }
 
@@ -30,6 +31,9 @@ export default class Objective extends Model<Objective, ICreateObjectiveDTO> {
 
   @Column
   goal: string;
+
+  @Column
+  time?: number;
 
   @Column
   isDaily: boolean;

@@ -5,14 +5,15 @@ import { Objective, Progress } from 'backend';
 import { useEffect, useState } from 'react';
 
 import BottomBar from '@components/BottomBar';
+import ProgressCircle from '@components/ProgressCircle';
 
 import api from '@api';
 
 import {
   Container,
-  DailyMissionText,
-  Mission,
-  MissionTitle,
+  DailyObjectiveText,
+  ObjectiveView,
+  ObjectiveTitle,
   ProgressBar,
   ProgressBarColor,
   ProgressBarText,
@@ -24,8 +25,9 @@ const Diary: React.FC = () => {
 
   const [objectives, setObjectives] = useState<Objective[]>([]);
   const [progress, setProgress] = useState<Record<string, number>>({});
+  const [timer, setTimer] = useState<[string, number]>(['', 0]);
 
-  const handlePlusMinus = async (action: string, objectiveId: number): Promise<void> => {
+  const handlePlusMinus = async (action: string, objectiveId: string): Promise<void> => {
     const updatedProgress = (progress[objectiveId] || 0) + (action === 'plus' ? 1 : -1);
 
     await api.post('/objectives/progress', {
@@ -79,26 +81,55 @@ const Diary: React.FC = () => {
     });
   }, [navigate]);
 
+  const handlePlus = (id: string, time: number): void => {
+    // setTimer([id, time]);
+    setTimer([id, time]);
+
+    for (let i = 1; i <= time; i++) {
+      setTimeout(() => setTimer(old => [old[0], old[1] - 1]), 1000 * i);
+    }
+
+    setTimeout(() => {
+      handlePlusMinus('plus', id).then(() => setTimer(['', 0]));
+    }, 1000 * time);
+  };
+
   return (
     <>
-      <Container showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 20, paddingBottom: 0 }}>
+      <Container
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ padding: 20, paddingBottom: 0, flex: 1 }}
+      >
         {objectives.map(objective => (
-          <Mission key={objective.id}>
-            <MissionTitle>{objective.title}</MissionTitle>
-            {objective.isDaily && <DailyMissionText>Missão diária</DailyMissionText>}
+          <ObjectiveView key={objective.id}>
+            <ObjectiveTitle>{objective.title}</ObjectiveTitle>
+            {objective.isDaily && <DailyObjectiveText>Missão diária</DailyObjectiveText>}
             <ProgressBar>
               <ProgressBarColor progress={progress[objective.id] / objective.goal} />
               {progress[objective.id] > 0 && (
-                <ProgressSign sign="minus" onPress={() => handlePlusMinus('minus', objective.id)} />
+                <ProgressSign sign="minus" onPress={() => handlePlusMinus('minus', objective.id)} style={{}} />
               )}
               <ProgressBarText>
                 {progress[objective.id] || 0} / {objective.goal}
               </ProgressBarText>
               {(progress[objective.id] || 0) < objective.goal && (
-                <ProgressSign sign="plus" onPress={() => handlePlusMinus('plus', objective.id)} />
+                <ProgressSign sign="plus" onPress={() => handlePlus(objective.id, objective.time)} />
               )}
             </ProgressBar>
-          </Mission>
+
+            {timer[0] === objective.id && (
+              <ProgressCircle
+                progress={timer[1] / objective.time || objective.time}
+                radius={100}
+                color="#c4d3f2"
+                background="#a3bee9"
+                text={`${Math.floor((timer[1] || objective.time) / 60)}:${String(
+                  (timer[1] || objective.time) % 60,
+                ).padStart(2, '0')}`}
+                style={{ marginTop: 12 }}
+              />
+            )}
+          </ObjectiveView>
         ))}
       </Container>
 

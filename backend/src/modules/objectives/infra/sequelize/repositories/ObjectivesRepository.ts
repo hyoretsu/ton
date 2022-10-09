@@ -19,4 +19,10 @@ export default class ObjectivesRepository implements IObjectivesRepository {
 
     return objective;
   }
+
+  public async update(objective: Objective, updatedInfo: Partial<Objective>): Promise<Objective> {
+    const updatedObjective = objective.update(updatedInfo);
+
+    return updatedObjective;
+  }
 }

@@ -1,17 +1,32 @@
 POST http://localhost:3333/objectives HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjQ1MDE2OTAsInN1YiI6IjViMTE3MTZkLTY1YTctNDdjYi04YTkyLTE1YTc3ZDUyNWViMyJ9.EZTvtc4ehV78OYUa6el9xWtQ8gIxiGhhxu8fKcm3U18
 
 {
     "title": "Teste",
     "goal": "3",
+    "time": 120,
     "isDaily": true
+}
+
+#####
+
+PUT http://localhost:3333/objectives HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjQ1MDE2OTAsInN1YiI6IjViMTE3MTZkLTY1YTctNDdjYi04YTkyLTE1YTc3ZDUyNWViMyJ9.EZTvtc4ehV78OYUa6el9xWtQ8gIxiGhhxu8fKcm3U18
+
+{
+    "info": {
+      "time": 120
+    },
+    "objectiveId": "3462dd30-6ca7-486f-a2f8-daddc850a4ec"
 }
 
 #####
 
 POST http://localhost:3333/objectives/progress HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjIzMjM4MjIsImV4cCI6MTY2MjkyODYyMiwic3ViIjoiOTFlMGNlMTMtMWM1Mi00ZDIwLThmY2UtMzJlZGIzZDdhZGJmIn0.7GyNOBasbsOW6ok5-C89AHIKUCTA82dQKhACJMJMEtU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjQ1MDE2OTAsInN1YiI6IjViMTE3MTZkLTY1YTctNDdjYi04YTkyLTE1YTc3ZDUyNWViMyJ9.EZTvtc4ehV78OYUa6el9xWtQ8gIxiGhhxu8fKcm3U18
 
 {
     "objectiveId": "3462dd30-6ca7-486f-a2f8-daddc850a4ec",

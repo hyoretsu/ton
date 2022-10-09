@@ -3,23 +3,21 @@ import { RectButton, RectButtonProps, ScrollView } from 'react-native-gesture-ha
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
-interface MissionProgressProps extends ViewProps {
+interface ProgressProps extends ViewProps {
   progress: number;
 }
 interface ProgressSignProps extends RectButtonProps {
   sign: string;
 }
 
-export const Container = styled(ScrollView)`
-  flex: 1;
-`;
+export const Container = styled(ScrollView)``;
 
-export const DailyMissionText = styled.Text`
+export const DailyObjectiveText = styled.Text`
   font-size: 15px;
   color: #fffa;
 `;
 
-export const Mission = styled.View`
+export const ObjectiveView = styled.View`
   flex-direction: column;
 
   background-color: #a3bee9;
@@ -30,7 +28,7 @@ export const Mission = styled.View`
   margin-bottom: 20px;
 `;
 
-export const MissionTitle = styled.Text`
+export const ObjectiveTitle = styled.Text`
   font-size: 20px;
 `;
 
@@ -47,7 +45,7 @@ export const ProgressBar = styled.View`
   margin-top: 40px;
 `;
 
-export const ProgressBarColor = styled.View<MissionProgressProps>`
+export const ProgressBarColor = styled.View<ProgressProps>`
   position: absolute;
   left: 0;
 

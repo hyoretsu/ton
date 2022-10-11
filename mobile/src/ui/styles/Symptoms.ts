@@ -99,3 +99,20 @@ export const SelectionCircle = styled(TouchableOpacity)<SelectionCircleProps>`
   border: ${({ selected }) => (selected ? 0 : 2)}px #889ae8;
   border-radius: 10px;
 `;
+
+export const ThanksModal = styled.View`
+  align-items: center;
+
+  width: 70%;
+  background-color: #c4d3f2;
+
+  border-radius: 15px;
+  padding: 16px 8px;
+`;
+
+export const ThanksText = styled.Text`
+  font-size: 16px;
+  text-align: center;
+
+  margin-bottom: 10px;
+`;

@@ -17,7 +17,7 @@ import Checkup from './Checkup';
 export interface ICreateCheckupAnswerDTO {
   checkupId: string;
   question: string;
-  answer: number;
+  answer: string;
 }
 
 @Table
@@ -37,7 +37,7 @@ export default class CheckupAnswer extends Model<CheckupAnswer, ICreateCheckupAn
   question: string;
 
   @Column
-  answer: number;
+  answer: string;
 
   @CreatedAt
   createdAt: Date;

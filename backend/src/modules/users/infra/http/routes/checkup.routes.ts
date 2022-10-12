@@ -24,6 +24,18 @@ checkupRouter.post(
   }),
   checkupController.create,
 );
+checkupRouter.patch(
+  '/',
+  ensureAuthenticated,
+  celebrate({
+    body: {
+      answers: Joi.object().required(),
+      checkupId: Joi.string().uuid().required(),
+    },
+  }),
+  checkupController.update,
+);
+
 checkupRouter.post(
   '/photos/find',
   ensureAuthenticated,

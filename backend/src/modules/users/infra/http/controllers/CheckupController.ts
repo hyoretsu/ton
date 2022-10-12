@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import FindPhotosService from '@modules/users/services/FindPhotosService';
 import FinishCheckupService from '@modules/users/services/FinishCheckupService';
+import UpdateCheckupService from '@modules/users/services/UpdateCheckupService';
 
 export default class CheckupController {
   public async create(req: Request, res: Response): Promise<Response> {
@@ -30,5 +31,15 @@ export default class CheckupController {
     const photos = await findPhotos.execute({ category, patientId: req.user.id });
 
     return res.json(photos);
+  }
+
+  public async update(req: Request, res: Response): Promise<Response> {
+    const { body } = req;
+
+    const updateCheckup = container.resolve(UpdateCheckupService);
+
+    await updateCheckup.execute(body);
+
+    return res.json();
   }
 }

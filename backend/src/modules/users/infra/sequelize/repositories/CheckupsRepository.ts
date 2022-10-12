@@ -1,11 +1,18 @@
 import Checkup, { ICreateCheckupDTO } from '@entities/Checkup';
 import CheckupAnswer, { ICreateCheckupAnswerDTO } from '@entities/CheckupAnswer';
 import DentalPhoto, { IRegisterPhotoDTO } from '@entities/DentalPhoto';
+import IFindPhotoDTO from '@modules/users/dtos/IFindPhotoDTO';
 import ICheckupsRepository from '@modules/users/repositories/ICheckupsRepository';
 
 export default class CheckupsRepository implements ICheckupsRepository {
   public async create(data: ICreateCheckupDTO): Promise<Checkup> {
     const checkup = await Checkup.create(data);
+
+    return checkup;
+  }
+
+  public async findById(checkupId: string): Promise<Checkup | null> {
+    const checkup = await Checkup.findByPk(checkupId, { include: [{ association: 'answers' }] });
 
     return checkup;
   }
@@ -16,7 +23,7 @@ export default class CheckupsRepository implements ICheckupsRepository {
     return checkups;
   }
 
-  public async findPhoto({ category, checkupId }: Record<string, string>): Promise<DentalPhoto> {
+  public async findPhoto({ category, checkupId }: IFindPhotoDTO): Promise<DentalPhoto | null> {
     const photo = await DentalPhoto.findOne({ where: { category, checkupId } });
 
     return photo;
@@ -32,5 +39,11 @@ export default class CheckupsRepository implements ICheckupsRepository {
     const photo = await DentalPhoto.create(data);
 
     return photo;
+  }
+
+  public async updateAnswer(existingAnswer: CheckupAnswer, answer: string): Promise<CheckupAnswer> {
+    const updatedAnswer = await existingAnswer.update({ answer });
+
+    return updatedAnswer;
   }
 }

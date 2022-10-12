@@ -9,9 +9,10 @@ const usersRouter = Router();
 const usersController = new UsersController();
 const sessionsController = new SessionsController();
 
-usersRouter.get('/', usersController.show);
+usersRouter.get('/', ensureAuthenticated, usersController.show);
 usersRouter.post(
   '/',
+  ensureAuthenticated,
   celebrate({
     body: {
       birthDate: Joi.date().required(),
@@ -42,6 +43,16 @@ usersRouter.patch(
     },
   }),
   usersController.update,
+);
+usersRouter.delete(
+  '/',
+  ensureAuthenticated,
+  celebrate({
+    body: {
+      userId: Joi.string().uuid().required(),
+    },
+  }),
+  usersController.delete,
 );
 usersRouter.post(
   '/login',

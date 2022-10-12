@@ -10,6 +10,10 @@ export default class UsersRepository implements IUsersRepository {
     return user;
   }
 
+  public async delete(userId: string): Promise<void> {
+    await User.destroy({ where: { id: userId } });
+  }
+
   public async findAllPatients(): Promise<User[]> {
     let users = await User.findAll();
 

@@ -15,8 +15,8 @@ export default class ProgressRepository implements IProgressRepository {
     return progresses;
   }
 
-  public async findExisting({ objectiveId, userId }: IFindProgressDTO): Promise<Progress | null> {
-    const progress = await Progress.findOne({ where: { objectiveId, userId } });
+  public async findExisting({ objectiveId, userId }: IFindProgressDTO): Promise<Progress[]> {
+    const progress = await Progress.findAll({ where: { objectiveId, userId } });
 
     return progress;
   }

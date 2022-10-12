@@ -1,3 +1,4 @@
+import { differenceInCalendarDays } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 
 import Progress, { ICreateProgressDTO } from '@entities/Progress';
@@ -30,8 +31,12 @@ export default class UpdateProgressService {
     }
 
     const existingProgress = await this.progressRepository.findExisting({ objectiveId, userId });
-    if (existingProgress) {
-      return this.progressRepository.update(existingProgress, progress);
+    if (
+      existingProgress.length > 0 &&
+      (!existingObjective.isDaily ||
+        (existingObjective.isDaily && differenceInCalendarDays(existingProgress.at(-1)!.createdAt, new Date()) === 0))
+    ) {
+      return this.progressRepository.update(existingProgress.at(-1) as Progress, progress);
     }
 
     return this.progressRepository.create({ objectiveId, progress, userId });

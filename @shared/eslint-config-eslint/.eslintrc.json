@@ -84,7 +84,7 @@
         "import/resolver": {
           "typescript": {
             "project": [
-              "tsconfig.json",
+              "../tsconfig.json",
               "backend/tsconfig.json",
               "frontend/tsconfig.json",
               "mobile/tsconfig.json"
@@ -92,10 +92,10 @@
           },
           "node": {
             "project": [
-              "tsconfig.json",
-              "backend/tsconfig.json",
-              "frontend/tsconfig.json",
-              "mobile/tsconfig.json"
+              "../tsconfig.json",
+              "../../backend/tsconfig.json",
+              "../../frontend/tsconfig.json",
+              "../../mobile/tsconfig.json"
             ]
           }
         },

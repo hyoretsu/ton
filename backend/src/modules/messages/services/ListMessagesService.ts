@@ -1,6 +1,5 @@
+import { Message } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
-
-import Message from '@entities/Message';
 
 import IMessagesRepository from '../repositories/IMessagesRepository';
 

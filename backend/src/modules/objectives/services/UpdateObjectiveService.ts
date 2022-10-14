@@ -1,6 +1,6 @@
+import { Objective } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
-import Objective from '@entities/Objective';
 import AppError from '@shared/errors/AppError';
 
 import IObjectivesRepository from '../repositories/IObjectivesRepository';
@@ -23,7 +23,7 @@ export default class UpdateObjectiveService {
       throw new AppError('O objetivo informado não existe.');
     }
 
-    const objective = await this.objectivesRepository.update(existingObjective, info);
+    const objective = await this.objectivesRepository.update(existingObjective.id, info);
 
     return objective;
   }

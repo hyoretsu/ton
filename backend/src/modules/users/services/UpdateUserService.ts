@@ -1,6 +1,6 @@
+import { User } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
-import User from '@entities/User';
 import AppError from '@shared/errors/AppError';
 
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
@@ -32,7 +32,7 @@ export default class UpdateUserService {
 
     if (password) password = await this.hashProvider.generateHash(password);
 
-    const updatedUser = await this.usersRepository.update(existingUser, { ...data, password });
+    const updatedUser = await this.usersRepository.update(userId, { ...data, password });
 
     return updatedUser;
   }

@@ -1,7 +1,7 @@
+import { Objective } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
-import Objective, { ICreateObjectiveDTO } from '@entities/Objective';
-
+import ICreateObjectiveDTO from '../dtos/ICreateObjectiveDTO';
 import IObjectivesRepository from '../repositories/IObjectivesRepository';
 
 @injectable()

@@ -1,10 +1,11 @@
+import { Progress } from '@prisma/client';
 import { differenceInCalendarDays } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 
-import Progress, { ICreateProgressDTO } from '@entities/Progress';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 
+import ICreateProgressDTO from '../dtos/ICreateProgressDTO';
 import IObjectivesRepository from '../repositories/IObjectivesRepository';
 import IProgressRepository from '../repositories/IProgressRepository';
 
@@ -36,7 +37,7 @@ export default class UpdateProgressService {
       (!existingObjective.isDaily ||
         (existingObjective.isDaily && differenceInCalendarDays(existingProgress.at(-1)!.createdAt, new Date()) === 0))
     ) {
-      return this.progressRepository.update(existingProgress.at(-1) as Progress, progress);
+      return this.progressRepository.update(existingProgress.at(-1)!.id, progress);
     }
 
     return this.progressRepository.create({ objectiveId, progress, userId });

@@ -1,6 +1,5 @@
+import { DentalPhoto } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
-
-import DentalPhoto from '@entities/DentalPhoto';
 
 import ICheckupsRepository from '../repositories/ICheckupsRepository';
 

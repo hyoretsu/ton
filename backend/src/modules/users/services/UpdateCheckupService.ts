@@ -26,7 +26,7 @@ export default class UpdateCheckupService {
         return this.checkupsRepository.registerAnswer({ checkupId, question, answer });
       }
 
-      return this.checkupsRepository.updateAnswer(matchingAnswer, answer);
+      return this.checkupsRepository.updateAnswer(matchingAnswer.id, answer);
     });
   }
 }

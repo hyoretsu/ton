@@ -1,6 +1,5 @@
+import { Progress } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
-
-import Progress from '@entities/Progress';
 
 import IProgressRepository from '../repositories/IProgressRepository';
 

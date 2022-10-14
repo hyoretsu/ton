@@ -1,9 +1,10 @@
+import { User } from '@prisma/client';
 import { getYear, isBefore } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 
-import User, { ICreateUserDTO } from '@entities/User';
 import AppError from '@shared/errors/AppError';
 
+import ICreateUserDTO from '../dtos/ICreateUserDTO';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 

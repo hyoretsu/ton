@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model Checkup {
+  id        String          @id @default(uuid())
+  patientId String
+  patient   User            @relation(fields: [patientId], references: [id])
+  photos    DentalPhoto[]
+  answers   CheckupAnswer[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model CheckupAnswer {
+  id        String   @id @default(uuid())
+  checkupId String
+  checkup   Checkup  @relation(fields: [checkupId], references: [id])
+  question  String
+  answer    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Content {
+  id        String           @id @default(uuid())
+  title     String
+  messages  ContentMessage[]
+  condition Int
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model ContentMessage {
+  id        String   @id @default(uuid())
+  contentId String
+  content   Content  @relation(fields: [contentId], references: [id])
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DentalPhoto {
+  id        String   @id @default(uuid())
+  fileName  String
+  category  String
+  checkupId String
+  checkup   Checkup  @relation(fields: [checkupId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  senderId    String
+  sender      User     @relation("Messages_senderIdToUsers", fields: [senderId], references: [id])
+  body        String
+  recipientId String
+  recipient   User     @relation("Messages_recipientIdToUsers", fields: [recipientId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Objective {
+  id         String     @id @default(uuid())
+  title      String
+  goal       String
+  time       Int?
+  isDaily    Boolean
+  progresses Progress[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Progress {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  objectiveId String
+  objective   Objective @relation(fields: [objectiveId], references: [id])
+  progress    Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model User {
+  id               String     @id @default(uuid())
+  name             String
+  parentName       String?
+  email            String
+  password         String
+  phoneNumber      String
+  birthDate        DateTime
+  city             String
+  checkups         Checkup[]
+  neoplasia        String?
+  doctorId         String?
+  doctor           User?      @relation("UsersToUsers", fields: [doctorId], references: [id])
+  chartNumber      String?
+  patients         User[]     @relation("UsersToUsers")
+  progresses       Progress[]
+  sentMessages     Message[]  @relation("Messages_senderIdToUsers")
+  receivedMessages Message[]  @relation("Messages_recipientIdToUsers")
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+}

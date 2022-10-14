@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import ICheckupsRepository from '../repositories/ICheckupsRepository';
 
 interface IRequest {
-  answers: Record<string, number>;
+  answers: Record<string, string>;
   photos: Express.Multer.File[];
   userId: string;
 }

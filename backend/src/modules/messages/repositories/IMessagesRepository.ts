@@ -1,4 +1,6 @@
-import Message, { ICreateMessageDTO } from '@entities/Message';
+import { Message } from '@prisma/client';
+
+import ICreateMessageDTO from '../dtos/ICreateMessageDTO';
 
 export default interface IMessagesRepository {
   create(data: ICreateMessageDTO): Promise<Message>;

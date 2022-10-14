@@ -1,11 +1,12 @@
+import { Message } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
-import Message, { ICreateMessageDTO } from '@entities/Message';
 import IContentsRepository from '@modules/contents/repositories/IContentsRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import { io } from '@shared/infra/http/server';
 
+import ICreateMessageDTO from '../dtos/ICreateMessageDTO';
 import IMessagesRepository from '../repositories/IMessagesRepository';
 
 interface IRequest extends ICreateMessageDTO {

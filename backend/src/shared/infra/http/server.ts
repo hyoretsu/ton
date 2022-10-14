@@ -1,5 +1,5 @@
-/* eslint-disable import/prefer-default-export */
 /* eslint-disable no-console */
+import { PrismaClient } from '@prisma/client';
 import { errors } from 'celebrate';
 import cors from 'cors';
 import express, { Request, Response, NextFunction } from 'express';
@@ -11,7 +11,6 @@ import 'reflect-metadata';
 
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
-import Postgres from '@shared/infra/sequelize';
 import '@shared/containers';
 
 import routes from './routes';
@@ -25,34 +24,34 @@ export const io = new Server(httpServer, {
   },
 });
 
-Postgres.sync().then(() => {
-  app.use(cors({ origin: process.env.APP_API_URL }));
-  app.use(express.json());
-  app.use('/files', express.static(uploadConfig.uploadsFolder));
-  app.use(routes);
+export const prisma = new PrismaClient();
 
-  app.use(errors());
+app.use(cors({ origin: process.env.APP_API_URL }));
+app.use(express.json());
+app.use('/files', express.static(uploadConfig.uploadsFolder));
+app.use(routes);
 
-  io.on('connection', socket => {
-    console.log(`${socket.id} connected`);
-  });
+app.use(errors());
 
-  app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    if (err instanceof AppError) {
-      return res.status(err.statusCode).json({
-        status: 'error',
-        message: err.message,
-      });
-    }
+io.on('connection', socket => {
+  console.log(`${socket.id} connected`);
+});
 
-    return res.status(500).json({
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
       status: 'error',
-      message: 'Internal server error',
+      message: err.message,
     });
-  });
+  }
 
-  httpServer.listen(3332);
-  app.listen(3333, () => {
-    console.log('Server started on port 3333!');
+  return res.status(500).json({
+    status: 'error',
+    message: 'Internal server error',
   });
+});
+
+httpServer.listen(3332);
+app.listen(3333, () => {
+  console.log('Server started on port 3333!');
 });

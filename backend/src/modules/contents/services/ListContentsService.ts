@@ -1,9 +1,9 @@
+import { Content } from '@prisma/client';
 import { differenceInWeeks } from 'date-fns';
 import { verify } from 'jsonwebtoken';
 import { inject, injectable } from 'tsyringe';
 
 import authConfig from '@config/auth';
-import Content from '@entities/Content';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 

@@ -1,6 +1,5 @@
+import { Objective } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
-
-import Objective from '@entities/Objective';
 
 import IObjectivesRepository from '../repositories/IObjectivesRepository';
 

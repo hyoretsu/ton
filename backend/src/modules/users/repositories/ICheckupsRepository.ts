@@ -1,15 +1,16 @@
-import Checkup, { ICreateCheckupDTO } from '@entities/Checkup';
-import CheckupAnswer, { ICreateCheckupAnswerDTO } from '@entities/CheckupAnswer';
-import DentalPhoto, { IRegisterPhotoDTO } from '@entities/DentalPhoto';
+import { Checkup, CheckupAnswer, DentalPhoto, Prisma } from '@prisma/client';
 
+import ICreateCheckupAnswerDTO from '../dtos/ICreateCheckupAnswerDTO';
+import ICreateCheckupDTO from '../dtos/ICreateCheckupDTO';
 import IFindPhotoDTO from '../dtos/IFindPhotoDTO';
+import IRegisterPhotoDTO from '../dtos/IRegisterPhotoDTO';
 
 export default interface ICheckupsRepository {
   create(data: ICreateCheckupDTO): Promise<Checkup>;
-  findById(checkupId: string): Promise<Checkup | null>;
+  findById(checkupId: string): Promise<Prisma.CheckupGetPayload<{ include: { answers: true } }> | null>;
   findCheckups(patientId: string): Promise<Checkup[]>;
   findPhoto(data: IFindPhotoDTO): Promise<DentalPhoto | null>;
   registerAnswer(data: ICreateCheckupAnswerDTO): Promise<CheckupAnswer>;
   registerPhoto(data: IRegisterPhotoDTO): Promise<DentalPhoto>;
-  updateAnswer(existingAnswer: CheckupAnswer, answer: string): Promise<CheckupAnswer>;
+  updateAnswer(answerId: string, newAnswer: string): Promise<CheckupAnswer>;
 }

@@ -1,7 +1,7 @@
+import { Content } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
-import Content, { ICreateContentDTO } from '@entities/Content';
-
+import ICreateContentDTO from '../dtos/ICreateContentDTO';
 import IContentsRepository from '../repositories/IContentsRepository';
 
 interface IRequest extends ICreateContentDTO {

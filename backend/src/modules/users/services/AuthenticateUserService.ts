@@ -1,8 +1,8 @@
+import { User } from '@prisma/client';
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
 
 import authConfig from '@config/auth';
-import User from '@entities/User';
 import AppError from '@shared/errors/AppError';
 
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';

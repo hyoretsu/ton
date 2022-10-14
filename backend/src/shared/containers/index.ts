@@ -2,16 +2,16 @@ import { container } from 'tsyringe';
 
 import '@modules/users/providers';
 
-import ContentsRepository from '@modules/contents/infra/sequelize/repositories/ContentsRepository';
+import ContentsRepository from '@modules/contents/infra/prisma/repositories/ContentsRepository';
 import IContentsRepository from '@modules/contents/repositories/IContentsRepository';
-import MessagesRepository from '@modules/messages/infra/sequelize/repositories/MessagesRepository';
+import MessagesRepository from '@modules/messages/infra/prisma/repositories/MessagesRepository';
 import IMessagesRepository from '@modules/messages/repositories/IMessagesRepository';
-import ObjectivesRepository from '@modules/objectives/infra/sequelize/repositories/ObjectivesRepository';
-import ProgressRepository from '@modules/objectives/infra/sequelize/repositories/ProgressRepository';
+import ObjectivesRepository from '@modules/objectives/infra/prisma/repositories/ObjectivesRepository';
+import ProgressRepository from '@modules/objectives/infra/prisma/repositories/ProgressRepository';
 import IObjectivesRepository from '@modules/objectives/repositories/IObjectivesRepository';
 import IProgressRepository from '@modules/objectives/repositories/IProgressRepository';
-import CheckupsRepository from '@modules/users/infra/sequelize/repositories/CheckupsRepository';
-import UsersRepository from '@modules/users/infra/sequelize/repositories/UsersRepository';
+import CheckupsRepository from '@modules/users/infra/prisma/repositories/CheckupsRepository';
+import UsersRepository from '@modules/users/infra/prisma/repositories/UsersRepository';
 import ICheckupsRepository from '@modules/users/repositories/ICheckupsRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 

@@ -1,0 +1,30 @@
+{
+    "$schema": "https://json.schemastore.org/swcrc",
+    "exclude": ["src/@types/*", "src/dtos/*", "src/**/*.spec.ts"],
+    "jsc": {
+        "baseUrl": "./src",
+        "loose": true,
+        "parser": {
+            "decorators": true,
+            "dynamicImport": true,
+            "syntax": "typescript",
+            "tsx": false
+        },
+        "paths": {
+            "@config/*": ["config/*"],
+            "@entities/*": ["shared/infra/sequelize/entities/*"],
+            "@modules/*": ["modules/*"],
+            "@shared/*": ["shared/*"]
+        },
+        "target": "es2017",
+        "transform": {
+            "decoratorMetadata": true,
+            "legacyDecorator": true
+        }
+    },
+    "minify": true,
+    "module": {
+        "type": "commonjs"
+    },
+    "sourceMaps": true
+}

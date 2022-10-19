@@ -10,36 +10,36 @@ import Profile from 'screens/Profile';
 import Symptoms from 'screens/Symptoms';
 
 export type RootStackParamList = {
-  Chat?: ChatParams;
-  CheckupBegin: undefined;
-  CheckupCamera: undefined;
-  CheckupConfirm: CheckupConfirmParams;
-  CheckupInstructions: undefined;
-  Diary: undefined;
-  Educational: undefined;
-  Profile: undefined;
-  Symptoms: undefined;
+    Chat?: ChatParams;
+    CheckupBegin: undefined;
+    CheckupCamera: undefined;
+    CheckupConfirm: CheckupConfirmParams;
+    CheckupInstructions: undefined;
+    Diary: undefined;
+    Educational: undefined;
+    Profile: undefined;
+    Symptoms: undefined;
 };
 
 const App = createStackNavigator<RootStackParamList>();
 
 const AppRoutes: React.FC = () => {
-  return (
-    <App.Navigator
-      initialRouteName="Diary"
-      screenOptions={{ cardStyle: { backgroundColor: '#c4d3f2' }, headerShown: false }}
-    >
-      <App.Screen name="Chat" component={Chat} />
-      <App.Screen name="CheckupBegin" component={CheckupBegin} />
-      <App.Screen name="CheckupCamera" component={CheckupCamera} />
-      <App.Screen name="CheckupConfirm" component={CheckupConfirm} />
-      <App.Screen name="CheckupInstructions" component={CheckupInstructions} />
-      <App.Screen name="Diary" component={Diary} />
-      <App.Screen name="Educational" component={Educational} />
-      <App.Screen name="Profile" component={Profile} />
-      <App.Screen name="Symptoms" component={Symptoms} />
-    </App.Navigator>
-  );
+    return (
+        <App.Navigator
+            initialRouteName="Diary"
+            screenOptions={{ cardStyle: { backgroundColor: '#c4d3f2' }, headerShown: false }}
+        >
+            <App.Screen name="Chat" component={Chat} />
+            <App.Screen name="CheckupBegin" component={CheckupBegin} />
+            <App.Screen name="CheckupCamera" component={CheckupCamera} />
+            <App.Screen name="CheckupConfirm" component={CheckupConfirm} />
+            <App.Screen name="CheckupInstructions" component={CheckupInstructions} />
+            <App.Screen name="Diary" component={Diary} />
+            <App.Screen name="Educational" component={Educational} />
+            <App.Screen name="Profile" component={Profile} />
+            <App.Screen name="Symptoms" component={Symptoms} />
+        </App.Navigator>
+    );
 };
 
 export default AppRoutes;

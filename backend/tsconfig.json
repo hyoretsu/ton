@@ -1,22 +1,22 @@
 {
-  "extends": "../@shared/tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": "./src",
-    "outDir": "./dist",
-    "paths": {
-      "@config/*": ["config/*"],
-      "@entities/*": ["shared/infra/sequelize/entities/*"],
-      "@modules/*": ["modules/*"],
-      "@shared/*": ["shared/*"]
+    "extends": "../@shared/tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "outDir": "./dist",
+        "paths": {
+            "@config/*": ["config/*"],
+            "@entities/*": ["shared/infra/sequelize/entities/*"],
+            "@modules/*": ["modules/*"],
+            "@shared/*": ["shared/*"]
+        },
+        "pretty": true,
+        "removeComments": true,
+        "rootDir": "./src",
+        "sourceMap": true,
+        "strictPropertyInitialization": false,
+        "target": "es2017",
+        "typeRoots": ["./node_modules/@types", "./src/@types"],
+        "types": ["node", "jest"]
     },
-    "pretty": true,
-    "removeComments": true,
-    "rootDir": "./src",
-    "sourceMap": true,
-    "strictPropertyInitialization": false,
-    "target": "es2017",
-    "typeRoots": ["./node_modules/@types", "./src/@types"],
-    "types": ["node", "jest"]
-  },
-  "include": ["src/**/*"]
+    "include": ["src/**/*"]
 }

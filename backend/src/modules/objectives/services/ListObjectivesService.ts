@@ -5,14 +5,14 @@ import IObjectivesRepository from '../repositories/IObjectivesRepository';
 
 @injectable()
 export default class ListObjectivesService {
-  constructor(
-    @inject('ObjectivesRepository')
-    private objectivesRepository: IObjectivesRepository,
-  ) {}
+    constructor(
+        @inject('ObjectivesRepository')
+        private objectivesRepository: IObjectivesRepository,
+    ) {}
 
-  public async execute(): Promise<Objective[]> {
-    const objectives = this.objectivesRepository.findAll();
+    public async execute(): Promise<Objective[]> {
+        const objectives = this.objectivesRepository.findAll();
 
-    return objectives;
-  }
+        return objectives;
+    }
 }

@@ -1,4 +1,4 @@
 export default interface ICreateContentMessageDTO {
-  body: string;
-  contentId: string;
+    body: string;
+    contentId: string;
 }

@@ -10,15 +10,15 @@ const messagesController = new MessagesController();
 
 messagesRouter.get('/', ensureAuthenticated, messagesController.show);
 messagesRouter.post(
-  '/',
-  ensureAuthenticated,
-  celebrate({
-    body: {
-      body: Joi.string().required(),
-      recipientId: Joi.string().required(),
-    },
-  }),
-  messagesController.create,
+    '/',
+    ensureAuthenticated,
+    celebrate({
+        body: {
+            body: Joi.string().required(),
+            recipientId: Joi.string().required(),
+        },
+    }),
+    messagesController.create,
 );
 
 export default messagesRouter;

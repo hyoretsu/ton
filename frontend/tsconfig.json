@@ -1,22 +1,22 @@
 {
-  "extends": "../@shared/tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": "./src",
-    "jsx": "preserve",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "noEmit": true,
-    "outDir": "./build",
-    "paths": {
-      "@api": ["data/services/api"],
-      "@assets/*": ["../public/images/*"],
-      "@components/*": ["ui/components/*"],
-      "@hooks/*": ["data/hooks/*"],
-      "@public/*": ["../public/*"],
-      "@styles/*": ["ui/styles/*"],
-      "@utils/*": ["data/utils/*"]
+    "extends": "../@shared/tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "jsx": "preserve",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "noEmit": true,
+        "outDir": "./build",
+        "paths": {
+            "@api": ["data/services/api"],
+            "@assets/*": ["../public/images/*"],
+            "@components/*": ["ui/components/*"],
+            "@hooks/*": ["data/hooks/*"],
+            "@public/*": ["../public/*"],
+            "@styles/*": ["ui/styles/*"],
+            "@utils/*": ["data/utils/*"]
+        },
+        "target": "es5",
+        "typeRoots": ["./node_modules/@types", "./src/data/@types"]
     },
-    "target": "es5",
-    "typeRoots": ["./node_modules/@types", "./src/data/@types"]
-  },
-  "include": ["src/**/*", "next-env.d.ts"]
+    "include": ["src/**/*", "next-env.d.ts"]
 }

@@ -5,26 +5,26 @@ import ICreateContentDTO from '../dtos/ICreateContentDTO';
 import IContentsRepository from '../repositories/IContentsRepository';
 
 interface IRequest extends ICreateContentDTO {
-  messages: string[];
+    messages: string[];
 }
 
 @injectable()
 export default class CreateContentService {
-  constructor(
-    @inject('ContentsRepository')
-    private contentsRepository: IContentsRepository,
-  ) {}
+    constructor(
+        @inject('ContentsRepository')
+        private contentsRepository: IContentsRepository,
+    ) {}
 
-  public async execute({ messages, ...contentInfo }: IRequest): Promise<Content> {
-    const content = await this.contentsRepository.create(contentInfo);
+    public async execute({ messages, ...contentInfo }: IRequest): Promise<Content> {
+        const content = await this.contentsRepository.create(contentInfo);
 
-    messages.forEach(async body => {
-      await this.contentsRepository.registerMessage({
-        contentId: content.id,
-        body,
-      });
-    });
+        messages.forEach(async body => {
+            await this.contentsRepository.registerMessage({
+                contentId: content.id,
+                body,
+            });
+        });
 
-    return content;
-  }
+        return content;
+    }
 }

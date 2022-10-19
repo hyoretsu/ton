@@ -13,38 +13,38 @@ const checkupController = new CheckupController();
 const upload = multer(uploadConfig.multer);
 
 checkupRouter.post(
-  '/',
-  ensureAuthenticated,
-  upload.any(),
-  celebrate({
-    body: {
-      // answers: Joi.object().required(),
-      answers: Joi.string().required(),
-    },
-  }),
-  checkupController.create,
+    '/',
+    ensureAuthenticated,
+    upload.any(),
+    celebrate({
+        body: {
+            // answers: Joi.object().required(),
+            answers: Joi.string().required(),
+        },
+    }),
+    checkupController.create,
 );
 checkupRouter.patch(
-  '/',
-  ensureAuthenticated,
-  celebrate({
-    body: {
-      answers: Joi.object().required(),
-      checkupId: Joi.string().uuid().required(),
-    },
-  }),
-  checkupController.update,
+    '/',
+    ensureAuthenticated,
+    celebrate({
+        body: {
+            answers: Joi.object().required(),
+            checkupId: Joi.string().uuid().required(),
+        },
+    }),
+    checkupController.update,
 );
 
 checkupRouter.post(
-  '/photos/find',
-  ensureAuthenticated,
-  celebrate({
-    body: {
-      category: Joi.string().required(),
-    },
-  }),
-  checkupController.show,
+    '/photos/find',
+    ensureAuthenticated,
+    celebrate({
+        body: {
+            category: Joi.string().required(),
+        },
+    }),
+    checkupController.show,
 );
 
 export default checkupRouter;

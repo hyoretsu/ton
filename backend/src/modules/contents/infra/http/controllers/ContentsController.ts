@@ -5,21 +5,21 @@ import CreateContentService from '@modules/contents/services/CreateContentServic
 import ListContentsService from '@modules/contents/services/ListContentsService';
 
 export default class ContentsController {
-  public async create(req: Request, res: Response): Promise<Response> {
-    const { body } = req;
+    public async create(req: Request, res: Response): Promise<Response> {
+        const { body } = req;
 
-    const createContent = container.resolve(CreateContentService);
+        const createContent = container.resolve(CreateContentService);
 
-    const content = await createContent.execute(body);
+        const content = await createContent.execute(body);
 
-    return res.json(content);
-  }
+        return res.json(content);
+    }
 
-  public async show(req: Request, res: Response): Promise<Response> {
-    const listContentsService = container.resolve(ListContentsService);
+    public async show(req: Request, res: Response): Promise<Response> {
+        const listContentsService = container.resolve(ListContentsService);
 
-    const content = await listContentsService.execute(req.headers.authorization);
+        const content = await listContentsService.execute(req.headers.authorization);
 
-    return res.json(content);
-  }
+        return res.json(content);
+    }
 }

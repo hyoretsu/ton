@@ -10,60 +10,60 @@ import ICreateMessageDTO from '../dtos/ICreateMessageDTO';
 import IMessagesRepository from '../repositories/IMessagesRepository';
 
 interface IRequest extends ICreateMessageDTO {
-  socketId: string;
+    socketId: string;
 }
 
 @injectable()
 export default class CreateMessageService {
-  constructor(
-    @inject('MessagesRepository')
-    private messagesRepository: IMessagesRepository,
+    constructor(
+        @inject('MessagesRepository')
+        private messagesRepository: IMessagesRepository,
 
-    @inject('ContentsRepository')
-    private contentsRepository: IContentsRepository,
+        @inject('ContentsRepository')
+        private contentsRepository: IContentsRepository,
 
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
-  ) {}
+        @inject('UsersRepository')
+        private usersRepository: IUsersRepository,
+    ) {}
 
-  public async execute({ body, recipientId, senderId }: IRequest): Promise<Message> {
-    if (body === '') {
-      throw new AppError('Please, send a message body.');
-    }
+    public async execute({ body, recipientId, senderId }: IRequest): Promise<Message> {
+        if (body === '') {
+            throw new AppError('Please, send a message body.');
+        }
 
-    const sender = await this.usersRepository.findById(senderId);
-    if (!sender) {
-      throw new AppError("The given sender doesn't exist.");
-    }
+        const sender = await this.usersRepository.findById(senderId);
+        if (!sender) {
+            throw new AppError("The given sender doesn't exist.");
+        }
 
-    const recipient = await this.usersRepository.findById(recipientId);
-    if (!recipient) {
-      throw new AppError("The given recipient doesn't exist.");
-    }
+        const recipient = await this.usersRepository.findById(recipientId);
+        if (!recipient) {
+            throw new AppError("The given recipient doesn't exist.");
+        }
 
-    const message = await this.messagesRepository.create({ body, recipientId, senderId });
-
-    io.emit('chat');
-
-    const foundContent = await this.contentsRepository.findByTitle(body);
-    if (foundContent) {
-      const answers = foundContent.messages.map(msg => msg.body);
-
-      answers.forEach(async (answer, i) => {
-        await new Promise(res => {
-          setTimeout(res, 2000 * (i + 1));
-        });
-
-        await this.messagesRepository.create({
-          body: answer,
-          recipientId: senderId,
-          senderId: recipientId,
-        });
+        const message = await this.messagesRepository.create({ body, recipientId, senderId });
 
         io.emit('chat');
-      });
-    }
 
-    return message;
-  }
+        const foundContent = await this.contentsRepository.findByTitle(body);
+        if (foundContent) {
+            const answers = foundContent.messages.map(msg => msg.body);
+
+            answers.forEach(async (answer, i) => {
+                await new Promise(res => {
+                    setTimeout(res, 2000 * (i + 1));
+                });
+
+                await this.messagesRepository.create({
+                    body: answer,
+                    recipientId: senderId,
+                    senderId: recipientId,
+                });
+
+                io.emit('chat');
+            });
+        }
+
+        return message;
+    }
 }

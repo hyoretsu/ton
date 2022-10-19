@@ -7,41 +7,41 @@ import ListPatientsService from '@modules/users/services/ListPatientsService';
 import UpdateUserService from '@modules/users/services/UpdateUserService';
 
 export default class UsersController {
-  public async create(req: Request, res: Response): Promise<Response> {
-    const { body } = req;
+    public async create(req: Request, res: Response): Promise<Response> {
+        const { body } = req;
 
-    const createUser = container.resolve(CreateUserService);
+        const createUser = container.resolve(CreateUserService);
 
-    const user = await createUser.execute(body);
+        const user = await createUser.execute(body);
 
-    return res.json(user);
-  }
+        return res.json(user);
+    }
 
-  public async delete(req: Request, res: Response): Promise<Response> {
-    const { userId } = req.body;
+    public async delete(req: Request, res: Response): Promise<Response> {
+        const { userId } = req.body;
 
-    const deleteUser = container.resolve(DeleteUserService);
+        const deleteUser = container.resolve(DeleteUserService);
 
-    await deleteUser.execute(userId);
+        await deleteUser.execute(userId);
 
-    return res.json();
-  }
+        return res.json();
+    }
 
-  public async show(req: Request, res: Response): Promise<Response> {
-    const listPatientsService = container.resolve(ListPatientsService);
+    public async show(req: Request, res: Response): Promise<Response> {
+        const listPatientsService = container.resolve(ListPatientsService);
 
-    const users = await listPatientsService.execute();
+        const users = await listPatientsService.execute();
 
-    return res.json(users);
-  }
+        return res.json(users);
+    }
 
-  public async update(req: Request, res: Response): Promise<Response> {
-    const { body } = req;
+    public async update(req: Request, res: Response): Promise<Response> {
+        const { body } = req;
 
-    const updateUser = container.resolve(UpdateUserService);
+        const updateUser = container.resolve(UpdateUserService);
 
-    const user = await updateUser.execute({ ...body, userId: req.user.id });
+        const user = await updateUser.execute({ ...body, userId: req.user.id });
 
-    return res.json(user);
-  }
+        return res.json(user);
+    }
 }

@@ -1,3 +1,3 @@
 export default interface ICreateCheckupDTO {
-  patientId: string;
+    patientId: string;
 }

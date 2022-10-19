@@ -9,17 +9,17 @@ import '@public/global.css';
 import '@public/fonts.css';
 
 const MyApp = ({ Component, pageProps }: AppProps): ReactElement => {
-  return (
-    <>
-      <DefaultSeo
-        defaultTitle={siteName}
-        titleTemplate={`%s | ${siteName}`}
-        dangerouslySetAllPagesToNoFollow
-        dangerouslySetAllPagesToNoIndex
-      />
-      <Component {...pageProps} />
-    </>
-  );
+    return (
+        <>
+            <DefaultSeo
+                defaultTitle={siteName}
+                titleTemplate={`%s | ${siteName}`}
+                dangerouslySetAllPagesToNoFollow
+                dangerouslySetAllPagesToNoIndex
+            />
+            <Component {...pageProps} />
+        </>
+    );
 };
 
 export default MyApp;

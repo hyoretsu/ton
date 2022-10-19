@@ -4,41 +4,41 @@ import { createContext, PropsWithChildren, useCallback, useContext, useEffect, u
 type Keys = 'checkupProgress' | 'objectiveProgress';
 
 interface StorageContext {
-  checkupProgress: Record<string, string>;
-  storeValue: (key: Keys, value: any) => Promise<void>;
+    checkupProgress: Record<string, string>;
+    storeValue: (key: Keys, value: any) => Promise<void>;
 }
 
 const StorageContext = createContext<StorageContext>({} as StorageContext);
 
 export const StorageProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [checkupProgress, setCheckupProgress] = useState({});
+    const [checkupProgress, setCheckupProgress] = useState({});
 
-  useEffect(() => {
-    AsyncStorage.getItem('@eOdontologia:checkupProgress').then(storedProgress => {
-      if (!storedProgress) {
-        AsyncStorage.setItem('@eOdontologia:checkupProgress', JSON.stringify({}));
+    useEffect(() => {
+        AsyncStorage.getItem('@eOdontologia:checkupProgress').then(storedProgress => {
+            if (!storedProgress) {
+                AsyncStorage.setItem('@eOdontologia:checkupProgress', JSON.stringify({}));
 
-        return;
-      }
+                return;
+            }
 
-      setCheckupProgress(JSON.parse(storedProgress));
-    });
-  }, []);
+            setCheckupProgress(JSON.parse(storedProgress));
+        });
+    }, []);
 
-  const storeValue = useCallback(async (key: Keys, value: any) => {
-    switch (key) {
-      case 'checkupProgress':
-        await AsyncStorage.setItem(`@eOdontologia:${key}`, JSON.stringify(value));
-        setCheckupProgress(value);
-        break;
-    }
-  }, []);
+    const storeValue = useCallback(async (key: Keys, value: any) => {
+        switch (key) {
+            case 'checkupProgress':
+                await AsyncStorage.setItem(`@eOdontologia:${key}`, JSON.stringify(value));
+                setCheckupProgress(value);
+                break;
+        }
+    }, []);
 
-  const storage: StorageContext = useMemo(() => ({ checkupProgress, storeValue }), [checkupProgress, storeValue]);
+    const storage: StorageContext = useMemo(() => ({ checkupProgress, storeValue }), [checkupProgress, storeValue]);
 
-  return <StorageContext.Provider value={storage}>{children}</StorageContext.Provider>;
+    return <StorageContext.Provider value={storage}>{children}</StorageContext.Provider>;
 };
 
 export const useStorage = (): StorageContext => {
-  return useContext(StorageContext);
+    return useContext(StorageContext);
 };

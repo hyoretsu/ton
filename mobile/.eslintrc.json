@@ -1,73 +1,76 @@
 {
-  "extends": ["airbnb", "@shared/eslint"],
-  "rules": {
-    "import/prefer-default-export": "off",
-    "import-helpers/order-imports": [
-      "warn",
-      {
-        "newlinesBetween": "always",
-        "groups": [
-          "module",
-          "/^@components/",
-          "/^@api/",
-          "/^@styles/",
-          "/assets/",
-          ["/^@config/", "/^@modules/", "/^@shared/"],
-          ["parent", "sibling"]
+    "extends": ["airbnb", "@shared/eslint"],
+    "rules": {
+        "import/prefer-default-export": "off",
+        "import-helpers/order-imports": [
+            "warn",
+            {
+                "newlinesBetween": "always",
+                "groups": [
+                    "module",
+                    ["/^@components/", "/^@contexts/"],
+                    "/^@api/",
+                    "/^@styles/",
+                    "/assets/",
+                    ["/^@config/", "/^@modules/", "/^@shared/"],
+                    ["parent", "sibling"]
+                ],
+                "alphabetize": {
+                    "order": "asc",
+                    "ignoreCase": false
+                }
+            }
         ],
-        "alphabetize": {
-          "order": "asc",
-          "ignoreCase": false
+        "no-shadow": "off",
+        "no-undef": "off"
+    },
+    "overrides": [
+        {
+            "files": ["**/*.ts", "**/*.tsx"],
+            "extends": [
+                "@react-native-community",
+                "plugin:react/recommended",
+                "plugin:react-native/all"
+            ],
+            "env": {
+                "browser": true,
+                "react-native/react-native": true
+            },
+            "plugins": ["react", "react-hooks", "react-native"],
+            "parserOptions": {
+                "ecmaFeatures": {
+                    "jsx": true
+                }
+            },
+            "rules": {
+                "@typescript-eslint/ban-ts-comment": "off",
+                "@typescript-eslint/explicit-function-return-type": [
+                    "error",
+                    { "allowExpressions": true }
+                ],
+                "@typescript-eslint/no-use-before-define": ["error"],
+                "@typescript-eslint/no-shadow": ["error"],
+                "react/function-component-definition": [
+                    "error",
+                    { "namedComponents": "arrow-function" }
+                ],
+                "react/jsx-filename-extension": [
+                    "warn",
+                    { "extensions": [".tsx"] }
+                ],
+                "react/jsx-indent": "off",
+                "react/jsx-indent-props": "off",
+                "react/jsx-one-expression-per-line": "off",
+                "react/jsx-props-no-spreading": "off",
+                "react/no-array-index-key": "warn",
+                "react/prop-types": "off",
+                "react/react-in-jsx-scope": "off",
+                "react-hooks/exhaustive-deps": "error",
+                "react-hooks/rules-of-hooks": "error",
+                "react-native/no-color-literals": "off",
+                "react-native/no-inline-styles": "off",
+                "react-native/no-raw-text": "off"
+            }
         }
-      }
-    ],
-    "no-shadow": "off",
-    "no-undef": "off"
-  },
-  "overrides": [
-    {
-      "files": ["**/*.ts", "**/*.tsx"],
-      "extends": [
-        "@react-native-community",
-        "plugin:react/recommended",
-        "plugin:react-native/all"
-      ],
-      "env": {
-        "browser": true,
-        "react-native/react-native": true
-      },
-      "plugins": ["react", "react-hooks", "react-native"],
-      "parserOptions": {
-        "ecmaFeatures": {
-          "jsx": true
-        }
-      },
-      "rules": {
-        "@typescript-eslint/ban-ts-comment": "off",
-        "@typescript-eslint/explicit-function-return-type": [
-          "error",
-          { "allowExpressions": true }
-        ],
-        "@typescript-eslint/no-use-before-define": ["error"],
-        "@typescript-eslint/no-shadow": ["error"],
-        "react/function-component-definition": [
-          "error",
-          { "namedComponents": "arrow-function" }
-        ],
-        "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
-        "react/jsx-indent": "off",
-        "react/jsx-indent-props": "off",
-        "react/jsx-one-expression-per-line": "off",
-        "react/jsx-props-no-spreading": "off",
-        "react/no-array-index-key": "warn",
-        "react/prop-types": "off",
-        "react/react-in-jsx-scope": "off",
-        "react-hooks/exhaustive-deps": "error",
-        "react-hooks/rules-of-hooks": "error",
-        "react-native/no-color-literals": "off",
-        "react-native/no-inline-styles": "off",
-        "react-native/no-raw-text": "off"
-      }
-    }
-  ]
+    ]
 }

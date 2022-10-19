@@ -12,41 +12,41 @@ const progressController = new ProgressController();
 
 objectivesRouter.get('/', ensureAuthenticated, objectivesController.show);
 objectivesRouter.post(
-  '/',
-  ensureAuthenticated,
-  celebrate({
-    body: {
-      title: Joi.string().required(),
-      goal: Joi.number().required(),
-      time: Joi.number(),
-      isDaily: Joi.boolean().required(),
-    },
-  }),
-  objectivesController.create,
+    '/',
+    ensureAuthenticated,
+    celebrate({
+        body: {
+            title: Joi.string().required(),
+            goal: Joi.number().required(),
+            time: Joi.number(),
+            isDaily: Joi.boolean().required(),
+        },
+    }),
+    objectivesController.create,
 );
 objectivesRouter.put(
-  '/',
-  ensureAuthenticated,
-  celebrate({
-    body: {
-      info: Joi.object().required(),
-      objectiveId: Joi.string().uuid().required(),
-    },
-  }),
-  objectivesController.update,
+    '/',
+    ensureAuthenticated,
+    celebrate({
+        body: {
+            info: Joi.object().required(),
+            objectiveId: Joi.string().uuid().required(),
+        },
+    }),
+    objectivesController.update,
 );
 
 objectivesRouter.get('/progress', ensureAuthenticated, progressController.show);
 objectivesRouter.post(
-  '/progress',
-  ensureAuthenticated,
-  celebrate({
-    body: {
-      objectiveId: Joi.string().required(),
-      progress: Joi.number().required(),
-    },
-  }),
-  progressController.create,
+    '/progress',
+    ensureAuthenticated,
+    celebrate({
+        body: {
+            objectiveId: Joi.string().required(),
+            progress: Joi.number().required(),
+        },
+    }),
+    progressController.create,
 );
 
 export default objectivesRouter;

@@ -1,4 +1,4 @@
 export default interface ICreateContentDTO {
-  condition: number;
-  title: string;
+    condition: number;
+    title: string;
 }

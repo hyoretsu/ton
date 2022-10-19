@@ -1,5 +1,5 @@
 export default interface ICreateProgressDTO {
-  userId: string;
-  objectiveId: string;
-  progress: number;
+    userId: string;
+    objectiveId: string;
+    progress: number;
 }

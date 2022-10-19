@@ -5,75 +5,75 @@ import React, { createContext, useCallback, useState, useContext, useEffect, Pro
 import api from '@api';
 
 export interface AuthInfo {
-  token: string;
-  user: User;
+    token: string;
+    user: User;
 }
 
 interface AuthContextData {
-  finishLogin(credentials: AuthInfo): Promise<void>;
-  signOut(): void;
-  updateUser(user: User): Promise<void>;
-  user: User;
-  loading: boolean;
+    finishLogin(credentials: AuthInfo): Promise<void>;
+    signOut(): void;
+    updateUser(user: User): Promise<void>;
+    user: User;
+    loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [data, setData] = useState<User>();
-  const [loading, setLoading] = useState(true);
+    const [data, setData] = useState<User>();
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    AsyncStorage.multiGet(['@eOdontologia:token', '@eOdontologia:user']).then(([[, token], [, user]]) => {
-      if (token && user) {
+    useEffect(() => {
+        AsyncStorage.multiGet(['@eOdontologia:token', '@eOdontologia:user']).then(([[, token], [, user]]) => {
+            if (token && user) {
+                api.defaults.headers.common.Authorization = `Bearer ${token}`;
+
+                setData(JSON.parse(user));
+            }
+
+            setLoading(false);
+        });
+    }, []);
+
+    const finishLogin = useCallback(async ({ token, user }: AuthInfo) => {
+        await AsyncStorage.multiSet([
+            ['@eOdontologia:token', token],
+            ['@eOdontologia:user', JSON.stringify(user)],
+        ]);
+
         api.defaults.headers.common.Authorization = `Bearer ${token}`;
 
-        setData(JSON.parse(user));
-      }
+        setData(user);
+    }, []);
 
-      setLoading(false);
-    });
-  }, []);
+    const signOut = useCallback(async () => {
+        await AsyncStorage.multiRemove(['@eOdontologia:token', '@eOdontologia:user']);
 
-  const finishLogin = useCallback(async ({ token, user }: AuthInfo) => {
-    await AsyncStorage.multiSet([
-      ['@eOdontologia:token', token],
-      ['@eOdontologia:user', JSON.stringify(user)],
-    ]);
+        setData({} as User);
+    }, []);
 
-    api.defaults.headers.common.Authorization = `Bearer ${token}`;
+    const updateUser = useCallback(async (user: User) => {
+        await AsyncStorage.setItem('@eOdontologia:user', JSON.stringify(user));
 
-    setData(user);
-  }, []);
+        setData(user);
+    }, []);
 
-  const signOut = useCallback(async () => {
-    await AsyncStorage.multiRemove(['@eOdontologia:token', '@eOdontologia:user']);
+    const authData = useMemo(
+        () => ({ finishLogin, signOut, updateUser, user: data, loading }),
+        [finishLogin, signOut, updateUser, data, loading],
+    );
 
-    setData({} as User);
-  }, []);
-
-  const updateUser = useCallback(async (user: User) => {
-    await AsyncStorage.setItem('@eOdontologia:user', JSON.stringify(user));
-
-    setData(user);
-  }, []);
-
-  const authData = useMemo(
-    () => ({ finishLogin, signOut, updateUser, user: data, loading }),
-    [finishLogin, signOut, updateUser, data, loading],
-  );
-
-  return <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>;
 };
 
 function useAuth(): AuthContextData {
-  const context = useContext(AuthContext);
+    const context = useContext(AuthContext);
 
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+    if (!context) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
 
-  return context;
+    return context;
 }
 
 export { AuthProvider, useAuth };

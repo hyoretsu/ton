@@ -4,17 +4,17 @@ import { TouchableOpacityProps } from 'react-native';
 import { Button, Icon } from './styles';
 
 interface BackButtonProps extends TouchableOpacityProps {
-  size: number;
+    size: number;
 }
 
 const BackButton: React.FC<BackButtonProps> = ({ size, style }) => {
-  const { goBack } = useNavigation();
+    const { goBack } = useNavigation();
 
-  return (
-    <Button onPress={goBack} style={style}>
-      <Icon name="arrow-left" size={size} />
-    </Button>
-  );
+    return (
+        <Button onPress={goBack} style={style}>
+            <Icon name="arrow-left" size={size} />
+        </Button>
+    );
 };
 
 export default BackButton;

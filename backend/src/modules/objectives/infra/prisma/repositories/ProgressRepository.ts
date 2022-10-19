@@ -6,37 +6,37 @@ import IProgressRepository from '@modules/objectives/repositories/IProgressRepos
 import { prisma } from '@shared/infra/http/server';
 
 export default class ProgressRepository implements IProgressRepository {
-  public async create(data: ICreateProgressDTO): Promise<Progress> {
-    const progress = await prisma.progress.create({ data });
+    public async create(data: ICreateProgressDTO): Promise<Progress> {
+        const progress = await prisma.progress.create({ data });
 
-    return progress;
-  }
+        return progress;
+    }
 
-  public async findAll(userId: string): Promise<Progress[]> {
-    const progresses = await prisma.progress.findMany({
-      where: { userId },
-    });
+    public async findAll(userId: string): Promise<Progress[]> {
+        const progresses = await prisma.progress.findMany({
+            where: { userId },
+        });
 
-    return progresses;
-  }
+        return progresses;
+    }
 
-  public async findExisting({ objectiveId, userId }: IFindProgressDTO): Promise<Progress[]> {
-    const progress = await prisma.progress.findMany({
-      where: {
-        objectiveId,
-        userId,
-      },
-    });
+    public async findExisting({ objectiveId, userId }: IFindProgressDTO): Promise<Progress[]> {
+        const progress = await prisma.progress.findMany({
+            where: {
+                objectiveId,
+                userId,
+            },
+        });
 
-    return progress;
-  }
+        return progress;
+    }
 
-  public async update(id: string, progress: number): Promise<Progress> {
-    const updatedProgress = await prisma.progress.update({
-      where: { id },
-      data: { progress },
-    });
+    public async update(id: string, progress: number): Promise<Progress> {
+        const updatedProgress = await prisma.progress.update({
+            where: { id },
+            data: { progress },
+        });
 
-    return updatedProgress;
-  }
+        return updatedProgress;
+    }
 }

@@ -1,4 +1,4 @@
 export default interface IFindProgressDTO {
-  objectiveId: string;
-  userId: string;
+    objectiveId: string;
+    userId: string;
 }

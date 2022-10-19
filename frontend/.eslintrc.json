@@ -1,44 +1,47 @@
 {
-  "extends": ["airbnb", "@shared/eslint"],
-  "overrides": [
-    {
-      "files": ["**/*.ts", "**/*.tsx"],
-      "env": {
-        "browser": true,
-        "es2021": true
-      },
-      "extends": ["plugin:react/recommended", "next"],
-      "parserOptions": {
-        "ecmaFeatures": {
-          "jsx": true
-        },
-        "ecmaVersion": "latest"
-      },
-      "plugins": ["react", "react-hooks"],
-      "rules": {
-        "@next/next/no-img-element": "off",
-        "@typescript-eslint/ban-ts-comment": "off",
-        "@typescript-eslint/explicit-function-return-type": [
-          "error",
-          { "allowExpressions": true }
-        ],
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-use-before-define": ["error"],
-        "react/function-component-definition": [
-          "error",
-          { "namedComponents": "arrow-function" }
-        ],
-        "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
-        "react/jsx-indent": "off",
-        "react/jsx-indent-props": "off",
-        "react/jsx-one-expression-per-line": "off",
-        "react/jsx-props-no-spreading": "off",
-        "react/no-unescaped-entities": "off",
-        "react/prop-types": "off",
-        "react/react-in-jsx-scope": "off",
-        "react-hooks/exhaustive-deps": "error",
-        "react-hooks/rules-of-hooks": "error"
-      }
-    }
-  ]
+    "extends": ["airbnb", "@shared/eslint"],
+    "overrides": [
+        {
+            "files": ["**/*.ts", "**/*.tsx"],
+            "env": {
+                "browser": true,
+                "es2021": true
+            },
+            "extends": ["plugin:react/recommended"],
+            "parserOptions": {
+                "ecmaFeatures": {
+                    "jsx": true
+                },
+                "ecmaVersion": "latest"
+            },
+            "plugins": ["react", "react-hooks"],
+            "rules": {
+                "@next/next/no-img-element": "off",
+                "@typescript-eslint/ban-ts-comment": "off",
+                "@typescript-eslint/explicit-function-return-type": [
+                    "error",
+                    { "allowExpressions": true }
+                ],
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/no-use-before-define": ["error"],
+                "react/function-component-definition": [
+                    "error",
+                    { "namedComponents": "arrow-function" }
+                ],
+                "react/jsx-filename-extension": [
+                    "warn",
+                    { "extensions": [".tsx"] }
+                ],
+                "react/jsx-indent": "off",
+                "react/jsx-indent-props": "off",
+                "react/jsx-one-expression-per-line": "off",
+                "react/jsx-props-no-spreading": "off",
+                "react/no-unescaped-entities": "off",
+                "react/prop-types": "off",
+                "react/react-in-jsx-scope": "off",
+                "react-hooks/exhaustive-deps": "error",
+                "react-hooks/rules-of-hooks": "error"
+            }
+        }
+    ]
 }

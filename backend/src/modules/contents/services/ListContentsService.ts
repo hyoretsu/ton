@@ -11,30 +11,30 @@ import IContentsRepository from '../repositories/IContentsRepository';
 
 @injectable()
 export default class ListContentsService {
-  constructor(
-    @inject('ContentsRepository')
-    private contentsRepository: IContentsRepository,
+    constructor(
+        @inject('ContentsRepository')
+        private contentsRepository: IContentsRepository,
 
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
-  ) {}
+        @inject('UsersRepository')
+        private usersRepository: IUsersRepository,
+    ) {}
 
-  public async execute(auth?: string): Promise<Content[]> {
-    if (auth) {
-      const { sub: userId } = verify(auth.split(' ')[1], authConfig.jwt.secret);
+    public async execute(auth?: string): Promise<Content[]> {
+        if (auth) {
+            const { sub: userId } = verify(auth.split(' ')[1], authConfig.jwt.secret);
 
-      const user = await this.usersRepository.findById(userId as string);
-      if (!user) {
-        throw new AppError('O usuário autenticado não foi encontrado.');
-      }
+            const user = await this.usersRepository.findById(userId as string);
+            if (!user) {
+                throw new AppError('O usuário autenticado não foi encontrado.');
+            }
 
-      const contents = await this.contentsRepository.filter(differenceInWeeks(new Date(), user.createdAt));
+            const contents = await this.contentsRepository.filter(differenceInWeeks(new Date(), user.createdAt));
 
-      return contents;
+            return contents;
+        }
+
+        const contents = await this.contentsRepository.findAll();
+
+        return contents;
     }
-
-    const contents = await this.contentsRepository.findAll();
-
-    return contents;
-  }
 }

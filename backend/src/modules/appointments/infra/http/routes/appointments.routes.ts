@@ -20,5 +20,15 @@ appointmentsRouter.post(
     }),
     appointmentsController.create,
 );
+appointmentsRouter.delete(
+    '/',
+    ensureAuthenticated,
+    celebrate({
+        body: {
+            appointmentId: Joi.string().uuid().required(),
+        },
+    }),
+    appointmentsController.delete,
+);
 
 export default appointmentsRouter;

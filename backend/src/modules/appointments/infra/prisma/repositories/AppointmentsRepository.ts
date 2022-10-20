@@ -11,12 +11,24 @@ export default class AppointmentsRepository implements IAppointmentsRepository {
         return appointment;
     }
 
+    public async delete(appointmentId: string): Promise<void> {
+        await prisma.appointment.delete({ where: { id: appointmentId } });
+    }
+
     public async findAll(id: string): Promise<Appointment[]> {
         const appointments = await prisma.appointment.findMany({
             where: { OR: [{ doctorId: id }, { patientId: id }] },
         });
 
         return appointments;
+    }
+
+    public async findById(id: string): Promise<Appointment | null> {
+        const appointment = await prisma.appointment.findUnique({
+            where: { id },
+        });
+
+        return appointment;
     }
 
     public async findByTime(time: Date): Promise<Appointment | null> {

@@ -1,4 +1,4 @@
-import { Progress } from '@prisma/client';
+import { Prisma, Progress } from '@prisma/client';
 
 import ICreateProgressDTO from '@modules/objectives/dtos/ICreateProgressDTO';
 import IFindProgressDTO from '@modules/objectives/dtos/IFindProgressDTO';
@@ -12,9 +12,11 @@ export default class ProgressRepository implements IProgressRepository {
         return progress;
     }
 
-    public async findAll(userId: string): Promise<Progress[]> {
+    public async findAll(userId: string): Promise<Prisma.ProgressGetPayload<{ include: { objective: true } }>[]> {
         const progresses = await prisma.progress.findMany({
             where: { userId },
+            include: { objective: true },
+            orderBy: { createdAt: 'asc' },
         });
 
         return progresses;

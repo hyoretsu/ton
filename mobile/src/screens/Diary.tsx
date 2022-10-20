@@ -2,6 +2,7 @@ import notifee from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { Objective, Progress } from 'backend';
+import { differenceInCalendarDays } from 'date-fns';
 import { useEffect, useState } from 'react';
 
 import BottomBar from '@components/BottomBar';
@@ -59,7 +60,10 @@ const Diary: React.FC = () => {
                 const parsedProgress = data.reduce((obj, entry) => {
                     return {
                         ...obj,
-                        [entry.objectiveId]: entry.progress,
+                        [entry.objectiveId]:
+                            !entry.objective.isDaily || differenceInCalendarDays(entry.createdAt, new Date()) === 0
+                                ? entry.progress
+                                : 0,
                     };
                 }, {});
 

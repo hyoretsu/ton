@@ -80,7 +80,7 @@ model Message {
 model Objective {
     id         String     @id @default(uuid())
     title      String
-    goal       String
+    goal       Int
     time       Int?
     isDaily    Boolean
     progresses Progress[]

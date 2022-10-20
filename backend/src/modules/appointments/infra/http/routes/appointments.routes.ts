@@ -8,6 +8,7 @@ import AppointmentsController from '../controllers/AppointmentsController';
 const appointmentsRouter = Router();
 const appointmentsController = new AppointmentsController();
 
+appointmentsRouter.get('/', ensureAuthenticated, appointmentsController.list);
 appointmentsRouter.post(
     '/',
     ensureAuthenticated,

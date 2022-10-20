@@ -2,6 +2,8 @@ import { container } from 'tsyringe';
 
 import '@modules/users/providers';
 
+import AppointmentsRepository from '@modules/appointments/infra/prisma/repositories/AppointmentsRepository';
+import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import ContentsRepository from '@modules/contents/infra/prisma/repositories/ContentsRepository';
 import IContentsRepository from '@modules/contents/repositories/IContentsRepository';
 import MessagesRepository from '@modules/messages/infra/prisma/repositories/MessagesRepository';
@@ -15,6 +17,7 @@ import UsersRepository from '@modules/users/infra/prisma/repositories/UsersRepos
 import ICheckupsRepository from '@modules/users/repositories/ICheckupsRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
+container.registerSingleton<IAppointmentsRepository>('AppointmentsRepository', AppointmentsRepository);
 container.registerSingleton<ICheckupsRepository>('CheckupsRepository', CheckupsRepository);
 container.registerSingleton<IContentsRepository>('ContentsRepository', ContentsRepository);
 container.registerSingleton<IMessagesRepository>('MessagesRepository', MessagesRepository);

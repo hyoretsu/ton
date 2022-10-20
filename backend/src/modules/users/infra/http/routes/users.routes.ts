@@ -12,7 +12,6 @@ const sessionsController = new SessionsController();
 usersRouter.get('/', ensureAuthenticated, usersController.show);
 usersRouter.post(
     '/',
-    ensureAuthenticated,
     celebrate({
         body: {
             birthDate: Joi.date().required(),

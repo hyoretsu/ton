@@ -46,6 +46,13 @@ export default class CreateUserService {
             throw new AppError('Um paciente com este celular já foi cadastrado.');
         }
 
+        if (doctorId) {
+            const existingDoctor = await this.usersRepository.findById(doctorId);
+            if (!existingDoctor) {
+                throw new AppError('Este doutor não foi encontrado.');
+            }
+        }
+
         password = await this.hashProvider.generateHash(password);
 
         const user = await this.usersRepository.create({

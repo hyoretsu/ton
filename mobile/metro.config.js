@@ -1,6 +1,9 @@
 const path = require('path');
 
 module.exports = {
+    resolver: {
+        nodeModulesPaths: ['../node_modules', './node_modules'],
+    },
     transformer: {
         getTransformOptions: async () => ({
             transform: {

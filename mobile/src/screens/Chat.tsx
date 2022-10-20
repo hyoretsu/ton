@@ -77,7 +77,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
             await updateMessages();
             setLoading(false);
 
-            setSocket(io('http://192.168.0.2:3332'));
+            setSocket(io('http://192.168.0.11:3332'));
 
             if (route.params) {
                 sendMessage(route.params.content);

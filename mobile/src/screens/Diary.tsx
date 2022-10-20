@@ -81,8 +81,12 @@ const Diary: React.FC = () => {
         });
     }, [navigate]);
 
-    const handlePlus = (id: string, time: number): void => {
-        // setTimer([id, time]);
+    const handlePlus = (id: string, time: number | null): void => {
+        if (!time) {
+            handlePlusMinus('plus', id).then(() => setTimer(['', 0]));
+            return;
+        }
+
         setTimer([id, time]);
 
         for (let i = 1; i <= time; i++) {
@@ -121,7 +125,7 @@ const Diary: React.FC = () => {
                             )}
                         </ProgressBar>
 
-                        {timer[0] === objective.id && (
+                        {timer[0] === objective.id && objective.time && (
                             <ProgressCircle
                                 progress={timer[1] / objective.time || objective.time}
                                 radius={100}

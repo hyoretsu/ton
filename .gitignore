@@ -8,6 +8,8 @@ build/
 .gradle
 local.properties
 *.iml
+*.hprof
+.cxx/
 
 # BUCK
 buck-out/

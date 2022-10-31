@@ -13,7 +13,7 @@ const BottomBar: React.FC = () => {
     const onChat = route.name === 'Chat';
     const onDiary = route.name === 'Diary';
     const onEducational = route.name === 'Educational';
-    const onProfile = route.name === 'Profile';
+    const onPersonal = route.name.match(/Appointments|EditProfile|Personal/);
     const highlightColor = '#8099ce';
 
     return (
@@ -50,9 +50,9 @@ const BottomBar: React.FC = () => {
                 <ButtonText>Chat</ButtonText>
             </Button>
 
-            <Button onPress={() => navigate('Profile')} isCurrentScreen={onProfile}>
-                <Icon name="user" size={30} color={onProfile ? highlightColor : '#000'} />
-                <ButtonText>Perfil</ButtonText>
+            <Button onPress={() => navigate('Personal')} isCurrentScreen={onPersonal}>
+                <Icon name="user" size={30} color={onPersonal ? highlightColor : '#000'} />
+                <ButtonText>Paciente</ButtonText>
             </Button>
         </Container>
     );

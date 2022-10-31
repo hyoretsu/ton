@@ -6,21 +6,13 @@ import * as Yup from 'yup';
 
 import Button from '@components/Button';
 import Input from '@components/Input';
+import Modal from '@components/Modal';
 import OpacityFilter from '@components/OpacityFilter';
 import { useAuth } from '@contexts/auth';
 
 import api from '@api';
 
-import {
-    Container,
-    ForgotPassword,
-    ForgotPasswordText,
-    Form,
-    FormFields,
-    Modal,
-    ModalText,
-    Title,
-} from '@styles/SignIn';
+import { Container, ForgotPassword, ForgotPasswordText, Form, FormFields, Title } from '@styles/SignIn';
 
 import logoImg from 'assets/logo.png';
 
@@ -63,7 +55,7 @@ const SignIn: React.FC = () => {
     };
 
     return (
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ flex: 1 }}>
             <Container>
                 <Title>e-Odontologia</Title>
 
@@ -121,9 +113,8 @@ const SignIn: React.FC = () => {
 
             {modalVisible && (
                 <OpacityFilter>
-                    <Modal>
-                        <ModalText>{modalMessage}</ModalText>
-                        <Button onPress={() => setModalVisibility(false)}>Entendi</Button>
+                    <Modal buttonText="Entendi" onConfirm={() => setModalVisibility(false)}>
+                        {modalMessage}
                     </Modal>
                 </OpacityFilter>
             )}

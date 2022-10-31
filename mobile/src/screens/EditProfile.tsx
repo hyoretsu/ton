@@ -4,15 +4,16 @@ import { TextInput } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 
 import BottomBar from '@components/BottomBar';
+import Button from '@components/Button';
 import Input from '@components/Input';
+import Modal from '@components/Modal';
 import OpacityFilter from '@components/OpacityFilter';
 import { useAuth } from '@contexts/auth';
 
 import api from '@api';
 
-import { Container, Form, FormFields, Modal, ModalText, Title } from '@styles/Profile';
-
-import Button from '../ui/components/Button';
+import { Container, Form, FormFields } from '@styles/EditProfile';
+import { Title } from '@styles/Personal';
 
 interface FormTypes {
     city: string;
@@ -21,7 +22,7 @@ interface FormTypes {
     phoneNumber: string;
 }
 
-const Profile: React.FC = () => {
+const EditProfile: React.FC = () => {
     const { updateUser, user } = useAuth();
 
     const cityRef = useRef<TextInput>(null);
@@ -124,14 +125,11 @@ const Profile: React.FC = () => {
 
             {modalVisible && (
                 <OpacityFilter>
-                    <Modal>
-                        <ModalText>Informações editadas com sucesso.</ModalText>
-                        <Button onPress={() => setModalVisibility(false)}>Entendi</Button>
-                    </Modal>
+                    <Modal onConfirm={() => setModalVisibility(false)}>Informações editadas com sucesso.</Modal>
                 </OpacityFilter>
             )}
         </>
     );
 };
 
-export default Profile;
+export default EditProfile;

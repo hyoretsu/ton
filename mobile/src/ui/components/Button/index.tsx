@@ -1,8 +1,11 @@
-import { RectButtonProperties } from 'react-native-gesture-handler';
-
-import { Container, ButtonText } from './styles';
+import { Text, View } from 'react-native';
+import { RectButton, RectButtonProperties } from 'react-native-gesture-handler';
 
 interface ButtonProps extends RectButtonProperties {
+    background?: string;
+    border?: string;
+    color?: string;
+    fontSize?: number;
     fill?: boolean;
     padding?: [number, number];
     paddingHorizontal?: number;
@@ -10,7 +13,11 @@ interface ButtonProps extends RectButtonProperties {
 }
 
 const Button: React.FC<ButtonProps> = ({
+    background = '#3d6',
+    border,
+    color = '#fff',
     fill = false,
+    fontSize = 16,
     padding = [12, 24],
     paddingHorizontal,
     paddingVertical,
@@ -18,26 +25,32 @@ const Button: React.FC<ButtonProps> = ({
     style,
     ...rest
 }) => {
+    const borderWidth = border ? 4 : 0;
+
     return (
-        <Container
-            style={[
-                {
-                    paddingBottom: paddingVertical || padding[0],
-                    paddingLeft: paddingHorizontal || padding[1],
-                    paddingRight: paddingHorizontal || padding[1],
-                    paddingTop: paddingVertical || padding[0],
-                },
-                fill && {
-                    paddingBottom: 16,
-                    paddingTop: 16,
-                    width: '100%',
-                },
-                style,
-            ]}
-            {...rest}
-        >
-            <ButtonText>{children}</ButtonText>
-        </Container>
+        <View style={[{ borderColor: border, borderRadius: 10 * 1.2, borderWidth }, style]}>
+            <RectButton
+                style={[
+                    {
+                        alignItems: 'center',
+                        backgroundColor: background,
+                        borderRadius: 10,
+                        paddingBottom: (paddingVertical || padding[0]) - borderWidth,
+                        paddingLeft: (paddingHorizontal || padding[1]) - borderWidth,
+                        paddingRight: (paddingHorizontal || padding[1]) - borderWidth,
+                        paddingTop: (paddingVertical || padding[0]) - borderWidth,
+                    },
+                    fill && {
+                        paddingBottom: 16,
+                        paddingTop: 16,
+                        width: '100%',
+                    },
+                ]}
+                {...rest}
+            >
+                <Text style={{ color, fontSize }}>{children}</Text>
+            </RectButton>
+        </View>
     );
 };
 

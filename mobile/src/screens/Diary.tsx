@@ -61,7 +61,8 @@ const Diary: React.FC = () => {
                     return {
                         ...obj,
                         [entry.objectiveId]:
-                            !entry.objective.isDaily || differenceInCalendarDays(entry.createdAt, new Date()) === 0
+                            !entry.objective.isDaily ||
+                            differenceInCalendarDays(new Date(entry.createdAt), new Date()) === 0
                                 ? entry.progress
                                 : 0,
                     };

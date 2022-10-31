@@ -3453,7 +3453,7 @@ packages:
       babel-plugin-syntax-jsx: 6.18.0
       lodash: 4.17.21
       picomatch: 2.3.1
-      styled-components: 5.3.6_7i5myeigehqah43i5u7wbekgba
+      styled-components: 5.3.6_uuaz5p7xzfmtjacf6iqf7idnby
     dev: false
 
   /babel-plugin-syntax-jsx/6.18.0:

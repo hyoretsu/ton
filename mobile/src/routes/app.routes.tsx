@@ -30,7 +30,7 @@ const App = createStackNavigator<RootStackParamList>();
 const AppRoutes: React.FC = () => {
     return (
         <App.Navigator
-            initialRouteName="Diary"
+            initialRouteName="Appointments"
             screenOptions={{ cardStyle: { backgroundColor: '#c4d3f2' }, headerShown: false }}
         >
             <App.Screen name="Appointments" component={Appointments} />

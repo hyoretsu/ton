@@ -22,6 +22,7 @@ export default class CreateAppointmentService {
             throw new AppError('Você não pode marcar uma consulta com você mesmo.');
         }
 
+        time.setMinutes(time.getMinutes(), 0, 0);
         const existingAppointment = await this.appointmentsRepository.findByTime(time);
         if (existingAppointment) {
             throw new AppError('Já existe um agendamento neste horário.');

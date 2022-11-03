@@ -100,25 +100,27 @@ model Progress {
 }
 
 model User {
-    id               String        @id @default(uuid())
-    name             String
-    parentName       String?
-    email            String
-    password         String
-    phoneNumber      String
-    birthDate        DateTime
-    city             String
-    checkups         Checkup[]
-    neoplasia        String?
-    doctorId         String?
-    doctor           User?         @relation("UsersToUsers", fields: [doctorId], references: [id])
-    chartNumber      String?
-    patients         User[]        @relation("UsersToUsers")
-    appointments     Appointment[] @relation("Appointment_doctorIdToUsers")
-    appointmentsMade Appointment[] @relation("Appointment_patientIdToUsers")
-    progresses       Progress[]
-    sentMessages     Message[]     @relation("Messages_senderIdToUsers")
-    receivedMessages Message[]     @relation("Messages_recipientIdToUsers")
-    createdAt        DateTime      @default(now())
-    updatedAt        DateTime      @updatedAt
+    id                String        @id @default(uuid())
+    name              String
+    parentName        String?
+    email             String
+    password          String
+    phoneNumber       String
+    birthDate         DateTime
+    city              String
+    checkups          Checkup[]
+    neoplasia         String?
+    doctorId          String?
+    doctor            User?         @relation("UsersToUsers", fields: [doctorId], references: [id])
+    chartNumber       String?
+    patients          User[]        @relation("UsersToUsers")
+    appointmentsStart Float?
+    appointmentsEnd   Float?
+    appointments      Appointment[] @relation("Appointment_doctorIdToUsers")
+    appointmentsMade  Appointment[] @relation("Appointment_patientIdToUsers")
+    progresses        Progress[]
+    sentMessages      Message[]     @relation("Messages_senderIdToUsers")
+    receivedMessages  Message[]     @relation("Messages_recipientIdToUsers")
+    createdAt         DateTime      @default(now())
+    updatedAt         DateTime      @updatedAt
 }

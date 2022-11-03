@@ -1,6 +1,6 @@
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
-import { format } from 'date-fns';
+import { differenceInCalendarDays, format, parseISO } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
@@ -26,16 +26,22 @@ const Appointments: React.FC = () => {
     const [datePickerVisible, showDatePicker] = useState(false);
 
     useEffect(() => {
-        setTimes([]);
+        const execute = async (): Promise<void> => {
+            setTimes([]);
 
-        if (Math.sign(differenceInCalendarDays(date, new Date())) <= 0) return;
+            if (Math.sign(differenceInCalendarDays(date, new Date())) <= 0) return;
 
-        for (let hours = 8; hours < 14; hours += 0.5) {
-            const newTime = new Date(date);
-            newTime.setHours(Math.floor(hours), (hours * 60) % 60);
-            setTimes(old => [...old, newTime]);
-        }
-    }, [date]);
+            const { data: appointmentsTime } = await api.post('/appointments/times/find', { doctorId: user.doctorId });
+
+            for (let hours = appointmentsTime[0]; hours < appointmentsTime[1]; hours += 0.5) {
+                const newTime = new Date(date);
+                newTime.setHours(Math.floor(hours), (hours * 60) % 60);
+                setTimes(old => [...old, newTime]);
+            }
+        };
+
+        execute();
+    }, [date, user.doctorId]);
 
     const datePickerOnChange = (event: DateTimePickerEvent, selectedDate: Date | undefined): void => {
         showDatePicker(false);
@@ -69,7 +75,7 @@ const Appointments: React.FC = () => {
                             onPress={() => selectTime(time)}
                             style={{ marginBottom: 8, marginRight: 8 }}
                         >
-                            {format(time, 'HH:mm')}
+                            {format(parseISO(time), 'HH:mm')}
                         </AppointmentButton>
                     ))}
                 </AppointmentTimes>

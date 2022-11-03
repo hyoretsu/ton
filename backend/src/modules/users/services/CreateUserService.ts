@@ -19,6 +19,8 @@ export default class CreateUserService {
     ) {}
 
     public async execute({
+        appointmentsEnd,
+        appointmentsStart,
         birthDate,
         chartNumber,
         doctorId,
@@ -29,6 +31,21 @@ export default class CreateUserService {
         phoneNumber,
         ...rest
     }: ICreateUserDTO): Promise<User> {
+        if (!!appointmentsEnd !== !!appointmentsStart) {
+            throw new AppError('Envie o horário de início e término das consultas.');
+        }
+
+        // They must be valid hours
+        if (
+            appointmentsStart &&
+            appointmentsEnd &&
+            (appointmentsEnd <= appointmentsStart ||
+                Math.min(appointmentsStart, appointmentsEnd) < 0 ||
+                Math.max(appointmentsStart, appointmentsEnd) >= 23.5)
+        ) {
+            throw new AppError('Horário de consultas inválido.');
+        }
+
         if (!isBefore(birthDate, new Date())) {
             throw new AppError('Impossível ter nascido hoje ou no futuro.');
         }
@@ -56,6 +73,8 @@ export default class CreateUserService {
         password = await this.hashProvider.generateHash(password);
 
         const user = await this.usersRepository.create({
+            appointmentsEnd,
+            appointmentsStart,
             birthDate,
             chartNumber,
             doctorId,

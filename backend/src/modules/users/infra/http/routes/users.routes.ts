@@ -35,6 +35,8 @@ usersRouter.patch(
     ensureAuthenticated,
     celebrate({
         body: {
+            appointmentsStart: Joi.number().min(0).max(23.5),
+            appointmentsEnd: Joi.number().min(0).max(23.5),
             city: Joi.string(),
             email: Joi.string(),
             password: Joi.string(),

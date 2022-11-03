@@ -9,4 +9,6 @@ export default interface ICreateUserDTO {
     neoplasia?: string;
     doctorId?: string;
     chartNumber?: string;
+    appointmentsStart?: number;
+    appointmentsEnd?: number;
 }

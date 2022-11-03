@@ -7,6 +7,8 @@ import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
+    appointmentsStart?: number;
+    appointmentsEnd?: number;
     city?: string;
     email?: string;
     password?: string;
@@ -24,10 +26,17 @@ export default class UpdateUserService {
         private hashProvider: IHashProvider,
     ) {}
 
-    public async execute({ userId, password, ...data }: IRequest): Promise<User> {
+    public async execute({ appointmentsStart, appointmentsEnd, userId, password, ...data }: IRequest): Promise<User> {
         const existingUser = await this.usersRepository.findById(userId);
         if (!existingUser) {
             throw new AppError('Este usuário não existe.');
+        }
+
+        if (
+            (appointmentsEnd || (existingUser.appointmentsEnd as number)) <=
+            (appointmentsStart || (existingUser.appointmentsStart as number))
+        ) {
+            throw new AppError('Horário de consultas inválido.');
         }
 
         if (password) password = await this.hashProvider.generateHash(password);

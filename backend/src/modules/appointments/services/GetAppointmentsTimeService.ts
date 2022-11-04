@@ -28,9 +28,16 @@ export default class GetAppointmentTimeService {
         if (differenceInCalendarDays(date, new Date()) > 0) {
             date.setHours(0, 0, 0, 0);
 
+            const existingAppointments = await this.appointmentsRepository.findByDate(date);
+            const existingAppointmentsTimes = existingAppointments.map(appointment => appointment.time);
+
             for (let hours = user.appointmentsStart as number; hours < (user.appointmentsEnd as number); hours += 0.5) {
                 const newTime = new Date(date);
                 newTime.setHours(Math.floor(hours), (hours * 60) % 60);
+
+                if (existingAppointmentsTimes.find(time => differenceInMinutes(time, newTime) === 0)) {
+                    continue;
+                }
 
                 times.push(newTime);
             }

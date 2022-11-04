@@ -1,4 +1,5 @@
 import { Appointment } from '@prisma/client';
+import { format } from 'date-fns';
 
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
@@ -18,6 +19,19 @@ export default class AppointmentsRepository implements IAppointmentsRepository {
     public async findAll(id: string): Promise<Appointment[]> {
         const appointments = await prisma.appointment.findMany({
             where: { OR: [{ doctorId: id }, { patientId: id }] },
+        });
+
+        return appointments;
+    }
+
+    public async findByDate(date: Date): Promise<Appointment[]> {
+        const appointments = await prisma.appointment.findMany({
+            where: {
+                time: {
+                    gte: date,
+                    lt: new Date(date.getTime() + 24 * 60 * 60 * 1000),
+                },
+            },
         });
 
         return appointments;

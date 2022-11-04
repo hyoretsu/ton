@@ -1,6 +1,6 @@
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
-import { differenceInCalendarDays, format, parseISO } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
@@ -29,15 +29,8 @@ const Appointments: React.FC = () => {
         const execute = async (): Promise<void> => {
             setTimes([]);
 
-            if (Math.sign(differenceInCalendarDays(date, new Date())) <= 0) return;
-
-            const { data: appointmentsTime } = await api.post('/appointments/times/find', { doctorId: user.doctorId });
-
-            for (let hours = appointmentsTime[0]; hours < appointmentsTime[1]; hours += 0.5) {
-                const newTime = new Date(date);
-                newTime.setHours(Math.floor(hours), (hours * 60) % 60);
-                setTimes(old => [...old, newTime]);
-            }
+            const { data } = await api.post('/appointments/times/find', { date, doctorId: user.doctorId });
+            setTimes(data);
         };
 
         execute();

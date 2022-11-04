@@ -38,6 +38,7 @@ appointmentsRouter.post(
     ensureAuthenticated,
     celebrate({
         body: {
+            date: Joi.date().required(),
             doctorId: Joi.string().uuid().required(),
         },
     }),

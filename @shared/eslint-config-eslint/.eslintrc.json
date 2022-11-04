@@ -42,6 +42,7 @@
             "always",
             { "exceptAfterSingleLine": true }
         ],
+        "no-continue": "off",
         "no-param-reassign": "off",
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "no-unused-expressions": ["off", { "allowShortCircuit": true }],

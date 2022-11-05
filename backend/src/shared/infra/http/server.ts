@@ -26,7 +26,7 @@ export const io = new Server(httpServer, {
 
 export const prisma = new PrismaClient();
 
-app.use(cors({ origin: process.env.APP_API_URL }));
+app.use(cors({ origin: process.env.APP_WEB_URL }));
 app.use(express.json());
 app.use('/files', express.static(uploadConfig.uploadsFolder));
 app.use(routes);

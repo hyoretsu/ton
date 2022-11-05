@@ -1,5 +1,13 @@
 {
     "extends": ["airbnb", "@shared/eslint"],
+    "rules": {
+        "jsx-a11y/label-has-associated-control": [
+            "error",
+            {
+                "controlComponents": ["Field"]
+            }
+        ]
+    },
     "overrides": [
         {
             "files": ["**/*.ts", "**/*.tsx"],

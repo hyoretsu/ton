@@ -2,6 +2,9 @@ const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
 
 module.exports = phase => {
     const baseConf = {
+        compiler: {
+            styledComponents: true,
+        },
         eslint: {
             ignoreDuringBuilds: true,
         },
@@ -10,7 +13,6 @@ module.exports = phase => {
         },
         productionBrowserSourceMaps: true,
         reactStrictMode: true,
-        styledComponents: true,
         swcMinify: true,
         typescript: {
             ignoreBuildErrors: true,

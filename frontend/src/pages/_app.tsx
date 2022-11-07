@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { AuthProvider } from 'data/contexts/auth';
 import { DefaultSeo } from 'next-seo';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
@@ -15,7 +16,7 @@ const MyApp = ({ Component, pageProps }: AppProps): ReactElement => {
     const { pathname } = useRouter();
 
     return (
-        <>
+        <AuthProvider>
             <DefaultSeo
                 defaultTitle={site_name}
                 facebook={{ appId: String(process.env.NEXT_PUBLIC_FACEBOOK_APP_ID) }}
@@ -39,7 +40,7 @@ const MyApp = ({ Component, pageProps }: AppProps): ReactElement => {
                 }}
             />
             <Component {...pageProps} />
-        </>
+        </AuthProvider>
     );
 };
 

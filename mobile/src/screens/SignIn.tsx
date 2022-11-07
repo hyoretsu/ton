@@ -41,14 +41,17 @@ const SignIn: React.FC = () => {
         }
     };
 
-    const forgotPassword = (emailError: string | undefined): void => {
-        if (emailError === 'email is a required field') {
-            setModalMessage('Por favor, escreva um e-mail.');
-        } else if (emailError === 'email must be a valid email') {
+    const forgotPassword = (emailValue: string, emailError: string | undefined): void => {
+        if (!emailValue) {
+            return;
+        }
+
+        if (emailError === 'email must be a valid email') {
             setModalMessage('Por favor, corrija seu e-mail.');
         } else {
-            setModalMessage('Uma senha temporária foi enviada para o seu email.');
             // Todo: send temporary password to email
+
+            setModalMessage('Uma senha temporária foi enviada para o seu email.');
         }
 
         setModalVisibility(true);
@@ -69,7 +72,7 @@ const SignIn: React.FC = () => {
                         password: Yup.string().required(),
                     })}
                 >
-                    {({ errors, handleChange, handleSubmit, validateField }) => (
+                    {({ errors, handleChange, handleSubmit, values }) => (
                         <Form>
                             <FormFields>
                                 <Input
@@ -94,8 +97,7 @@ const SignIn: React.FC = () => {
 
                                 <ForgotPassword
                                     onPress={() => {
-                                        validateField('email');
-                                        forgotPassword(errors.email);
+                                        forgotPassword(values.email, errors.email);
                                     }}
                                     activeOpacity={0.7}
                                 >

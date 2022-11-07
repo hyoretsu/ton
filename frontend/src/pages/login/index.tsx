@@ -1,3 +1,4 @@
+import { useAuth } from 'data/contexts/auth';
 import { Field, Formik } from 'formik';
 import { NextSeo } from 'next-seo';
 
@@ -11,11 +12,14 @@ interface FormFields {
 }
 
 const Login: React.FC = () => {
-    const login = async (fields: FormFields): Promise<void> => {
-        const { data } = await api.post('/users/login', fields);
+    const { finishLogin } = useAuth();
 
-        localStorage.setItem('@eOdontologia:user', JSON.stringify(data.user));
-        localStorage.setItem('@eOdontologia:token', data.token);
+    const login = async (fields: FormFields): Promise<void> => {
+        const {
+            data: { token, user },
+        } = await api.post('/users/login', fields);
+
+        finishLogin({ token, user });
     };
 
     return (

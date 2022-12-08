@@ -60,7 +60,7 @@ const SignIn: React.FC = () => {
     return (
         <ScrollView contentContainerStyle={{ flex: 1 }}>
             <Container>
-                <Title>e-Odontologia</Title>
+                <Title>TON</Title>
 
                 <Image source={logoImg} style={{ width: 200, height: 200 }} />
 

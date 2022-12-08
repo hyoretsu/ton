@@ -40,18 +40,18 @@ const Diary: React.FC = () => {
     };
 
     useEffect(() => {
-        AsyncStorage.getItem('@eOdontologia:objectives').then(storedObjectives => {
+        AsyncStorage.getItem('@ton:objectives').then(storedObjectives => {
             if (storedObjectives) {
                 setObjectives(JSON.parse(storedObjectives));
             }
 
             api.get('/objectives').then(({ data }) => {
                 setObjectives(data);
-                AsyncStorage.setItem('@eOdontologia:objectives', JSON.stringify(data));
+                AsyncStorage.setItem('@ton:objectives', JSON.stringify(data));
             });
         });
 
-        AsyncStorage.getItem('@eOdontologia:progress').then(storedProgress => {
+        AsyncStorage.getItem('@ton:progress').then(storedProgress => {
             if (storedProgress) {
                 setProgress(JSON.parse(storedProgress));
             }
@@ -72,7 +72,7 @@ const Diary: React.FC = () => {
                     ...old,
                     ...parsedProgress,
                 }));
-                AsyncStorage.setItem('@eOdontologia:progress', JSON.stringify(parsedProgress));
+                AsyncStorage.setItem('@ton:progress', JSON.stringify(parsedProgress));
             });
         });
     }, []);

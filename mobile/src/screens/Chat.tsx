@@ -49,7 +49,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
         const { data } = await api.get('/messages');
 
         setMessages(data);
-        AsyncStorage.setItem('@eOdontologia:messages', JSON.stringify(data));
+        AsyncStorage.setItem('@ton:messages', JSON.stringify(data));
     }, []);
 
     const sendMessage = useCallback(
@@ -69,7 +69,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     // Init
     useEffect(() => {
         const execute = async (): Promise<void> => {
-            const storedMessages = await AsyncStorage.getItem('@eOdontologia:messages');
+            const storedMessages = await AsyncStorage.getItem('@ton:messages');
             if (storedMessages) {
                 setMessages(JSON.parse(storedMessages));
             }

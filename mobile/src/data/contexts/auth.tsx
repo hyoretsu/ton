@@ -24,7 +24,7 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        AsyncStorage.multiGet(['@eOdontologia:token', '@eOdontologia:user']).then(([[, token], [, user]]) => {
+        AsyncStorage.multiGet(['@ton:token', '@ton:user']).then(([[, token], [, user]]) => {
             if (token && user) {
                 api.defaults.headers.common.Authorization = `Bearer ${token}`;
 
@@ -37,8 +37,8 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     const finishLogin = useCallback(async ({ token, user }: AuthInfo) => {
         await AsyncStorage.multiSet([
-            ['@eOdontologia:token', token],
-            ['@eOdontologia:user', JSON.stringify(user)],
+            ['@ton:token', token],
+            ['@ton:user', JSON.stringify(user)],
         ]);
 
         api.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -47,13 +47,13 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }, []);
 
     const signOut = useCallback(async () => {
-        await AsyncStorage.multiRemove(['@eOdontologia:token', '@eOdontologia:user']);
+        await AsyncStorage.multiRemove(['@ton:token', '@ton:user']);
 
         setData({} as User);
     }, []);
 
     const updateUser = useCallback(async (user: User) => {
-        await AsyncStorage.setItem('@eOdontologia:user', JSON.stringify(user));
+        await AsyncStorage.setItem('@ton:user', JSON.stringify(user));
 
         setData(user);
     }, []);

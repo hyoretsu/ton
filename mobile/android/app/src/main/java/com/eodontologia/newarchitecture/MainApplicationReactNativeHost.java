@@ -1,4 +1,4 @@
-package com.eodontologia.newarchitecture;
+package com.hyoretsu.ton.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.eodontologia.BuildConfig;
-import com.eodontologia.newarchitecture.components.MainComponentsRegistry;
-import com.eodontologia.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.hyoretsu.ton.BuildConfig;
+import com.hyoretsu.ton.newarchitecture.components.MainComponentsRegistry;
+import com.hyoretsu.ton.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

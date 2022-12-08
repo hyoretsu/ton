@@ -21,8 +21,8 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [data, setData] = useState<User>({} as User);
 
     useEffect(() => {
-        const token = localStorage.getItem('@eOdontologia:token');
-        const user = localStorage.getItem('@eOdontologia:user');
+        const token = localStorage.getItem('@ton:token');
+        const user = localStorage.getItem('@ton:user');
 
         if (token && user) {
             api.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -32,8 +32,8 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }, []);
 
     const finishLogin = useCallback(({ token, user }: AuthInfo) => {
-        localStorage.setItem('@eOdontologia:token', token);
-        localStorage.setItem('@eOdontologia:user', JSON.stringify(user));
+        localStorage.setItem('@ton:token', token);
+        localStorage.setItem('@ton:user', JSON.stringify(user));
 
         api.defaults.headers.common.Authorization = `Bearer ${token}`;
 
@@ -41,14 +41,14 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }, []);
 
     const signOut = useCallback(() => {
-        localStorage.removeItem('@eOdontologia:token');
-        localStorage.removeItem('@eOdontologia:user');
+        localStorage.removeItem('@ton:token');
+        localStorage.removeItem('@ton:user');
 
         setData({} as User);
     }, []);
 
     const updateUser = useCallback((user: User) => {
-        localStorage.setItem('@eOdontologia:user', JSON.stringify(user));
+        localStorage.setItem('@ton:user', JSON.stringify(user));
 
         setData(user);
     }, []);

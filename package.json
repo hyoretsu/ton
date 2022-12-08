@@ -1,5 +1,5 @@
 {
-    "name": "e-odontologia",
+    "name": "ton",
     "private": true,
     "workspaces": [
         "@shared/*",

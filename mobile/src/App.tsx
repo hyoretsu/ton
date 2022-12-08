@@ -32,7 +32,7 @@ const App: React.FC = () => {
                 stopOnTerminate: false,
             },
             async taskId => {
-                const storedContents = (await AsyncStorage.getItem('@eOdontologia:contents')) as string;
+                const storedContents = (await AsyncStorage.getItem('@ton:contents')) as string;
                 const { data: contents } = await api.get('/contents');
 
                 const channelId = await notifee.createChannel({
@@ -54,7 +54,7 @@ const App: React.FC = () => {
                         },
                     });
 
-                    await AsyncStorage.setItem('@eOdontologia:contents', JSON.stringify(contents));
+                    await AsyncStorage.setItem('@ton:contents', JSON.stringify(contents));
                 }
 
                 BackgroundFetch.finish(taskId);

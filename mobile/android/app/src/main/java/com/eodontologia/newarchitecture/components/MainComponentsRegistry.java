@@ -1,4 +1,4 @@
-package com.eodontologia.newarchitecture.components;
+package com.hyoretsu.ton.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

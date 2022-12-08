@@ -14,9 +14,9 @@ export const StorageProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [checkupProgress, setCheckupProgress] = useState({});
 
     useEffect(() => {
-        AsyncStorage.getItem('@eOdontologia:checkupProgress').then(storedProgress => {
+        AsyncStorage.getItem('@ton:checkupProgress').then(storedProgress => {
             if (!storedProgress) {
-                AsyncStorage.setItem('@eOdontologia:checkupProgress', JSON.stringify({}));
+                AsyncStorage.setItem('@ton:checkupProgress', JSON.stringify({}));
 
                 return;
             }
@@ -28,7 +28,7 @@ export const StorageProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const storeValue = useCallback(async (key: Keys, value: any) => {
         switch (key) {
             case 'checkupProgress':
-                await AsyncStorage.setItem(`@eOdontologia:${key}`, JSON.stringify(value));
+                await AsyncStorage.setItem(`@ton:${key}`, JSON.stringify(value));
                 setCheckupProgress(value);
                 break;
         }

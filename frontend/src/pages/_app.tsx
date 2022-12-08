@@ -10,7 +10,7 @@ import { siteName as site_name } from './_document';
 import '@public/global.css';
 import '@public/fonts.css';
 
-const url = 'https://e-odontologia.vercel.app';
+const url = 'https://ton.vercel.app';
 
 const MyApp = ({ Component, pageProps }: AppProps): ReactElement => {
     const { pathname } = useRouter();

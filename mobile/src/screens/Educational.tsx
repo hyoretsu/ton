@@ -20,7 +20,7 @@ const Educational: React.FC = () => {
 
     useEffect(() => {
         const execute = async (): Promise<void> => {
-            const storedContent = await AsyncStorage.getItem('@eOdontologia:contents');
+            const storedContent = await AsyncStorage.getItem('@ton:contents');
             if (storedContent) {
                 setContents(JSON.parse(storedContent));
             }
@@ -28,7 +28,7 @@ const Educational: React.FC = () => {
             const { data } = await api.get('/contents');
 
             setContents(data);
-            await AsyncStorage.setItem('@eOdontologia:contents', JSON.stringify(data));
+            await AsyncStorage.setItem('@ton:contents', JSON.stringify(data));
         };
 
         execute();

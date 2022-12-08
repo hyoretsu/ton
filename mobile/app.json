@@ -1,6 +1,6 @@
 {
-    "name": "eOdontologia",
-    "displayName": "e-Odontologia",
+    "name": "Telemonitoramento Odontológico em Odontologia",
+    "displayName": "TON",
     "android": {
         "enableDangerousExperimentalLeanBuilds": true
     }

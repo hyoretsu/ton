@@ -4,7 +4,7 @@ import { ReactElement } from 'react';
 // Generate favicons here https://realfavicongenerator.net/
 // Great variable fonts database https://fonts.google.com/?vfonly=true
 const siteColor = `#c4d3f2`;
-export const siteName = 'eOdontologia';
+export const siteName = 'TON';
 
 class MyDocument extends Document {
     render(): ReactElement {

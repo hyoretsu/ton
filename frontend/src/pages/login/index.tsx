@@ -1,6 +1,7 @@
 import { useAuth } from 'data/contexts/auth';
 import { Field, Formik } from 'formik';
 import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
 
 import api from '@api';
 
@@ -13,13 +14,17 @@ interface FormFields {
 
 const Login: React.FC = () => {
     const { finishLogin } = useAuth();
+    const { push } = useRouter();
 
+    // Todo: add error handling
     const login = async (fields: FormFields): Promise<void> => {
         const {
             data: { token, user },
         } = await api.post('/users/login', fields);
 
         finishLogin({ token, user });
+
+        push('/admin/dashboard');
     };
 
     return (

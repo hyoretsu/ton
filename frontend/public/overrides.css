@@ -1,0 +1,10 @@
+/* React Date Picker */
+.react-datepicker-popper > div {
+    transform: translateX(-18%);
+}
+.react-datepicker__input-container {
+    position: initial !important;
+}
+.react-datepicker__triangle {
+    transform: translate3d(123px, 0, 0) !important;
+}

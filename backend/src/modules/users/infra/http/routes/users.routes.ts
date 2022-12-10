@@ -14,14 +14,16 @@ usersRouter.post(
     '/',
     celebrate({
         body: {
+            appointmentsStart: Joi.number().min(0).max(23.5),
+            appointmentsEnd: Joi.number().min(0).max(23.5),
             birthDate: Joi.date().required(),
-            chartNumber: Joi.string().required(),
+            chartNumber: Joi.string(),
             city: Joi.string().required(),
             doctorId: Joi.string().uuid(),
             email: Joi.string().email().required(),
             name: Joi.string().required(),
-            neoplasia: Joi.string().required(),
-            parentName: Joi.string().required(),
+            neoplasia: Joi.string(),
+            parentName: Joi.string(),
             password: Joi.string().required(),
             phoneNumber: Joi.string()
                 .required()

@@ -1,22 +1,15 @@
+import Link from '@hyoretsu/components.next-link';
 import { formatPhoneNumber } from '@hyoretsu/shared.utils';
 import { User } from 'backend';
 import { differenceInYears } from 'date-fns';
 import { NextSeo } from 'next-seo';
 import { useEffect, useState } from 'react';
-import { BsChatLeftTextFill } from 'react-icons/bs';
+import { BsChatLeftTextFill, BsPlusSquareFill } from 'react-icons/bs';
 import { FiTarget } from 'react-icons/fi';
 
 import api from '@api';
 
-import {
-    Patient,
-    PatientButton,
-    PatientButtons,
-    PatientInfo,
-    Patients,
-    PatientTextGray,
-    Styling,
-} from '@styles/admin/dashboard';
+import { Patient, PatientButtons, PatientInfo, Patients, PatientTextGray, Styling } from '@styles/admin/dashboard';
 
 const Dashboard: React.FC = () => {
     const [patients, setPatients] = useState<User[]>([]);
@@ -55,16 +48,21 @@ const Dashboard: React.FC = () => {
                                     </span>
                                 </PatientInfo>
                                 <PatientButtons>
-                                    <PatientButton type="button">
+                                    <button type="button">
                                         <FiTarget color="#555" size={20} />
-                                    </PatientButton>
-                                    <PatientButton type="button">
+                                    </button>
+                                    <button type="button">
                                         <BsChatLeftTextFill color="#555" size={20} />
-                                    </PatientButton>
+                                    </button>
                                 </PatientButtons>
                             </Patient>
                         );
                     })}
+                    <Link href="/admin/patients/register">
+                        <Patient id="addUser" style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <BsPlusSquareFill color="#555" size={120} />
+                        </Patient>
+                    </Link>
                 </Patients>
             </Styling>
         </>

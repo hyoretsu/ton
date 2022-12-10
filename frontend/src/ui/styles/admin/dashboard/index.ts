@@ -20,6 +20,10 @@ export const Patient = styled.div`
 
     border: 1px solid #000;
     border-radius: 1vw;
+
+    svg:hover {
+        opacity: 0.7;
+    }
 `;
 
 export const PatientInfo = styled.div`
@@ -36,12 +40,6 @@ export const PatientButtons = styled.div`
     justify-content: space-around;
 
     margin-left: auto;
-`;
-
-export const PatientButton = styled.button`
-    svg:hover {
-        opacity: 0.7;
-    }
 `;
 
 export const PatientTextGray = styled.span`

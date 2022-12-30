@@ -1,8 +1,9 @@
+import { vh } from '@units/viewport';
 import { ReactNode } from 'react';
 
 import Button from '@components/Button';
 
-import { Container, ModalText } from './styles';
+import { Container } from './styles';
 
 interface ModalProps {
     buttonText?: string;
@@ -13,9 +14,11 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ buttonText = 'Entendi', children, onConfirm }) => {
     return (
         <Container>
-            <ModalText>{children}</ModalText>
+            {children}
 
-            <Button onPress={onConfirm}>{buttonText}</Button>
+            <Button onPress={onConfirm} style={{ marginTop: 1 * vh }}>
+                {buttonText}
+            </Button>
         </Container>
     );
 };

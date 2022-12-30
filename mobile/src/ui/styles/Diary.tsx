@@ -1,7 +1,7 @@
 import { ViewProps } from 'react-native';
 import { RectButton, RectButtonProps, ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
-import styled from 'styled-components/native';
+import styled from 'rn-css';
 
 interface ProgressProps extends ViewProps {
     progress: number;

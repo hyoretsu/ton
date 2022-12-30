@@ -6,6 +6,7 @@ import { LogBox } from 'react-native';
 import { StatusBar } from 'react-native';
 import BackgroundFetch from 'react-native-background-fetch';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ThemeProvider } from 'rn-css';
 
 import { AuthProvider } from '@contexts/auth';
 import { StorageProvider } from '@contexts/storage';
@@ -13,6 +14,7 @@ import { StorageProvider } from '@contexts/storage';
 import api from '@api';
 
 import Routes from './routes';
+import mainTheme from './ui/theme/main';
 
 const App: React.FC = () => {
     LogBox.ignoreLogs([
@@ -65,11 +67,13 @@ const App: React.FC = () => {
 
     return (
         <NavigationContainer>
-            <StatusBar barStyle="dark-content" backgroundColor="#c4d3f2" />
-            <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#c4d3f2' }}>
+            <StatusBar barStyle="dark-content" backgroundColor={mainTheme.colors.background} />
+            <GestureHandlerRootView style={{ flex: 1, backgroundColor: mainTheme.colors.background }}>
                 <StorageProvider>
                     <AuthProvider>
-                        <Routes />
+                        <ThemeProvider theme={mainTheme}>
+                            <Routes />
+                        </ThemeProvider>
                     </AuthProvider>
                 </StorageProvider>
             </GestureHandlerRootView>

@@ -1,35 +1,32 @@
 import { TextInput } from 'react-native';
-import styled from 'styled-components/native';
+import styled from 'rn-css';
 
-export const Container = styled.View`
+interface ContainerProps {
+    isErrored: boolean;
+}
+
+export const Container = styled.View<ContainerProps>`
     flex-direction: row;
     align-items: center;
 
     position: relative;
 
     width: 100%;
-    height: 64px;
-    background: #8ca9d8;
+    height: 6vh;
 
-    border-radius: 10px;
-    margin-bottom: 12px;
-`;
-
-export const ErrorOutline = styled.View`
-    position: absolute;
-
-    width: 100%;
-    height: 100%;
-
-    border: #f00 2px;
-    border-radius: 10px;
+    border: 2px ${({ isErrored, theme }) => (isErrored ? '#f00' : theme.colors.purple)};
+    border-radius: 50vw;
+    padding: 1vh 5vw;
+    margin-bottom: 2vh;
 `;
 
 export const CustomInput = styled(TextInput)`
     flex: 1;
 
-    color: #000;
+    color: ${({ theme }) => theme.colors.purple};
     font-size: 16px;
 
-    margin-right: 16px;
+    border-left: 1px solid ${({ theme }) => theme.colors.purple};
+    padding: -1vh 0;
+    padding-left: 16px;
 `;

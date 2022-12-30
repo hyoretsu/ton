@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled from 'rn-css';
 
 interface CircleProps {
     color: string;

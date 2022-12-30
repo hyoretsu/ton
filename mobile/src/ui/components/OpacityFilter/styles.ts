@@ -1,5 +1,5 @@
 import { ViewProps } from 'react-native';
-import styled from 'styled-components/native';
+import styled from 'rn-css';
 
 export interface FilterProps extends ViewProps {
     /** Value between 0 and 1. */

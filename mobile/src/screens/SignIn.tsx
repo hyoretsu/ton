@@ -1,6 +1,6 @@
+import { vh, vw } from '@units/viewport';
 import { Formik } from 'formik';
 import { useRef, useState } from 'react';
-import { Image } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 
@@ -12,9 +12,25 @@ import { useAuth } from '@contexts/auth';
 
 import api from '@api';
 
-import { Container, ForgotPassword, ForgotPasswordText, Form, FormFields, Title } from '@styles/SignIn';
+import {
+    AppInfo,
+    Container,
+    ForgotPassword,
+    ForgotPasswordModalInfo,
+    ForgotPasswordModalText,
+    ForgotPasswordModalTitle,
+    ForgotPasswordText,
+    Form,
+    FormFields,
+    SubTitleFirst,
+    SubTitleSecond,
+    Title,
+} from '@styles/SignIn';
 
-import logoImg from 'assets/logo.png';
+import Lock from 'assets/lock.svg';
+import Logo from 'assets/logo.svg';
+import Mail from 'assets/mail.svg';
+import MinLogo from 'assets/minLogo.svg';
 
 interface FormTypes {
     email: string;
@@ -43,14 +59,11 @@ const SignIn: React.FC = () => {
 
     const forgotPassword = (emailValue: string, emailError: string | undefined): void => {
         if (!emailValue) {
-            return;
-        }
-
-        if (emailError === 'email must be a valid email') {
-            setModalMessage('Por favor, corrija seu e-mail.');
+            setModalMessage('Por favor, insira um email.');
+        } else if (emailError === 'email must be a valid email') {
+            setModalMessage('Por favor, corrija seu email.');
         } else {
             // Todo: send temporary password to email
-
             setModalMessage('Uma senha temporária foi enviada para o seu email.');
         }
 
@@ -60,9 +73,13 @@ const SignIn: React.FC = () => {
     return (
         <ScrollView contentContainerStyle={{ flex: 1 }}>
             <Container>
-                <Title>TON</Title>
+                <AppInfo>
+                    <Logo width={30 * vw} height={20 * vh} />
 
-                <Image source={logoImg} style={{ width: 200, height: 200 }} />
+                    <Title>TON</Title>
+                    <SubTitleFirst>Telemonitoramento</SubTitleFirst>
+                    <SubTitleSecond>Odontopediátrico em Oncologia</SubTitleSecond>
+                </AppInfo>
 
                 <Formik
                     initialValues={{ email: '', password: '' }}
@@ -76,8 +93,8 @@ const SignIn: React.FC = () => {
                         <Form>
                             <FormFields>
                                 <Input
-                                    placeholder="E-mail"
-                                    icon="mail"
+                                    placeholder="Email"
+                                    icon={Mail}
                                     onChangeText={handleChange('email')}
                                     onSubmitEditing={() => passwordRef.current?.focus()}
                                     isErrored={errors.email}
@@ -86,7 +103,7 @@ const SignIn: React.FC = () => {
                                 />
                                 <Input
                                     placeholder="Senha"
-                                    icon="lock"
+                                    icon={Lock}
                                     onChangeText={handleChange('password')}
                                     onSubmitEditing={() => handleSubmit()}
                                     isErrored={errors.password}
@@ -96,16 +113,14 @@ const SignIn: React.FC = () => {
                                 />
 
                                 <ForgotPassword
-                                    onPress={() => {
-                                        forgotPassword(values.email, errors.email);
-                                    }}
+                                    onPress={() => forgotPassword(values.email, errors.email)}
                                     activeOpacity={0.7}
                                 >
                                     <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
                                 </ForgotPassword>
                             </FormFields>
 
-                            <Button onPress={() => handleSubmit()} style={{ marginBottom: 24 }} fill>
+                            <Button onPress={() => handleSubmit()} style={{ marginTop: 6 * vh, width: 56 * vw }} fill>
                                 Entrar
                             </Button>
                         </Form>
@@ -116,7 +131,11 @@ const SignIn: React.FC = () => {
             {modalVisible && (
                 <OpacityFilter>
                     <Modal buttonText="Entendi" onConfirm={() => setModalVisibility(false)}>
-                        {modalMessage}
+                        <ForgotPasswordModalInfo>
+                            <MinLogo height={5 * vh} width={15 * vw} style={{ marginTop: 0.5 * vh }} />
+                            <ForgotPasswordModalTitle>TON</ForgotPasswordModalTitle>
+                        </ForgotPasswordModalInfo>
+                        <ForgotPasswordModalText>{modalMessage}</ForgotPasswordModalText>
                     </Modal>
                 </OpacityFilter>
             )}

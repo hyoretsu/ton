@@ -1,11 +1,14 @@
+import { vw } from '@units/viewport';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { TextInputProps } from 'react-native';
+import { SvgProps } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/Feather';
+import mainTheme from 'ui/theme/main';
 
-import { Container, CustomInput, ErrorOutline } from './styles';
+import { Container, CustomInput } from './styles';
 
 interface InputProps extends TextInputProps {
-    icon: string;
+    icon: string | React.FC<SvgProps>;
     isErrored: string | undefined;
     type?: TextInputProps['keyboardType'];
 }
@@ -19,6 +22,7 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
     ref,
 ) => {
     const inputRef = useRef<any>(null);
+    const ProvidedIcon = icon;
 
     useImperativeHandle(ref, () => ({
         focus() {
@@ -27,13 +31,21 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
     }));
 
     return (
-        <Container style={style}>
-            {isErrored && <ErrorOutline />}
-            <Icon name={icon} size={20} color="#708fe5" style={{ marginLeft: 16, marginRight: 10 }} />
+        <Container isErrored={!!isErrored} style={style}>
+            {typeof icon === 'string' ? (
+                <Icon name={icon} size={4.5 * vw} color={mainTheme.colors.purple} style={{ marginRight: 10 }} />
+            ) : (
+                <ProvidedIcon
+                    height={4.5 * vw}
+                    width={4.5 * vw}
+                    color={mainTheme.colors.purple}
+                    style={{ marginRight: 10 }}
+                />
+            )}
             <CustomInput
                 ref={inputRef}
                 placeholder={placeholder}
-                placeholderTextColor="#fff8"
+                placeholderTextColor="#0006"
                 keyboardType={type || 'default'}
                 autoCapitalize={type === 'email-address' ? 'none' : 'words'}
                 returnKeyType={returnKeyType}

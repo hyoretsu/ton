@@ -1,5 +1,5 @@
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import styled from 'styled-components/native';
+import styled from 'rn-css';
 
 export const Button = styled.TouchableOpacity`
     align-self: baseline;

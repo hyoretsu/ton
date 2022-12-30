@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native';
-import styled from 'styled-components/native';
+import styled from 'rn-css';
 
 export const ConfirmationPrompt = styled.View`
     flex-direction: row;

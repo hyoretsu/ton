@@ -1,6 +1,6 @@
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
-import styled from 'styled-components/native';
+import styled from 'rn-css';
 
 export const Container = styled.View`
     flex: 1;

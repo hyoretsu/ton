@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled from 'rn-css';
 
 export const Body = styled.View`
     align-items: center;

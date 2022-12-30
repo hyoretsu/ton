@@ -5,6 +5,9 @@
         <key>UIAppFonts</key>
         <array>
             <string>AntDesign.ttf</string>
+            <string>CeraCompactPro-Bold.ttf</string>
+            <string>CeraCompactPro-Medium.ttf</string>
+            <string>CeraCompactPro-Regular.ttf</string>
             <string>Entypo.ttf</string>
             <string>EvilIcons.ttf</string>
             <string>Feather.ttf</string>

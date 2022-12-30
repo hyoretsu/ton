@@ -1,5 +1,5 @@
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
-import styled from 'styled-components/native';
+import styled from 'rn-css';
 
 interface SelectionItemProps {
     horizontal?: boolean;

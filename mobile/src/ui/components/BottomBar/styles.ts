@@ -1,5 +1,5 @@
 import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
-import styled from 'styled-components/native';
+import styled from 'rn-css';
 
 interface ButtonProps extends RectButtonProps {
     isCurrentScreen?: boolean;

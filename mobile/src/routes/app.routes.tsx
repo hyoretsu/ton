@@ -10,6 +10,7 @@ import EditProfile from 'screens/EditProfile';
 import Educational from 'screens/Educational';
 import Personal from 'screens/Personal';
 import Symptoms from 'screens/Symptoms';
+import mainTheme from 'ui/theme/main';
 
 export type RootStackParamList = {
     Appointments: undefined;
@@ -31,7 +32,12 @@ const AppRoutes: React.FC = () => {
     return (
         <App.Navigator
             initialRouteName="Diary"
-            screenOptions={{ cardStyle: { backgroundColor: '#c4d3f2' }, headerShown: false }}
+            screenOptions={{
+                cardStyle: {
+                    backgroundColor: mainTheme.colors.background,
+                },
+                headerShown: false,
+            }}
         >
             <App.Screen name="Appointments" component={Appointments} />
             <App.Screen name="Chat" component={Chat} />

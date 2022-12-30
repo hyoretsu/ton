@@ -13,7 +13,7 @@ interface ButtonProps extends RectButtonProperties {
 }
 
 const Button: React.FC<ButtonProps> = ({
-    background = '#3d6',
+    background = '#625791',
     border,
     color = '#fff',
     fill = false,
@@ -28,21 +28,19 @@ const Button: React.FC<ButtonProps> = ({
     const borderWidth = border ? 4 : 0;
 
     return (
-        <View style={[{ borderColor: border, borderRadius: 10 * 1.2, borderWidth }, style]}>
+        <View style={[{ borderColor: border, borderRadius: 25 * 1.2, borderWidth }, style]}>
             <RectButton
                 style={[
                     {
                         alignItems: 'center',
                         backgroundColor: background,
-                        borderRadius: 10,
+                        borderRadius: 25,
                         paddingBottom: (paddingVertical || padding[0]) - borderWidth,
                         paddingLeft: (paddingHorizontal || padding[1]) - borderWidth,
                         paddingRight: (paddingHorizontal || padding[1]) - borderWidth,
                         paddingTop: (paddingVertical || padding[0]) - borderWidth,
                     },
                     fill && {
-                        paddingBottom: 16,
-                        paddingTop: 16,
                         width: '100%',
                     },
                 ]}

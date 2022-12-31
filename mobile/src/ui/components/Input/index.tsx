@@ -45,7 +45,7 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
             <CustomInput
                 ref={inputRef}
                 placeholder={placeholder}
-                placeholderTextColor="#0006"
+                placeholderTextColor={mainTheme.colors.gray}
                 keyboardType={type || 'default'}
                 autoCapitalize={type === 'email-address' ? 'none' : 'words'}
                 returnKeyType={returnKeyType}

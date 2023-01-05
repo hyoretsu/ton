@@ -1,4 +1,5 @@
-import { RootStackParamList } from 'routes';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from 'routes/app.routes';
 
 interface RouteParams<Params> {
     route: {
@@ -12,5 +13,5 @@ declare global {
         interface RootParamList extends RootStackParamList {}
     }
 
-    type NavProps<Screen> = NativeStackNavigationProp<RootStackParamList, Screen>;
+    type NavProps<Screen> = NativeStackScreenProps<RootStackParamList, Screen>;
 }

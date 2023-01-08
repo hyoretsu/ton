@@ -1,3 +1,8 @@
 {
-  "eslint.workingDirectories": ["backend", "mobile"]
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.workingDirectories": ["backend", "mobile"],
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "java.compile.nullAnalysis.mode": "disabled"
 }

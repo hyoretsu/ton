@@ -4,11 +4,11 @@ import mainTheme from 'ui/theme/main';
 
 import { useStorage } from '@contexts/storage';
 
-import Home from '../../../assets/home.svg';
 import Chat from 'assets/chat.svg';
 import Diary from 'assets/diary.svg';
 import Educational from 'assets/educational.svg';
-import MinLogo from 'assets/minLogo.svg';
+import Home from 'assets/home.svg';
+import MinLogoWhite from 'assets/minLogoWhite.svg';
 
 import { Button, ButtonText, Container, MiddleButtonView } from './styles';
 
@@ -65,7 +65,7 @@ const BottomBar: React.FC = () => {
                         width: '100%',
                     }}
                 >
-                    <MinLogo height={3 * vh} width={9 * vw} style={{ marginTop: 0.9 * vh }} />
+                    <MinLogoWhite height={3 * vh} width={9 * vw} style={{ marginTop: 0.9 * vh }} />
                 </Button>
                 <ButtonText style={{ color: mainTheme.colors.purple, marginBottom: 1 * vh, marginTop: 0.5 * vh }}>
                     Exame

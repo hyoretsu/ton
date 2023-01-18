@@ -4,8 +4,8 @@
     "main": "typings/index.d.ts",
     "scripts": {
         "build": "swc src --out-dir dist",
-        "dev": "tsnd -r tsconfig-paths/register --inspect --no-notify --respawn --exit-child -T -I /node_modules/ src/shared/infra/http/server.ts",
-        "start": "npm run build && node dist/shared/infra/http/server.js"
+        "dev": "tsx watch --ignore /node_modules/ src/shared/infra/http/server.ts",
+        "start": "node dist/shared/infra/http/server.js"
     },
     "dependencies": {
         "@prisma/client": "^4.4.0",
@@ -46,8 +46,8 @@
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-plugin-import": "^2.26.0",
         "prisma": "^4.4.0",
-        "ts-node-dev": "^2.0.0",
         "tsconfig-paths": "^4.0.0",
+        "tsx": "^3.12.2",
         "typescript": "^4.7.4"
     }
 }

@@ -12,6 +12,7 @@ importers:
       eslint-plugin-import: ^2.26.0
       eslint-plugin-import-helpers: ^1.2.1
       eslint-plugin-prettier: ^4.2.1
+      husky: ^8.0.3
       lint-staged: ^13.0.3
       prettier: ^2.7.1
       typescript: ^4.7.4
@@ -24,6 +25,7 @@ importers:
       eslint-plugin-import: 2.26.0_p6eswnf3xl3aaa2djfyukgz5eq
       eslint-plugin-import-helpers: 1.3.1_eslint@8.30.0
       eslint-plugin-prettier: 4.2.1_kl4pe43v5b43npmso5hoplpbyi
+      husky: 8.0.3
       lint-staged: 13.1.0
       prettier: 2.8.1
       typescript: 4.9.4
@@ -7173,6 +7175,12 @@ packages:
   /human-signals/3.0.1:
     resolution: {integrity: sha512-rQLskxnM/5OCldHo+wNXbpVgDn5A17CUoKX+7Sokwaknlq7CdSnphy0W39GU8dw59XiCXmFXDg4fRuckQRKewQ==}
     engines: {node: '>=12.20.0'}
+    dev: true
+
+  /husky/8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /iconv-lite/0.4.24:

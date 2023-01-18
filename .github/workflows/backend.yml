@@ -1,0 +1,83 @@
+name: Backend CI/CD
+
+on:
+  push:
+    paths: [ 'backend/**' ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@main
+      with:
+        node-version: 'lts/*'
+
+    - name: Enable PNPM
+      uses: pnpm/action-setup@v2
+      with:
+        version: 'latest'
+
+    - name: Get PNPM store directory
+      id: pnpm-cache
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm
+        restore-keys: |
+          ${{ runner.os }}-pnpm
+
+    - name: Install dependencies
+      run: pnpm i
+
+    - name: Build the app
+      run: pnpm -F backend build
+
+    - name: Copy `dist` to deploy server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        password: ${{ secrets.SSH_PASS }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USER }}
+        source: "package.json,pnpm-lock.yaml,backend/dist,backend/package.json"
+        target: "/srv/ton"
+
+    - name: Install dependencies on server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        password: ${{ secrets.SSH_PASS }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USER }}
+        script: |
+          cd /srv/ton
+          pnpm i --ignore-scripts
+
+    - name: Run DB migrations on server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        password: ${{ secrets.SSH_PASS }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USER }}
+        script: |
+          cd /srv/ton/backend
+          npx prisma migrate deploy
+
+    - name: Restart backend
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        password: ${{ secrets.SSH_PASS }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USER }}
+        script: pm2 restart ton

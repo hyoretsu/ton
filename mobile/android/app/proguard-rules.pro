@@ -12,3 +12,4 @@
 -keep class com.facebook.jni.** { *; }
 # [react-native-background-fetch]
 -keep class com.transistorsoft.rnbackgroundfetch.HeadlessTask { *; }
+-keep public class com.horcrux.svg.** {*;}

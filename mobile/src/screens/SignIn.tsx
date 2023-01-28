@@ -57,13 +57,14 @@ const SignIn: React.FC = () => {
         }
     };
 
-    const forgotPassword = (emailValue: string, emailError: string | undefined): void => {
+    const forgotPassword = async (emailValue: string, emailError: string | undefined): Promise<void> => {
         if (!emailValue) {
             setModalMessage('Por favor, insira um email.');
         } else if (emailError === 'email must be a valid email') {
             setModalMessage('Por favor, corrija seu email.');
         } else {
-            // Todo: send temporary password to email
+            await api.post('/users/forgot_password', { email: emailValue });
+
             setModalMessage('Uma senha temporária foi enviada para o seu email.');
         }
 

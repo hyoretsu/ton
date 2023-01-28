@@ -24,7 +24,7 @@ export const io = new Server(httpServer, {
     },
 });
 
-export const prisma = new PrismaClient();
+export const prisma = new PrismaClient({ log: ['error', 'info', 'warn'] });
 
 app.use(cors({ origin: process.env.APP_WEB_URL }));
 app.use(express.json());

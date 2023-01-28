@@ -1,5 +1,6 @@
 import { container } from 'tsyringe';
 
+import './providers';
 import '@modules/users/providers';
 
 import AppointmentsRepository from '@modules/appointments/infra/prisma/repositories/AppointmentsRepository';

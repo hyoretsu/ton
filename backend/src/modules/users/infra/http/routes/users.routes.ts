@@ -1,11 +1,13 @@
 import { celebrate, Joi } from 'celebrate';
 import { Router } from 'express';
 
+import ForgotPasswordController from '../controllers/ForgotPasswordController';
 import SessionsController from '../controllers/SessionsController';
 import UsersController from '../controllers/UsersController';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const usersRouter = Router();
+const forgotPasswordController = new ForgotPasswordController();
 const usersController = new UsersController();
 const sessionsController = new SessionsController();
 
@@ -66,6 +68,15 @@ usersRouter.post(
         },
     }),
     sessionsController.create,
+);
+usersRouter.post(
+    '/forgot_password',
+    celebrate({
+        body: {
+            email: Joi.string().required(),
+        },
+    }),
+    forgotPasswordController.create,
 );
 
 export default usersRouter;

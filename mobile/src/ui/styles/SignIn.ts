@@ -66,23 +66,3 @@ export const ForgotPasswordText = styled.Text`
     color: ${({ theme }) => theme.colors.purple};
     text-decoration: underline;
 `;
-
-export const ForgotPasswordModalInfo = styled.View`
-    flex-direction: row;
-    align-items: center;
-`;
-
-export const ForgotPasswordModalTitle = styled.Text`
-    font-family: ${({ theme }) => theme.fontFamily.bold};
-    font-size: 5em;
-    text-transform: lowercase;
-    color: ${({ theme }) => theme.colors.purple};
-    margin: -1vh 0 0 2vw;
-`;
-
-export const ForgotPasswordModalText = styled.Text`
-    font-size: 16px;
-    text-align: center;
-
-    margin-bottom: 10px;
-`;

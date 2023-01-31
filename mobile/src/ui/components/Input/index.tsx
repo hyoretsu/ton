@@ -8,8 +8,13 @@ import mainTheme from 'ui/theme/main';
 import { Container, CustomInput } from './styles';
 
 interface InputProps extends TextInputProps {
+    background?: string;
+    borderColor?: string;
     icon: string | React.FC<SvgProps>;
+    iconDivider?: boolean;
+    iconSize?: number;
     isErrored: string | undefined;
+    squared?: boolean;
     type?: TextInputProps['keyboardType'];
 }
 
@@ -18,7 +23,20 @@ interface InputRef {
 }
 
 const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
-    { placeholder, icon, isErrored, type, returnKeyType = 'next', style, ...rest },
+    {
+        background = '#fff',
+        borderColor = mainTheme.colors.purple,
+        placeholder,
+        icon,
+        iconDivider = true,
+        iconSize = 4.5 * vw,
+        isErrored,
+        type,
+        returnKeyType = 'next',
+        squared = false,
+        style,
+        ...rest
+    },
     ref,
 ) => {
     const inputRef = useRef<any>(null);
@@ -31,16 +49,18 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
     }));
 
     return (
-        <Container isErrored={!!isErrored} style={style}>
+        <Container
+            isErrored={!!isErrored}
+            style={[
+                { backgroundColor: background, borderRadius: squared ? 4 * vw : 50 * vw },
+                iconSize !== 4.5 * vw ? { paddingLeft: 3 * vw } : {},
+                style,
+            ]}
+        >
             {typeof icon === 'string' ? (
-                <Icon name={icon} size={4.5 * vw} color={mainTheme.colors.purple} style={{ marginRight: 10 }} />
+                <Icon name={icon} size={iconSize} color={borderColor} style={{ marginRight: 10 }} />
             ) : (
-                <ProvidedIcon
-                    height={4.5 * vw}
-                    width={4.5 * vw}
-                    color={mainTheme.colors.purple}
-                    style={{ marginRight: 10 }}
-                />
+                <ProvidedIcon height={iconSize} width={iconSize} color={borderColor} style={{ marginRight: 10 }} />
             )}
             <CustomInput
                 ref={inputRef}
@@ -49,6 +69,7 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
                 keyboardType={type || 'default'}
                 autoCapitalize={type === 'email-address' ? 'none' : 'words'}
                 returnKeyType={returnKeyType}
+                style={!iconDivider && { borderColor: background, paddingLeft: 2 * vw }}
                 {...rest}
             />
         </Container>

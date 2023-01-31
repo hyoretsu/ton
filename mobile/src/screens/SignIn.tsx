@@ -16,9 +16,6 @@ import {
     AppInfo,
     Container,
     ForgotPassword,
-    ForgotPasswordModalInfo,
-    ForgotPasswordModalText,
-    ForgotPasswordModalTitle,
     ForgotPasswordText,
     Form,
     FormFields,
@@ -30,7 +27,6 @@ import {
 import Lock from 'assets/lock.svg';
 import Logo from 'assets/logo.svg';
 import Mail from 'assets/mail.svg';
-import MinLogo from 'assets/minLogo.svg';
 
 interface FormTypes {
     email: string;
@@ -94,6 +90,7 @@ const SignIn: React.FC = () => {
                         <Form>
                             <FormFields>
                                 <Input
+                                    background="transparent"
                                     placeholder="Email"
                                     icon={Mail}
                                     onChangeText={handleChange('email')}
@@ -103,6 +100,7 @@ const SignIn: React.FC = () => {
                                     ref={emailRef}
                                 />
                                 <Input
+                                    background="transparent"
                                     placeholder="Senha"
                                     icon={Lock}
                                     onChangeText={handleChange('password')}
@@ -132,11 +130,7 @@ const SignIn: React.FC = () => {
             {modalVisible && (
                 <OpacityFilter>
                     <Modal buttonText="Entendi" onConfirm={() => setModalVisibility(false)}>
-                        <ForgotPasswordModalInfo>
-                            <MinLogo height={5 * vh} width={15 * vw} style={{ marginTop: 0.5 * vh }} />
-                            <ForgotPasswordModalTitle>TON</ForgotPasswordModalTitle>
-                        </ForgotPasswordModalInfo>
-                        <ForgotPasswordModalText>{modalMessage}</ForgotPasswordModalText>
+                        {modalMessage}
                     </Modal>
                 </OpacityFilter>
             )}

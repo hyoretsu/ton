@@ -18,29 +18,32 @@ export default class GetAppointmentTimeService {
     ) {}
 
     public async execute({ date, doctorId }: IGetAppointmentsDTO): Promise<Array<Date | null>> {
-        const user = await this.usersRepository.findById(doctorId);
-        if (!user) {
+        // Trying to make an appointment today or in the past
+        if (differenceInCalendarDays(date, new Date()) <= 0) {
+            return [null];
+        }
+
+        const doctor = await this.usersRepository.findById(doctorId);
+        if (!doctor) {
             throw new AppError('Doutor não encontrado.');
         }
 
         const times: Date[] = [];
 
-        if (differenceInCalendarDays(date, new Date()) > 0) {
-            date.setHours(0, 0, 0, 0);
+        date.setHours(0, 0, 0, 0);
 
-            const existingAppointments = await this.appointmentsRepository.findByDate(date);
-            const existingAppointmentsTimes = existingAppointments.map(appointment => appointment.time);
+        const existingAppointments = await this.appointmentsRepository.findByDate(date);
+        const existingAppointmentsTimes = existingAppointments.map(appointment => appointment.time);
 
-            for (let hours = user.appointmentsStart as number; hours < (user.appointmentsEnd as number); hours += 0.5) {
-                const newTime = new Date(date);
-                newTime.setHours(Math.floor(hours), (hours * 60) % 60);
+        for (let hours = doctor.appointmentsStart as number; hours < (doctor.appointmentsEnd as number); hours += 0.5) {
+            const newTime = new Date(date);
+            newTime.setHours(Math.floor(hours), (hours * 60) % 60);
 
-                if (existingAppointmentsTimes.find(time => differenceInMinutes(time, newTime) === 0)) {
-                    continue;
-                }
-
-                times.push(newTime);
+            if (existingAppointmentsTimes.find(time => differenceInMinutes(time, newTime) === 0)) {
+                continue;
             }
+
+            times.push(newTime);
         }
 
         return times;

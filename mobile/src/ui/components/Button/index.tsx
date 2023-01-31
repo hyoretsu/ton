@@ -1,8 +1,10 @@
 import { Text, View } from 'react-native';
 import { RectButton, RectButtonProperties } from 'react-native-gesture-handler';
+import mainTheme from 'ui/theme/main';
 
 interface ButtonProps extends RectButtonProperties {
     background?: string;
+    bold?: boolean;
     border?: string;
     color?: string;
     fontSize?: number;
@@ -14,6 +16,7 @@ interface ButtonProps extends RectButtonProperties {
 
 const Button: React.FC<ButtonProps> = ({
     background = '#625791',
+    bold = false,
     border,
     color = '#fff',
     fill = false,
@@ -46,7 +49,15 @@ const Button: React.FC<ButtonProps> = ({
                 ]}
                 {...rest}
             >
-                <Text style={{ color, fontSize }}>{children}</Text>
+                <Text
+                    style={{
+                        color,
+                        fontFamily: bold ? mainTheme.fontFamily.bold : mainTheme.fontFamily.regular,
+                        fontSize,
+                    }}
+                >
+                    {children}
+                </Text>
             </RectButton>
         </View>
     );

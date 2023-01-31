@@ -19,6 +19,9 @@ export default class AppointmentsRepository implements IAppointmentsRepository {
     public async findAll(id: string): Promise<Appointment[]> {
         const appointments = await prisma.appointment.findMany({
             where: { OR: [{ doctorId: id }, { patientId: id }] },
+            orderBy: {
+                time: 'asc',
+            },
         });
 
         return appointments;

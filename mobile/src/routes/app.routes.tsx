@@ -9,9 +9,11 @@ import Diary from 'screens/Diary';
 import EditProfile from 'screens/EditProfile';
 import Educational from 'screens/Educational';
 import Home from 'screens/Home';
-import Personal from 'screens/Personal';
+import Profile from 'screens/Profile';
 import Symptoms from 'screens/Symptoms';
 import mainTheme from 'ui/theme/main';
+
+import { InfoProvider } from '@contexts/info';
 
 export type RootStackParamList = {
     Appointments: undefined;
@@ -24,7 +26,7 @@ export type RootStackParamList = {
     EditProfile: undefined;
     Educational: undefined;
     Home: undefined;
-    Personal: undefined;
+    Profile: undefined;
     Symptoms: undefined;
 };
 
@@ -32,28 +34,30 @@ const App = createStackNavigator<RootStackParamList>();
 
 const AppRoutes: React.FC = () => {
     return (
-        <App.Navigator
-            initialRouteName="Diary"
-            screenOptions={{
-                cardStyle: {
-                    backgroundColor: mainTheme.colors.background,
-                },
-                headerShown: false,
-            }}
-        >
-            <App.Screen name="Appointments" component={Appointments} />
-            <App.Screen name="Chat" component={Chat} />
-            <App.Screen name="CheckupBegin" component={CheckupBegin} />
-            <App.Screen name="CheckupCamera" component={CheckupCamera} />
-            <App.Screen name="CheckupConfirm" component={CheckupConfirm} />
-            <App.Screen name="CheckupInstructions" component={CheckupInstructions} />
-            <App.Screen name="Diary" component={Diary} />
-            <App.Screen name="EditProfile" component={EditProfile} />
-            <App.Screen name="Educational" component={Educational} />
-            <App.Screen name="Home" component={Home} />
-            <App.Screen name="Personal" component={Personal} />
-            <App.Screen name="Symptoms" component={Symptoms} />
-        </App.Navigator>
+        <InfoProvider>
+            <App.Navigator
+                initialRouteName="Home"
+                screenOptions={{
+                    cardStyle: {
+                        backgroundColor: mainTheme.colors.background,
+                    },
+                    headerShown: false,
+                }}
+            >
+                <App.Screen name="Appointments" component={Appointments} />
+                <App.Screen name="Chat" component={Chat} />
+                <App.Screen name="CheckupBegin" component={CheckupBegin} />
+                <App.Screen name="CheckupCamera" component={CheckupCamera} />
+                <App.Screen name="CheckupConfirm" component={CheckupConfirm} />
+                <App.Screen name="CheckupInstructions" component={CheckupInstructions} />
+                <App.Screen name="Diary" component={Diary} />
+                <App.Screen name="EditProfile" component={EditProfile} />
+                <App.Screen name="Educational" component={Educational} />
+                <App.Screen name="Home" component={Home} />
+                <App.Screen name="Profile" component={Profile} />
+                <App.Screen name="Symptoms" component={Symptoms} />
+            </App.Navigator>
+        </InfoProvider>
     );
 };
 

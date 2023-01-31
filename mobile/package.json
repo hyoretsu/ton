@@ -36,7 +36,7 @@
         "react-native-tts": "^4.1.0",
         "react-native-vector-icons": "^9.2.0",
         "react-native-vision-camera": "^2.15.2",
-        "rn-css": "^1.6.18",
+        "rn-css": "^1.7.0",
         "socket.io-client": "^4.5.4",
         "yup": "^0.32.11"
     },

@@ -20,7 +20,7 @@ const BottomBar: React.FC = () => {
     const onChat = route.name === 'Chat';
     const onDiary = route.name === 'Diary';
     const onEducational = route.name === 'Educational';
-    const onHome = route.name === 'Home';
+    const onHome = route.name === 'Home' || route.name === 'Profile';
 
     const iconSize = 11 * vw;
 

@@ -12,10 +12,9 @@ export const Container = styled.View<ContainerProps>`
     position: relative;
 
     width: 100%;
-    height: 6vh;
+    height: 7vh;
 
     border: 2px ${({ isErrored, theme }) => (isErrored ? '#f00' : theme.colors.purple)};
-    border-radius: 50vw;
     padding: 1vh 5vw;
     margin-bottom: 2vh;
 `;
@@ -28,5 +27,5 @@ export const CustomInput = styled(TextInput)`
 
     border-left: 1px solid ${({ theme }) => theme.colors.purple};
     padding: -1vh 0;
-    padding-left: 16px;
+    padding-left: 4vw;
 `;

@@ -1,6 +1,7 @@
-import { Prisma, DentalPhoto, Message, Objective, User } from '@prisma/client';
+import { DentalPhoto, Message, Objective, Prisma, User } from '@prisma/client';
 
+type Appointment = Prisma.AppointmentGetPayload<{ include: { doctor: true; patient: true } }>;
 type Checkup = Prisma.CheckupGetPayload<{ include: { answers: true; photos: true } }>;
 type Progress = Prisma.ProgressGetPayload<{ include: { objective: true } }>;
 
-export { Checkup, DentalPhoto, Message, Objective, Progress, User };
+export { Appointment, Checkup, DentalPhoto, Message, Objective, Progress, User };

@@ -1,14 +1,10 @@
 import notifee from '@notifee/react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { Objective, Progress } from 'backend';
-import { differenceInCalendarDays } from 'date-fns';
 import { useEffect, useState } from 'react';
 
 import BottomBar from '@components/BottomBar';
 import ProgressCircle from '@components/ProgressCircle';
-
-import api from '@api';
+import { useInfo } from '@contexts/info';
 
 import {
     Container,
@@ -22,60 +18,16 @@ import {
 } from '@styles/Diary';
 
 const Diary: React.FC = () => {
+    const { objectives, progress, updateProgress } = useInfo();
     const { navigate } = useNavigation();
 
-    const [objectives, setObjectives] = useState<Objective[]>([]);
-    const [progress, setProgress] = useState<Record<string, number>>({});
     const [timer, setTimer] = useState<[string, number]>(['', 0]);
 
     const handlePlusMinus = async (action: string, objectiveId: string): Promise<void> => {
         const updatedProgress = (progress[objectiveId] || 0) + (action === 'plus' ? 1 : -1);
 
-        await api.post('/objectives/progress', {
-            objectiveId,
-            progress: updatedProgress,
-        });
-
-        setProgress(old => ({ ...old, [objectiveId]: updatedProgress }));
+        updateProgress(objectiveId, updatedProgress);
     };
-
-    useEffect(() => {
-        AsyncStorage.getItem('@ton:objectives').then(storedObjectives => {
-            if (storedObjectives) {
-                setObjectives(JSON.parse(storedObjectives));
-            }
-
-            api.get('/objectives').then(({ data }) => {
-                setObjectives(data);
-                AsyncStorage.setItem('@ton:objectives', JSON.stringify(data));
-            });
-        });
-
-        AsyncStorage.getItem('@ton:progress').then(storedProgress => {
-            if (storedProgress) {
-                setProgress(JSON.parse(storedProgress));
-            }
-
-            api.get('/objectives/progress').then(({ data }: { data: Progress[] }) => {
-                const parsedProgress = data.reduce((obj, entry) => {
-                    return {
-                        ...obj,
-                        [entry.objectiveId]:
-                            !entry.objective.isDaily ||
-                            differenceInCalendarDays(new Date(entry.createdAt), new Date()) === 0
-                                ? entry.progress
-                                : 0,
-                    };
-                }, {});
-
-                setProgress(old => ({
-                    ...old,
-                    ...parsedProgress,
-                }));
-                AsyncStorage.setItem('@ton:progress', JSON.stringify(parsedProgress));
-            });
-        });
-    }, []);
 
     useEffect(() => {
         notifee.getInitialNotification().then(notification => {
@@ -109,7 +61,7 @@ const Diary: React.FC = () => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ padding: 20, paddingBottom: 0, flex: 1 }}
             >
-                {objectives.map(objective => (
+                {(objectives || []).map(objective => (
                     <ObjectiveView key={objective.id}>
                         <ObjectiveTitle>{objective.title}</ObjectiveTitle>
                         {objective.isDaily && <DailyObjectiveText>Missão diária</DailyObjectiveText>}

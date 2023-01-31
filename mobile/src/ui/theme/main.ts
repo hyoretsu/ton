@@ -1,6 +1,7 @@
 const mainTheme = {
     colors: {
         background: '#eaf7f9',
+        gold: '#f39b03',
         gray: '#959595',
         purple: '#625791',
     },

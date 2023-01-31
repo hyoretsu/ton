@@ -4,5 +4,8 @@
     },
     "eslint.workingDirectories": ["backend", "mobile"],
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "java.compile.nullAnalysis.mode": "disabled"
+    "java.compile.nullAnalysis.mode": "disabled",
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }

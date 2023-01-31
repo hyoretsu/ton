@@ -49,7 +49,7 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const signOut = useCallback(async () => {
         await AsyncStorage.multiRemove(['@ton:token', '@ton:user']);
 
-        setData({} as User);
+        setData(undefined);
     }, []);
 
     const updateUser = useCallback(async (user: User) => {
@@ -63,6 +63,7 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         [finishLogin, signOut, updateUser, data, loading],
     );
 
+    // @ts-ignore
     return <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>;
 };
 

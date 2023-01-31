@@ -13,7 +13,7 @@ import { useAuth } from '@contexts/auth';
 import api from '@api';
 
 import { AppointmentButton, AppointmentTimes, Container } from '@styles/Appointments';
-import { Title } from '@styles/Personal';
+import { Title } from '@styles/Profile';
 
 const Appointments: React.FC = () => {
     const { user } = useAuth();

@@ -2,8 +2,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { vh, vw } from '@units/viewport';
 import mainTheme from 'ui/theme/main';
 
-import { useStorage } from '@contexts/storage';
-
 import Chat from 'assets/chat.svg';
 import Diary from 'assets/diary.svg';
 import Educational from 'assets/educational.svg';
@@ -14,7 +12,6 @@ import { Button, ButtonText, Container, MiddleButtonView } from './styles';
 
 const BottomBar: React.FC = () => {
     const { navigate } = useNavigation();
-    const { checkupProgress } = useStorage();
     const route = useRoute();
 
     const onChat = route.name === 'Chat';
@@ -46,17 +43,7 @@ const BottomBar: React.FC = () => {
 
             <MiddleButtonView>
                 <Button
-                    onPress={() => {
-                        const checkupLength = Object.entries(checkupProgress).length;
-
-                        if (checkupLength === 10) {
-                            navigate('Symptoms');
-                        } else if (checkupLength > 0) {
-                            navigate('CheckupInstructions');
-                        } else {
-                            navigate('CheckupBegin');
-                        }
-                    }}
+                    onPress={() => navigate('Checkup')}
                     style={{
                         backgroundColor: mainTheme.colors.purple,
                         borderRadius: 7 * vw,

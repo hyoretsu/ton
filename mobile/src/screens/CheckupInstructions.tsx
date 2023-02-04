@@ -1,43 +1,45 @@
 import { useNavigation } from '@react-navigation/native';
 import { DentalPhoto } from 'backend';
+import { RouteParams } from 'data/@types/navigation';
 import { useEffect, useState } from 'react';
-import { BackHandler } from 'react-native';
 
 import Button from '@components/Button';
-import { useStorage } from '@contexts/storage';
 
 import api from '@api';
 
 import { Container, Example, Instructions, Body, Title } from '@styles/Checkup';
 
-import checkup from 'assets/checkup.json';
+import { instructions, titles } from 'assets/checkup.json';
 
-const CheckupInstructions: React.FC = () => {
-    const [example, setExample] = useState<DentalPhoto>({});
+export interface CheckupInstructionsParams {
+    step: string;
+}
 
-    const { instructions, titles } = checkup;
+const CheckupInstructions: React.FC<RouteParams<CheckupInstructionsParams>> = ({ route }) => {
+    // @ts-ignore
+    const { step } = route.params;
+
     const { navigate } = useNavigation();
-    const { checkupProgress } = useStorage();
 
-    const checkupLength = Object.entries(checkupProgress).length;
+    const [example, setExample] = useState<DentalPhoto>({} as DentalPhoto);
 
     useEffect(() => {
-        api.post('/checkup/photos/find', { category: titles[checkupLength] }).then(({ data }) => setExample(data));
+        const execute = async (): Promise<void> => {
+            const { data } = await api.post('/checkup/photos/find', { category: step });
+            console.log(data);
 
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            navigate('Diary');
-            return true;
-        });
+            setExample(data);
+        };
 
-        return () => backHandler.remove();
-    }, [checkupLength, navigate, titles]);
+        execute();
+    }, [step]);
 
     return (
         <Container>
-            <Title>{titles[checkupLength]}</Title>
-            <Instructions>{instructions[checkupLength]}</Instructions>
+            <Title>{step}</Title>
+            <Instructions>{instructions[titles.indexOf(step)]}</Instructions>
             <Body>
-                {example && <Example source={{ uri: `http://192.168.0.11:3333/files/${example.fileName}` }} />}
+                {example && <Example source={{ uri: `http://192.168.0.5:3333/files/${example.fileName}` }} />}
 
                 <Button onPress={() => navigate('CheckupCamera')} style={{ marginTop: 16, marginBottom: 12 }}>
                     Tirar foto

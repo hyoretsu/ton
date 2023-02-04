@@ -1,17 +1,14 @@
-import { useNavigation } from '@react-navigation/native';
+import { vh } from '@units/viewport';
 import { useRef, useState } from 'react';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import mainTheme from 'ui/theme/main';
 
-import Button from '@components/Button';
-import OpacityFilter from '@components/OpacityFilter';
+import Modal, { ModalProps } from '@components/Modal';
 import { useStorage } from '@contexts/storage';
-
-import api from '@api';
 
 import {
     Container,
-    Info,
     Selection,
     SelectionCircle,
     SelectionColumn,
@@ -21,26 +18,23 @@ import {
     SelectionText,
     Symptom,
     SymptomQuestion,
-    ThanksModal,
-    ThanksText,
     Title,
-} from '@styles/Symptoms';
+    TitleDivision,
+} from './styles';
 
-const Symptoms: React.FC = () => {
-    const { navigate } = useNavigation();
-    const { checkupProgress, storeValue } = useStorage();
+const SymptomQuestions: React.FC<Pick<ModalProps, 'onConfirm' | 'icon' | 'width'>> = ({ icon, onConfirm, width }) => {
+    const { storeValue } = useStorage();
 
     const symptomInputRef = useRef<TextInput>(null);
-    const [modalVisible, setModalVisibility] = useState(false);
     const [answers, setAnswers] = useState<Record<string, string>>({});
     const [question2Input, setQuestion2Input] = useState('');
 
     const questions = [
-        'O paciente sente ou sentiu dor na boca esta semana?',
+        'Sentiu dor na boca esta semana?',
         'Se sim, onde foi a dor?',
-        'O paciente está se alimentando normal?',
-        'O paciente reclamou de sentir a boca mais seca? Com menos saliva que o normal?',
-        'O paciente percebe que seus lábios estão ressecados?',
+        'Está se alimentando normal?',
+        'Reclamou de sentir a boca mais seca? Com menos saliva que o normal?',
+        'Percebe que seus lábios estão ressecados?',
     ];
 
     const painOptions = ['Garganta', 'Dente', 'Língua', 'Gengiva', 'Lábio'];
@@ -53,43 +47,31 @@ const Symptoms: React.FC = () => {
         'Não, nem líquidos consegue tomar.',
     ];
 
-    const finishCheckup = async (): Promise<void> => {
-        if (Object.entries(answers).length < (Object.values(answers)[0] === 'Sim' ? 5 : 4)) {
-            return;
+    const finishQuestions = (): void => {
+        if (Object.values(answers).length >= 4) {
+            storeValue('checkupAnswers', answers);
         }
 
-        const formData = new FormData();
-
-        // Analisar como enviar as respostas da sintomatologia
-        Object.entries(checkupProgress).forEach(([key, path]) =>
-            formData.append(key, {
-                uri: Platform.OS === 'android' ? `file:///${path}` : path,
-                type: 'image/jpeg',
-                name: (path.match(/mrousavy.*\.jpg/) as string[])[0],
-            }),
-        );
-        formData.append('answers', JSON.stringify(answers));
-
-        await api.post('/checkup', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-
-        await storeValue('checkupProgress', []);
-
-        setModalVisibility(true);
+        onConfirm();
     };
 
     return (
-        <>
-            <Container>
-                <Title>Sintomatologia</Title>
-                <Info>
-                    Obrigada pelas fotos 😊{'\n\n'}
-                    Para finalizar o exame desta semana, pedimos que responda as próximas questões sobre como a
-                    criança/adolescente está se sentindo:
-                </Info>
+        <Modal
+            icon={icon}
+            buttonText="Enviar"
+            buttonTextColor={mainTheme.colors.purple}
+            buttonBackground="transparent"
+            width={width}
+            onConfirm={finishQuestions}
+            style={{
+                marginBottom: 10 * vh,
+                marginTop: 10 * vh,
+                paddingBottom: 3 * vh,
+            }}
+        >
+            <Container showsVerticalScrollIndicator={false}>
+                <Title>O paciente:</Title>
+                <TitleDivision />
                 <Symptom>
                     <SymptomQuestion>{questions[0]}</SymptomQuestion>
                     <Selection>
@@ -185,47 +167,30 @@ const Symptoms: React.FC = () => {
                         </SelectionItem>
                         <View style={{ alignItems: 'center' }}>
                             <SelectionRow>
-                                <SelectionItem horizontal style={{ width: '40%' }}>
-                                    <SelectionCircle
-                                        onPress={() =>
-                                            setAnswers(old => ({ ...old, [questions[2]]: eatingOptions[1] }))
-                                        }
-                                        selected={answers[questions[2]] === eatingOptions[1]}
-                                    />
-                                    <SelectionText>{eatingOptions[1]}</SelectionText>
-                                </SelectionItem>
-                                <SelectionItem horizontal style={{ width: '40%' }}>
-                                    <SelectionCircle
-                                        onPress={() =>
-                                            setAnswers(old => ({
-                                                ...old,
-                                                [questions[2]]: eatingOptions[2],
-                                            }))
-                                        }
-                                        selected={answers[questions[2]] === eatingOptions[2]}
-                                    />
-                                    <SelectionText>{eatingOptions[2]}</SelectionText>
-                                </SelectionItem>
+                                {eatingOptions.slice(1, 2 + 1).map((eatingOption, index) => (
+                                    <SelectionItem key={index} horizontal style={{ width: '40%' }}>
+                                        <SelectionCircle
+                                            onPress={() =>
+                                                setAnswers(old => ({ ...old, [questions[2]]: eatingOption }))
+                                            }
+                                            selected={answers[questions[2]] === eatingOption}
+                                        />
+                                        <SelectionText>{eatingOption}</SelectionText>
+                                    </SelectionItem>
+                                ))}
                             </SelectionRow>
                             <SelectionRow>
-                                <SelectionItem horizontal style={{ width: '40%' }}>
-                                    <SelectionCircle
-                                        onPress={() =>
-                                            setAnswers(old => ({ ...old, [questions[2]]: eatingOptions[3] }))
-                                        }
-                                        selected={answers[questions[2]] === eatingOptions[3]}
-                                    />
-                                    <SelectionText>{eatingOptions[3]}</SelectionText>
-                                </SelectionItem>
-                                <SelectionItem horizontal style={{ width: '40%' }}>
-                                    <SelectionCircle
-                                        onPress={() =>
-                                            setAnswers(old => ({ ...old, [questions[2]]: eatingOptions[4] }))
-                                        }
-                                        selected={answers[questions[2]] === eatingOptions[4]}
-                                    />
-                                    <SelectionText>{eatingOptions[4]}</SelectionText>
-                                </SelectionItem>
+                                {eatingOptions.slice(3, 4 + 1).map((eatingOption, index) => (
+                                    <SelectionItem key={index} horizontal style={{ width: '40%' }}>
+                                        <SelectionCircle
+                                            onPress={() =>
+                                                setAnswers(old => ({ ...old, [questions[2]]: eatingOption }))
+                                            }
+                                            selected={answers[questions[2]] === eatingOption}
+                                        />
+                                        <SelectionText>{eatingOption}</SelectionText>
+                                    </SelectionItem>
+                                ))}
                             </SelectionRow>
                         </View>
                     </Selection>
@@ -268,28 +233,9 @@ const Symptoms: React.FC = () => {
                         </SelectionItem>
                     </Selection>
                 </Symptom>
-                <Button onPress={finishCheckup} style={{ marginTop: 12, marginBottom: 32 }}>
-                    Enviar
-                </Button>
             </Container>
-
-            {modalVisible && (
-                <OpacityFilter>
-                    <ThanksModal>
-                        <ThanksText>Fim do exame desta semana! 😄</ThanksText>
-                        <ThanksText>
-                            Obrigada por sua ajuda, vamos avaliar as fotos e damos notícias pelo chat.
-                        </ThanksText>
-                        <ThanksText>
-                            Qualquer coisa, fique à vontade para entrar em contato conosco por lá também.
-                        </ThanksText>
-
-                        <Button onPress={() => navigate('Diary')}>Voltar</Button>
-                    </ThanksModal>
-                </OpacityFilter>
-            )}
-        </>
+        </Modal>
     );
 };
 
-export default Symptoms;
+export default SymptomQuestions;

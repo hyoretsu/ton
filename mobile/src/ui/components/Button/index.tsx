@@ -1,3 +1,4 @@
+import { vh, vw } from '@units/viewport';
 import { Text, View } from 'react-native';
 import { RectButton, RectButtonProperties } from 'react-native-gesture-handler';
 import mainTheme from 'ui/theme/main';
@@ -15,33 +16,40 @@ interface ButtonProps extends RectButtonProperties {
 }
 
 const Button: React.FC<ButtonProps> = ({
-    background = '#625791',
+    background = mainTheme.colors.purple,
     bold = false,
-    border,
+    border = mainTheme.colors.purple,
     color = '#fff',
     fill = false,
     fontSize = 16,
-    padding = [12, 24],
+    padding = [1.4 * vh, 6 * vw],
     paddingHorizontal,
     paddingVertical,
     children,
     style,
     ...rest
 }) => {
-    const borderWidth = border ? 4 : 0;
-
     return (
-        <View style={[{ borderColor: border, borderRadius: 25 * 1.2, borderWidth }, style]}>
+        <View
+            style={[
+                {
+                    borderColor: border,
+                    borderRadius: 50 * vw,
+                    borderWidth: border ? 0.3 * vw : 0,
+                },
+                style,
+            ]}
+        >
             <RectButton
                 style={[
                     {
                         alignItems: 'center',
                         backgroundColor: background,
                         borderRadius: 25,
-                        paddingBottom: (paddingVertical || padding[0]) - borderWidth,
-                        paddingLeft: (paddingHorizontal || padding[1]) - borderWidth,
-                        paddingRight: (paddingHorizontal || padding[1]) - borderWidth,
-                        paddingTop: (paddingVertical || padding[0]) - borderWidth,
+                        paddingBottom: paddingVertical || padding[0],
+                        paddingLeft: paddingHorizontal || padding[1],
+                        paddingRight: paddingHorizontal || padding[1],
+                        paddingTop: paddingVertical || padding[0],
                     },
                     fill && {
                         width: '100%',

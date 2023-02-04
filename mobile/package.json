@@ -36,7 +36,7 @@
         "react-native-tts": "^4.1.0",
         "react-native-vector-icons": "^9.2.0",
         "react-native-vision-camera": "^2.15.2",
-        "rn-css": "^1.7.0",
+        "rn-css": "^1.8.0",
         "socket.io-client": "^4.5.4",
         "yup": "^0.32.11"
     },
@@ -52,7 +52,6 @@
         "@types/react-native": "^0.70.8",
         "@types/react-native-vector-icons": "^6.4.12",
         "@types/react-test-renderer": "^18.0.0",
-        "@types/yup": "^0.32.0",
         "babel-plugin-module-resolver": "^4.1.0",
         "eslint": "^8.30.0",
         "eslint-config-airbnb": "^19.0.4",

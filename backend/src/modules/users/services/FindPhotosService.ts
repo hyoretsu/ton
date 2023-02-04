@@ -20,7 +20,7 @@ export default class FindPhotosService {
 
         const photo = await this.checkupsRepository.findPhoto({
             category,
-            checkupId: checkups[0].id,
+            checkupId: checkups[0]?.id,
         });
 
         return photo;

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-type Keys = 'checkupProgress' | 'objectiveProgress';
+type Keys = 'checkupAnswers' | 'objectiveProgress';
 
 interface StorageContext {
     checkupProgress: Record<string, string>;

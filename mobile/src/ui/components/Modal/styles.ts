@@ -3,7 +3,6 @@ import styled from 'rn-css';
 export const Container = styled.View`
     align-items: center;
 
-    width: 67vw;
     background-color: ${({ theme }) => theme.colors.background};
 
     border-radius: 15vw;
@@ -29,6 +28,7 @@ export const ModalText = styled.Text`
     font-family: ${({ theme }) => theme.fontFamily.regular};
     font-size: 1em;
     color: ${({ theme }) => theme.colors.purple};
+    text-align: center;
 
     margin: 3vh 0;
 `;

@@ -1,40 +1,70 @@
+import { vh, vw } from '@units/viewport';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';
 
-export const Body = styled.View`
+export const Container = styled.View`
     align-items: center;
     justify-content: space-around;
     flex: 1;
+
+    background-color: ${({ theme }) => theme.colors.purple};
+
+    padding: 0 5vw 1vh;
 `;
 
-export const Container = styled.View`
-    flex: 1;
+export const GenericView = styled.View`
     align-items: center;
 `;
 
-export const Example = styled.Image`
-    width: 225px;
-    height: 400px;
+export const CheckupTitle = styled.Text`
+    align-self: center;
+
+    font-family: ${({ theme }) => theme.fontFamily.bold};
+    font-size: 1.2em;
+    color: #fff;
 `;
 
-export const Instructions = styled.Text`
-    font-size: 18px;
-    color: #889ae8;
+export const CheckupText = styled.Text`
+    font-family: ${({ theme }) => theme.fontFamily.regular};
+    color: #fff;
     text-align: center;
+    max-width: 60%;
 
-    margin: 0 24px 20px;
+    margin-bottom: 3vh;
 `;
 
-export const TextBody = styled.View`
+export const StepView = styled.View`
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    width: 60%;
+`;
+
+export const StepCircle = styled(TouchableOpacity)`
     align-items: center;
     justify-content: center;
-    flex: 1;
+
+    width: 8.5vw;
+    height: 4vh;
+    background-color: #fff;
+
+    border-radius: 50vw;
 `;
 
-export const Title = styled.Text`
-    font-size: 32px;
-    font-weight: 500;
-    color: #889ae8;
-    text-align: center;
+export const StepNumber = styled.Text`
+    font-family: ${({ theme }) => theme.fontFamily.bold};
+    font-size: 1.3em;
+    color: ${({ theme }) => theme.colors.purple};
+`;
 
-    margin: 20px 0 20px;
+export const SymptomsButton = styled(TouchableOpacity).attrs({
+    containerStyle: {
+        borderRadius: 50 * vw,
+        marginBottom: 6 * vh,
+    },
+})`
+    background-color: #fff;
+
+    padding: 4vw;
+    border-radius: 50vw;
 `;

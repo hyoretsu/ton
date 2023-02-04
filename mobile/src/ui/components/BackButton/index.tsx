@@ -1,5 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
+import { vw } from '@units/viewport';
 import { TouchableOpacityProps } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Button, Icon } from './styles';
 
@@ -11,8 +13,10 @@ const BackButton: React.FC<BackButtonProps> = ({ size, style }) => {
     const { goBack } = useNavigation();
 
     return (
-        <Button onPress={goBack} style={style}>
-            <Icon name="arrow-left" size={size} />
+        <Button style={style}>
+            <TouchableOpacity onPress={goBack} containerStyle={{ borderRadius: 50 * vw }}>
+                <Icon name="chevron-left" size={size} />
+            </TouchableOpacity>
         </Button>
     );
 };

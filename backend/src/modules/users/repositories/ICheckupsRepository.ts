@@ -8,7 +8,7 @@ import IRegisterPhotoDTO from '../dtos/IRegisterPhotoDTO';
 export default interface ICheckupsRepository {
     create(data: ICreateCheckupDTO): Promise<Checkup>;
     findById(checkupId: string): Promise<Prisma.CheckupGetPayload<{ include: { answers: true } }> | null>;
-    findCheckups(patientId: string): Promise<Checkup[]>;
+    findCheckups(patientId: string): Promise<Array<Checkup | null>>;
     findPhoto(data: IFindPhotoDTO): Promise<DentalPhoto | null>;
     registerAnswer(data: ICreateCheckupAnswerDTO): Promise<CheckupAnswer>;
     registerPhoto(data: IRegisterPhotoDTO): Promise<DentalPhoto>;

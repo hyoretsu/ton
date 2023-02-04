@@ -1,16 +1,15 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import Appointments from 'screens/Appointments';
 import Chat, { ChatParams } from 'screens/Chat';
-import CheckupBegin from 'screens/CheckupBegin';
+import Checkup from 'screens/Checkup';
 import CheckupCamera from 'screens/CheckupCamera';
 import CheckupConfirm, { CheckupConfirmParams } from 'screens/CheckupConfirm';
-import CheckupInstructions from 'screens/CheckupInstructions';
+import CheckupInstructions, { CheckupInstructionsParams } from 'screens/CheckupInstructions';
 import Diary from 'screens/Diary';
 import EditProfile from 'screens/EditProfile';
 import Educational from 'screens/Educational';
 import Home from 'screens/Home';
 import Profile from 'screens/Profile';
-import Symptoms from 'screens/Symptoms';
 import mainTheme from 'ui/theme/main';
 
 import { InfoProvider } from '@contexts/info';
@@ -18,16 +17,15 @@ import { InfoProvider } from '@contexts/info';
 export type RootStackParamList = {
     Appointments: undefined;
     Chat?: ChatParams;
-    CheckupBegin: undefined;
+    Checkup: undefined;
     CheckupCamera: undefined;
     CheckupConfirm: CheckupConfirmParams;
-    CheckupInstructions: undefined;
+    CheckupInstructions: CheckupInstructionsParams;
     Diary: undefined;
     EditProfile: undefined;
     Educational: undefined;
     Home: undefined;
     Profile: undefined;
-    Symptoms: undefined;
 };
 
 const App = createStackNavigator<RootStackParamList>();
@@ -46,7 +44,7 @@ const AppRoutes: React.FC = () => {
             >
                 <App.Screen name="Appointments" component={Appointments} />
                 <App.Screen name="Chat" component={Chat} />
-                <App.Screen name="CheckupBegin" component={CheckupBegin} />
+                <App.Screen name="Checkup" component={Checkup} />
                 <App.Screen name="CheckupCamera" component={CheckupCamera} />
                 <App.Screen name="CheckupConfirm" component={CheckupConfirm} />
                 <App.Screen name="CheckupInstructions" component={CheckupInstructions} />
@@ -55,7 +53,6 @@ const AppRoutes: React.FC = () => {
                 <App.Screen name="Educational" component={Educational} />
                 <App.Screen name="Home" component={Home} />
                 <App.Screen name="Profile" component={Profile} />
-                <App.Screen name="Symptoms" component={Symptoms} />
             </App.Navigator>
         </InfoProvider>
     );

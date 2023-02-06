@@ -8,4 +8,6 @@ export const Button = styled.View`
 
 export const Icon = styled(FeatherIcon)`
     color: ${({ theme }) => theme.colors.purple};
+
+    margin: 0 0.5vw 0 -0.5vw;
 `;

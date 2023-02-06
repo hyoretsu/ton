@@ -2,33 +2,94 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
 import styled from 'rn-css';
 
+interface MessageProps {
+    sentFromUser: boolean;
+}
+
 export const Container = styled.View`
     flex: 1;
     flex-direction: column-reverse;
+
+    margin-bottom: 3vh;
 `;
 
-export const MessageView = styled.View`
+export const Header = styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    height: 10vh;
+    background-color: ${({ theme }) => theme.colors.purple};
+`;
+
+export const LogoTitle = styled.View`
+    flex-direction: row;
+    align-items: center;
+`;
+
+export const HeaderTitle = styled.Text`
+    font-family: ${({ theme }) => theme.fontFamily.bold};
+    color: #fff;
+    font-size: 2.5em;
+    text-transform: lowercase;
+
+    margin-left: 2vw;
+`;
+
+export const MessageCompleteView = styled.View<MessageProps>`
+    align-self: ${({ sentFromUser }) => (sentFromUser ? 'flex-end' : 'flex-start')};
+    flex-direction: row;
+
+    margin: 0 4vw 12px;
+`;
+
+export const MessageView = styled.View<MessageProps>`
     flex-direction: row;
     align-items: center;
 
     max-width: 76%;
-    background-color: #a3bee9;
+    background-color: ${({ sentFromUser, theme }) => (sentFromUser ? theme.colors.purple : '#fff')};
 
-    border: 1px #000;
-    border-radius: 12px;
-    padding: 8px;
-    margin-bottom: 12px;
+    border-radius: 3vw;
+    ${({ sentFromUser }) => ({ [`borderBottom${sentFromUser ? 'Right' : 'Left'}Radius`]: 0 })};
+    padding: 1vh 2.8vw 0.5vh ${({ sentFromUser }) => (!sentFromUser ? 6 : 3)}vw;
 `;
 
-export const MessageText = styled.Text`
-    margin-bottom: 2px;
-    margin-right: 8px;
-`;
-
-export const MessageTime = styled.Text`
+export const MessageTriangle = styled.View<MessageProps>`
     align-self: flex-end;
 
-    font-size: 12px;
+    width: 0;
+    height: 0;
+    background-color: transparent;
+
+    border-style: solid;
+    border-width: ${({ sentFromUser }) => (sentFromUser ? '2vh 0 0 2vw' : '0 0 2vh 2vw')};
+    border-color: transparent;
+    ${({ sentFromUser, theme }) => ({
+        [sentFromUser ? 'borderLeftColor' : 'borderBottomColor']: sentFromUser ? theme.colors.purple : '#fff',
+    })};
+`;
+
+export const MessageSender = styled.Text<MessageProps>`
+    font-family: ${({ theme }) => theme.fontFamily.bold};
+    color: ${({ sentFromUser, theme }) => (sentFromUser ? '#fff' : theme.colors.purple)};
+    font-size: 0.7em;
+`;
+
+export const MessageText = styled.Text<MessageProps>`
+    font-family: ${({ sentFromUser, theme }) => (!sentFromUser ? theme.fontFamily.medium : theme.fontFamily.regular)};
+    color: ${({ sentFromUser, theme }) => (sentFromUser ? '#fff' : theme.colors.purple)};
+
+    margin: 0.8vh 13.5vw 0.7vh 0;
+`;
+
+export const MessageTime = styled.Text<MessageProps>`
+    align-self: ${({ sentFromUser }) => (sentFromUser ? 'flex-end' : 'flex-start')};
+
+    font-family: ${({ theme }) => theme.fontFamily.regular};
+    font-style: italic;
+    font-size: 0.5em;
+    color: ${({ sentFromUser, theme }) => (sentFromUser ? '#fff' : theme.colors.purple)};
 `;
 
 export const MessageSpeaker = styled(TouchableOpacity).attrs({ children: <Icon name="sound" size={20} /> })`
@@ -47,44 +108,57 @@ export const DateSection = styled.View`
 
 export const DateSectionMark = styled.View`
     position: absolute;
-    top: 10px;
+    top: 50%;
 
-    width: 100%;
-    height: 1px;
-    background-color: #0005;
+    width: 87vw;
+    height: 0.2vh;
+    background-color: ${({ theme }) => theme.colors.purple};
 `;
 
 export const DateSectionText = styled.Text`
-    background-color: #c4d3f2;
+    font-family: ${({ theme }) => theme.fontFamily.bold};
+    color: #fff;
+    background-color: ${({ theme }) => theme.colors.purple};
+
+    padding: 0.9vh 3vw 1vh;
+    border-radius: 50vw;
 `;
 
 export const InputView = styled.View`
     flex-direction: row;
 
     width: 100%;
-    height: 40px;
 
     margin: 12px 0 16px;
 `;
 
-export const UserInput = styled.TextInput`
+export const InputVoiceView = styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     flex: 1;
 
     background-color: #fff;
-    color: #000;
 
     border-radius: 30px;
-    padding: 0 12px;
-    margin-left: 16px;
+    padding: 0 4vw 0 5vw;
+    margin: 0 3vw 0 4vw;
 `;
 
-export const MessageSend = styled.TouchableOpacity`
+export const UserInput = styled.TextInput`
+    color: #000;
+`;
+
+export const VoiceInput = styled(TouchableOpacity)``;
+
+export const MessageSend = styled(TouchableOpacity)`
     align-items: center;
     justify-content: center;
 
-    width: 40px;
-    background-color: #8099ceaa;
+    aspect-ratio: 1;
+    width: 12vw;
+    background-color: ${({ theme }) => theme.colors.purple};
 
-    border-radius: 20px;
-    margin: 0 16px;
+    margin-right: 5vw;
+    border-radius: 50vw;
 `;

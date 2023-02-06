@@ -1,14 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { vh, vw } from '@units/viewport';
 import { Message } from 'backend';
 import { RouteParams } from 'data/@types/navigation';
 import { format } from 'date-fns';
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, StatusBar, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Tts from 'react-native-tts';
 import Icon from 'react-native-vector-icons/Feather';
 import { io, Socket } from 'socket.io-client';
+import mainTheme from 'ui/theme/main';
 
+import BackButton from '@components/BackButton';
 import BottomBar from '@components/BottomBar';
 import { useAuth } from '@contexts/auth';
 
@@ -16,17 +19,27 @@ import api from '@api';
 
 import {
     Container,
-    MessageView,
-    MessageTime,
-    MessageText,
-    UserInput,
-    InputView,
-    MessageSend,
     DateSection,
     DateSectionMark,
     DateSectionText,
-    MessageSpeaker,
+    Header,
+    HeaderTitle,
+    InputView,
+    LogoTitle,
+    MessageView,
+    MessageSend,
+    MessageSender,
+    MessageText,
+    MessageTime,
+    UserInput,
+    MessageTriangle,
+    MessageCompleteView,
+    InputVoiceView,
+    VoiceInput,
 } from '@styles/Chat';
+
+import MinLogo from 'assets/minLogo.svg';
+import Send from 'assets/send.svg';
 
 interface DateDict {
     [id: string]: string;
@@ -129,53 +142,77 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                     <ActivityIndicator size="large" color="#0006" />
                 </View>
             ) : (
-                <Container>
-                    <InputView>
-                        <UserInput onChangeText={setCurrentMessage} value={currentMessage} />
-                        <MessageSend onPress={() => sendMessage(currentMessage)}>
-                            <Icon name="send" size={28} style={{ left: -1, top: 1 }} />
-                        </MessageSend>
-                    </InputView>
+                <>
+                    <StatusBar backgroundColor={mainTheme.colors.purple} />
+                    <Container>
+                        <InputView>
+                            <InputVoiceView>
+                                <UserInput
+                                    placeholder="Mensagem"
+                                    placeholderTextColor={mainTheme.colors.gray}
+                                    onChangeText={setCurrentMessage}
+                                    value={currentMessage}
+                                />
+                                <VoiceInput>
+                                    <Icon name="mic" size={6 * vw} color={mainTheme.colors.purple} />
+                                </VoiceInput>
+                            </InputVoiceView>
+                            <MessageSend onPress={() => sendMessage(currentMessage)}>
+                                <Send height={7 * vw} width={7 * vw} style={{ left: -2, top: 2 }} />
+                            </MessageSend>
+                        </InputView>
 
-                    <FlatList
-                        data={messages}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item: message, index }) => (
-                            <>
-                                <MessageView
-                                    style={[
-                                        index === messages.length - 1 && { marginBottom: 0 },
-                                        message.senderId !== user.id
-                                            ? {
-                                                  marginLeft: 16,
-                                                  marginRight: 'auto',
-                                              }
-                                            : {
-                                                  marginLeft: 'auto',
-                                                  marginRight: 16,
-                                              },
-                                    ]}
-                                >
-                                    <View>
-                                        <MessageText>{message.body}</MessageText>
-                                        <MessageTime>{format(new Date(message.createdAt), 'HH:mm')}</MessageTime>
-                                    </View>
-                                    {message.senderId !== user.id && (
+                        <FlatList
+                            data={messages}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={({ item: message, index }) => {
+                                const sentFromUser = message.senderId === user.id;
+                                return (
+                                    <>
+                                        <MessageCompleteView sentFromUser={sentFromUser}>
+                                            {!sentFromUser && <MessageTriangle sentFromUser={sentFromUser} />}
+                                            <MessageView
+                                                sentFromUser={sentFromUser}
+                                                style={index === messages.length - 1 && { marginBottom: 0 }}
+                                            >
+                                                <View>
+                                                    <MessageSender sentFromUser={sentFromUser}>
+                                                        {message.sender.name}
+                                                    </MessageSender>
+                                                    <MessageText sentFromUser={sentFromUser}>
+                                                        {message.body}
+                                                    </MessageText>
+                                                    <MessageTime sentFromUser={sentFromUser}>
+                                                        {format(new Date(message.createdAt), 'HH:mm')}
+                                                    </MessageTime>
+                                                </View>
+                                                {/* {message.senderId !== user.id && (
                                         <MessageSpeaker onPress={() => Tts.speak(message.body)} />
-                                    )}
-                                </MessageView>
-                                {Object.keys(dates).includes(message.id) && (
-                                    <DateSection>
-                                        <DateSectionMark />
-                                        <DateSectionText>{dates[message.id]}</DateSectionText>
-                                    </DateSection>
-                                )}
-                            </>
-                        )}
-                        inverted
-                        contentContainerStyle={{ flexDirection: 'column-reverse', paddingBottom: 12 }}
-                    />
-                </Container>
+                                    )} */}
+                                            </MessageView>
+                                            {sentFromUser && <MessageTriangle sentFromUser={sentFromUser} />}
+                                        </MessageCompleteView>
+                                        {Object.keys(dates).includes(message.id) && (
+                                            <DateSection>
+                                                <DateSectionMark />
+                                                <DateSectionText>{dates[message.id]}</DateSectionText>
+                                            </DateSection>
+                                        )}
+                                    </>
+                                );
+                            }}
+                            inverted
+                            contentContainerStyle={{ flexDirection: 'column-reverse', paddingBottom: 12 }}
+                        />
+                        <Header>
+                            <BackButton size={9 * vw} style={{ left: 3 * vw, position: 'absolute' }} />
+                            <LogoTitle>
+                                <MinLogo width={9 * vw} style={{ marginTop: 0.8 * vh }} />
+                                <HeaderTitle>TON</HeaderTitle>
+                            </LogoTitle>
+                        </Header>
+                    </Container>
+                </>
             )}
 
             <BottomBar />

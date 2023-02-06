@@ -23,6 +23,9 @@ export default class MessagesRepository implements IMessagesRepository {
                     },
                 ],
             },
+            include: {
+                sender: true,
+            },
         });
 
         return messages;

@@ -4,7 +4,7 @@ import { Message } from 'backend';
 import { RouteParams } from 'data/@types/navigation';
 import { format } from 'date-fns';
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, StatusBar, View } from 'react-native';
+import { ActivityIndicator, StatusBar, Image, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Tts from 'react-native-tts';
 import Icon from 'react-native-vector-icons/Feather';
@@ -167,6 +167,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                             showsVerticalScrollIndicator={false}
                             renderItem={({ item: message, index }) => {
                                 const sentFromUser = message.senderId === user.id;
+
                                 return (
                                     <>
                                         <MessageCompleteView sentFromUser={sentFromUser}>
@@ -179,9 +180,24 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                                                     <MessageSender sentFromUser={sentFromUser}>
                                                         {message.sender.name}
                                                     </MessageSender>
-                                                    <MessageText sentFromUser={sentFromUser}>
-                                                        {message.body}
-                                                    </MessageText>
+                                                    {message.body.startsWith('img:') ? (
+                                                        <Image
+                                                            source={{
+                                                                uri: `http://192.168.0.5:3333/files/${
+                                                                    message.body.split('img:')[1]
+                                                                }`,
+                                                            }}
+                                                            style={{
+                                                                height: 50 * vh,
+                                                                width: 60 * vw,
+                                                            }}
+                                                            resizeMode="contain"
+                                                        />
+                                                    ) : (
+                                                        <MessageText sentFromUser={sentFromUser}>
+                                                            {message.body}
+                                                        </MessageText>
+                                                    )}
                                                     <MessageTime sentFromUser={sentFromUser}>
                                                         {format(new Date(message.createdAt), 'HH:mm')}
                                                     </MessageTime>

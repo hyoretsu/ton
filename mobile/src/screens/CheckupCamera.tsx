@@ -65,7 +65,15 @@ const CheckupCamera: React.FC = () => {
 
     return (
         <>
-            <Camera ref={camera} device={device} photo enableZoomGesture style={StyleSheet.absoluteFill} isActive />
+            <Camera
+                ref={camera}
+                device={device}
+                photo
+                orientation="portrait"
+                enableZoomGesture
+                style={StyleSheet.absoluteFill}
+                isActive
+            />
             <TouchableWithoutFeedback onPress={focus}>
                 <Interface>
                     {coords && (

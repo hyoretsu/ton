@@ -1,6 +1,9 @@
 import { inject, injectable } from 'tsyringe';
 
+import IMailProvider from '@shared/containers/providers/MailProvider/models/IMailProvider';
+
 import ICheckupsRepository from '../repositories/ICheckupsRepository';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
     answers: Record<string, string>;
@@ -13,6 +16,12 @@ export default class FinishCheckupService {
     constructor(
         @inject('CheckupsRepository')
         private checkupsRepository: ICheckupsRepository,
+
+        @inject('MailProvider')
+        private mailProvider: IMailProvider,
+
+        @inject('UsersRepository')
+        private usersRepository: IUsersRepository,
     ) {}
 
     public async execute({ answers, photos, userId }: IRequest): Promise<void> {
@@ -34,6 +43,20 @@ export default class FinishCheckupService {
                 category: photo.fieldname,
                 fileName: photo.filename,
             });
+        });
+
+        const doctor = await this.usersRepository.findDoctorByPatientId(userId);
+        if (!doctor) {
+            return;
+        }
+
+        await this.mailProvider.sendMail({
+            to: {
+                email: doctor.email,
+                name: doctor.name,
+            },
+            subject: '[TON] Um paciente acabou de finalizar um checkup',
+            body: 'Acesse o painel administrativo para checar as fotos assim que puder.',
         });
     }
 }

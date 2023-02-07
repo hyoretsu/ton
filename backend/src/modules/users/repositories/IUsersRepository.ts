@@ -9,5 +9,6 @@ export default interface IUsersRepository {
     findByEmail(email: string): Promise<User | null>;
     findById(id: string): Promise<User | null>;
     findByPhone(phoneNumber: string): Promise<User | null>;
+    findDoctorByPatientId(id: string): Promise<User | null>;
     update(userId: string, updatedInfo: Partial<User>): Promise<User>;
 }

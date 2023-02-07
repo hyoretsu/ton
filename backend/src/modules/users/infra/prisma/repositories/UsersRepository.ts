@@ -53,6 +53,20 @@ export default class UsersRepository implements IUsersRepository {
         return user;
     }
 
+    public async findDoctorByPatientId(id: string): Promise<User | null> {
+        const patient = await prisma.user.findUnique({
+            where: { id },
+        });
+
+        const doctor = await prisma.user.findFirst({
+            where: {
+                id: patient?.doctorId as string,
+            },
+        });
+
+        return doctor;
+    }
+
     public async update(id: string, data: Partial<User>): Promise<User> {
         const updatedUser = await prisma.user.update({
             where: { id },

@@ -1,5 +1,5 @@
 interface IMailConfig {
-    driver: 'ethereal';
+    driver: 'ethereal' | 'nodemailer';
     defaults: {
         from: {
             email: string;

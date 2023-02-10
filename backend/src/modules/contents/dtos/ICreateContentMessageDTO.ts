@@ -1,4 +1,5 @@
 export default interface ICreateContentMessageDTO {
     body: string;
-    contentId: string;
+    questionId?: string;
+    prequelId?: string;
 }

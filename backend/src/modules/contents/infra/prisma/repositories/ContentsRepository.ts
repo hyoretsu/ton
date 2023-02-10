@@ -1,8 +1,8 @@
-import { Content, ContentMessage, Prisma } from '@prisma/client';
+import { Content, ContentMessage } from '@prisma/client';
 
 import ICreateContentDTO from '@modules/contents/dtos/ICreateContentDTO';
 import ICreateContentMessageDTO from '@modules/contents/dtos/ICreateContentMessageDTO';
-import IContentsRepository from '@modules/contents/repositories/IContentsRepository';
+import IContentsRepository, { CompleteContentMessage } from '@modules/contents/repositories/IContentsRepository';
 import { prisma } from '@shared/infra/http/server';
 
 export default class ContentsRepository implements IContentsRepository {
@@ -30,15 +30,26 @@ export default class ContentsRepository implements IContentsRepository {
         return contents;
     }
 
-    public async findByTitle(title: string): Promise<Prisma.ContentGetPayload<{ include: { messages: true } }> | null> {
-        const content = await prisma.content.findFirst({
-            where: { title },
+    public async findByTitle(title: string): Promise<Content | null> {
+        const content = await prisma.content.findFirst({ where: { title } });
+
+        return content;
+    }
+
+    public async findMessageById(id: string): Promise<CompleteContentMessage | null> {
+        const message = await prisma.contentMessage.findFirst({
+            where: { id },
             include: {
-                messages: true,
+                answer: {
+                    include: {
+                        sequel: true,
+                    },
+                },
+                sequel: true,
             },
         });
 
-        return content;
+        return message;
     }
 
     public async registerMessage(data: ICreateContentMessageDTO): Promise<ContentMessage> {

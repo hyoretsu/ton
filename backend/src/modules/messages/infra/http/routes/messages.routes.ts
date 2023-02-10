@@ -16,6 +16,7 @@ messagesRouter.post(
         body: {
             body: Joi.string().required(),
             recipientId: Joi.string().required(),
+            sequelId: Joi.string(),
         },
     }),
     messagesController.create,

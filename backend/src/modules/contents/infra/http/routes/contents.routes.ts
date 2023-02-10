@@ -11,6 +11,7 @@ contentsRouter.post(
     '/',
     celebrate({
         body: {
+            answers: Joi.array().items(Joi.string()).required(),
             condition: Joi.number().required(),
             messages: Joi.array().items(Joi.string()).required(),
             title: Joi.string().required(),

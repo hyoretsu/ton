@@ -1,11 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { vh, vw } from '@units/viewport';
-import { Message } from 'backend';
+import { ContentMessage, Message } from 'backend';
 import { RouteParams } from 'data/@types/navigation';
+import { wait } from 'data/utils';
 import { format } from 'date-fns';
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StatusBar, Image, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import Tts from 'react-native-tts';
 import Icon from 'react-native-vector-icons/Feather';
 import { io, Socket } from 'socket.io-client';
@@ -53,6 +54,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     const { user } = useAuth();
 
     const [messages, setMessages] = useState<Message[]>([]);
+    const [currentAnswer, setCurrentAnswer] = useState<ContentMessage | null>();
     const [currentMessage, setCurrentMessage] = useState('');
     const [dates, setDates] = useState<DateDict>({});
     const [loading, setLoading] = useState(true);
@@ -66,15 +68,14 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     }, []);
 
     const sendMessage = useCallback(
-        async (message: string) => {
-            if (message) {
-                await api.post('/messages', {
-                    body: message,
-                    recipientId: user.doctorId,
-                });
+        async (message: string, sequelId?: string) => {
+            await api.post('/messages', {
+                body: message,
+                recipientId: user.doctorId,
+                sequelId,
+            });
 
-                setCurrentMessage('');
-            }
+            setCurrentMessage('');
         },
         [user],
     );
@@ -90,7 +91,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
             await updateMessages();
             setLoading(false);
 
-            setSocket(io('http://192.168.0.5:3332'));
+            setSocket(io('http://192.168.0.98:3332'));
 
             if (route.params) {
                 sendMessage(route.params.content);
@@ -116,6 +117,11 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
         if (!socket) return;
 
         socket.on('chat', () => updateMessages());
+        socket.on('answer', async (answer: ContentMessage) => {
+            await updateMessages();
+            await wait(2000);
+            setCurrentAnswer(answer);
+        });
     }, [socket, updateMessages]);
 
     useEffect(() => {
@@ -162,6 +168,39 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                             </MessageSend>
                         </InputView>
 
+                        {currentAnswer && (
+                            <TouchableOpacity
+                                onPress={async () => {
+                                    sendMessage(currentAnswer.body, currentAnswer.sequel?.id);
+                                    setCurrentAnswer(null);
+                                }}
+                                containerStyle={{
+                                    alignSelf: 'flex-end',
+                                    borderRadius: 3 * vw,
+                                    marginRight: 5 * vw,
+                                }}
+                            >
+                                <MessageView
+                                    sentFromUser
+                                    style={{
+                                        borderBottomRightRadius: 3 * vw,
+                                        maxWidth: 40 * vw,
+                                        paddingRight: 0,
+                                    }}
+                                >
+                                    <MessageText
+                                        sentFromUser
+                                        style={{
+                                            fontFamily: mainTheme.fontFamily.bold,
+                                            width: '100%',
+                                        }}
+                                    >
+                                        {currentAnswer.body}
+                                    </MessageText>
+                                </MessageView>
+                            </TouchableOpacity>
+                        )}
+
                         <FlatList
                             data={messages}
                             showsVerticalScrollIndicator={false}
@@ -183,7 +222,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                                                     {message.body.startsWith('img:') ? (
                                                         <Image
                                                             source={{
-                                                                uri: `http://192.168.0.5:3333/files/${
+                                                                uri: `http://192.168.0.98:3333/files/${
                                                                     message.body.split('img:')[1]
                                                                 }`,
                                                             }}

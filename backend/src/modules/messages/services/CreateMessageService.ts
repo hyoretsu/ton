@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+import { wait } from '@hyoretsu/shared.utils';
 import { Message } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
@@ -10,6 +12,7 @@ import ICreateMessageDTO from '../dtos/ICreateMessageDTO';
 import IMessagesRepository from '../repositories/IMessagesRepository';
 
 interface IRequest extends ICreateMessageDTO {
+    sequelId?: string;
     socketId: string;
 }
 
@@ -26,7 +29,7 @@ export default class CreateMessageService {
         private usersRepository: IUsersRepository,
     ) {}
 
-    public async execute({ body, recipientId, senderId }: IRequest): Promise<Message> {
+    public async execute({ body, recipientId, senderId, sequelId }: IRequest): Promise<Message> {
         if (body === '') {
             throw new AppError('Please, send a message body.');
         }
@@ -43,26 +46,36 @@ export default class CreateMessageService {
 
         const message = await this.messagesRepository.create({ body, recipientId, senderId });
 
-        io.emit('chat');
-
         const foundContent = await this.contentsRepository.findByTitle(body);
-        if (foundContent) {
-            const answers = foundContent.messages.map(msg => msg.body);
+        if (foundContent || sequelId) {
+            let nextMessage = await this.contentsRepository.findMessageById(
+                (sequelId || foundContent?.firstMessageId) as string,
+            );
 
-            answers.forEach(async (answer, i) => {
-                await new Promise(res => {
-                    setTimeout(res, 2000 * (i + 1));
-                });
+            while (true) {
+                io.emit('chat');
+
+                await wait(2000);
 
                 await this.messagesRepository.create({
-                    body: answer,
+                    body: nextMessage?.body as string,
                     recipientId: senderId,
                     senderId: recipientId,
                 });
 
-                io.emit('chat');
-            });
+                if (!nextMessage?.sequel) {
+                    if (nextMessage?.answer) {
+                        io.emit('answer', nextMessage.answer);
+                    }
+
+                    break;
+                }
+
+                nextMessage = await this.contentsRepository.findMessageById(nextMessage.sequel.id);
+            }
         }
+
+        io.emit('chat');
 
         return message;
     }

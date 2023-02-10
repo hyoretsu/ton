@@ -39,7 +39,7 @@ const CheckupInstructions: React.FC<RouteParams<CheckupInstructionsParams>> = ({
             <Title>{step}</Title>
             <Instructions>{instructions[titles.indexOf(step)]}</Instructions>
             <Body>
-                {example && <Example source={{ uri: `http://192.168.0.5:3333/files/${example.fileName}` }} />}
+                {example && <Example source={{ uri: `http://192.168.0.98:3333/files/${example.fileName}` }} />}
 
                 <Button onPress={() => navigate('CheckupCamera')} style={{ marginTop: 16, marginBottom: 12 }}>
                     Tirar foto

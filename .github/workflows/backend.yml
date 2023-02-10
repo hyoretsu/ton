@@ -50,6 +50,7 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         source: "package.json,pnpm-lock.yaml,backend/dist,backend/package.json"
         target: "/srv/ton"
+        overwrite: true
 
     - name: Install dependencies on server
       uses: appleboy/ssh-action@master

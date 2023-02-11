@@ -48,6 +48,8 @@ export default class CreateMessageService {
 
         const foundContent = await this.contentsRepository.findByTitle(body);
         if (foundContent || sequelId) {
+            const botId = await this.usersRepository.findByEmail(process.env.MAIL_DEFAULT_ADDRESS as string);
+
             let nextMessage = await this.contentsRepository.findMessageById(
                 (sequelId || foundContent?.firstMessageId) as string,
             );
@@ -60,7 +62,7 @@ export default class CreateMessageService {
                 await this.messagesRepository.create({
                     body: nextMessage?.body as string,
                     recipientId: senderId,
-                    senderId: recipientId,
+                    senderId: botId?.id as string,
                 });
 
                 if (!nextMessage?.sequel) {

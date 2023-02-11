@@ -4,9 +4,9 @@ import { ContentMessage, Message } from 'backend';
 import { RouteParams } from 'data/@types/navigation';
 import { wait } from 'data/utils';
 import { format } from 'date-fns';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, StatusBar, Image, View } from 'react-native';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Tts from 'react-native-tts';
 import Icon from 'react-native-vector-icons/Feather';
 import { io, Socket } from 'socket.io-client';
@@ -37,6 +37,7 @@ import {
     MessageCompleteView,
     InputVoiceView,
     VoiceInput,
+    MessageList,
 } from '@styles/Chat';
 
 import MinLogo from 'assets/minLogo.svg';
@@ -53,6 +54,7 @@ export interface ChatParams {
 const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     const { user } = useAuth();
 
+    const messageListRef = useRef<ScrollView>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [currentAnswer, setCurrentAnswer] = useState<ContentMessage | null>();
     const [currentMessage, setCurrentMessage] = useState('');
@@ -132,6 +134,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                 if (Object.values(old).includes(formattedDate)) {
                     return old;
                 }
+                console.log(message.body);
 
                 return {
                     ...old,
@@ -201,14 +204,22 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                             </TouchableOpacity>
                         )}
 
-                        <FlatList
-                            data={messages}
-                            showsVerticalScrollIndicator={false}
-                            renderItem={({ item: message, index }) => {
+                        <MessageList
+                            ref={messageListRef}
+                            onContentSizeChange={() => messageListRef.current?.scrollToEnd()}
+                        >
+                            {messages.map((message, index) => {
                                 const sentFromUser = message.senderId === user.id;
 
                                 return (
-                                    <>
+                                    <View key={index}>
+                                        {Object.keys(dates).includes(message.id) && (
+                                            <DateSection>
+                                                <DateSectionMark />
+                                                <DateSectionText>{dates[message.id]}</DateSectionText>
+                                            </DateSection>
+                                        )}
+
                                         <MessageCompleteView sentFromUser={sentFromUser}>
                                             {!sentFromUser && <MessageTriangle sentFromUser={sentFromUser} />}
                                             <MessageView
@@ -247,18 +258,11 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                                             </MessageView>
                                             {sentFromUser && <MessageTriangle sentFromUser={sentFromUser} />}
                                         </MessageCompleteView>
-                                        {Object.keys(dates).includes(message.id) && (
-                                            <DateSection>
-                                                <DateSectionMark />
-                                                <DateSectionText>{dates[message.id]}</DateSectionText>
-                                            </DateSection>
-                                        )}
-                                    </>
+                                    </View>
                                 );
-                            }}
-                            inverted
-                            contentContainerStyle={{ flexDirection: 'column-reverse', paddingBottom: 12 }}
-                        />
+                            })}
+                        </MessageList>
+
                         <Header>
                             <BackButton size={9 * vw} style={{ left: 3 * vw, position: 'absolute' }} />
                             <LogoTitle>

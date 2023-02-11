@@ -1,4 +1,5 @@
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { vh } from '@units/viewport';
+import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
 import styled from 'rn-css';
 
@@ -35,6 +36,13 @@ export const HeaderTitle = styled.Text`
 
     margin-left: 2vw;
 `;
+
+export const MessageList = styled(ScrollView).attrs({
+    contentContainerStyle: {
+        justifySelf: 'flex-end',
+        paddingTop: 2 * vh,
+    },
+})``;
 
 export const MessageCompleteView = styled.View<MessageProps>`
     align-self: ${({ sentFromUser }) => (sentFromUser ? 'flex-end' : 'flex-start')};
@@ -145,7 +153,9 @@ export const InputVoiceView = styled.View`
     margin: 0 3vw 0 4vw;
 `;
 
-export const UserInput = styled.TextInput`
+export const UserInput = styled(TextInput)`
+    flex: 1;
+
     color: #000;
 `;
 

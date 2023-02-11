@@ -26,6 +26,9 @@ export default class MessagesRepository implements IMessagesRepository {
             include: {
                 sender: true,
             },
+            orderBy: {
+                createdAt: 'asc',
+            },
         });
 
         return messages;

@@ -1,8 +1,10 @@
 import Link from '@hyoretsu/components.next-link';
 import { formatPhoneNumber } from '@hyoretsu/shared.utils';
 import { User } from 'backend';
+import { useAuth } from 'data/contexts/auth';
 import { differenceInYears } from 'date-fns';
 import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { BsChatLeftTextFill, BsPlusSquareFill } from 'react-icons/bs';
 import { FiTarget } from 'react-icons/fi';
@@ -12,17 +14,26 @@ import api from '@api';
 import { Patient, PatientButtons, PatientInfo, Patients, PatientTextGray, Styling } from '@styles/admin/dashboard';
 
 const Dashboard: React.FC = () => {
+    const { loading, user } = useAuth();
+    const { replace } = useRouter();
+
     const [patients, setPatients] = useState<User[]>([]);
 
     useEffect(() => {
         const execute = async (): Promise<void> => {
-            const { data } = await api.get('/users');
+            if (!user) {
+                if (!loading) {
+                    replace('/login');
+                }
+            } else {
+                const { data } = await api.get('/users');
 
-            setPatients(data);
+                setPatients(data);
+            }
         };
 
         execute();
-    }, []);
+    }, [loading, replace, user]);
 
     return (
         <>

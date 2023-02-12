@@ -10,15 +10,17 @@ export interface AuthInfo {
 
 interface AuthContextData {
     finishLogin(credentials: AuthInfo): void;
+    loading: boolean;
     signOut(): void;
     updateUser(user: User): void;
-    user: User;
+    user: User | null;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-    const [data, setData] = useState<User>({} as User);
+    const [data, setData] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const token = localStorage.getItem('@ton:token');
@@ -29,6 +31,8 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
             setData(JSON.parse(user));
         }
+
+        setLoading(false);
     }, []);
 
     const finishLogin = useCallback(({ token, user }: AuthInfo) => {
@@ -54,8 +58,8 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }, []);
 
     const authData = useMemo(
-        () => ({ finishLogin, signOut, updateUser, user: data }),
-        [finishLogin, signOut, updateUser, data],
+        () => ({ finishLogin, loading, signOut, updateUser, user: data }),
+        [finishLogin, loading, signOut, updateUser, data],
     );
 
     return <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>;

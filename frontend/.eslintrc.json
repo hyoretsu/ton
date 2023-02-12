@@ -44,6 +44,7 @@
                 "react/jsx-indent-props": "off",
                 "react/jsx-one-expression-per-line": "off",
                 "react/jsx-props-no-spreading": "off",
+                "react/no-array-index-key": "warn",
                 "react/no-unescaped-entities": "off",
                 "react/prop-types": "off",
                 "react/react-in-jsx-scope": "off",

@@ -10,7 +10,9 @@ import { siteName as site_name } from './_document';
 import '@public/global.css';
 import '@public/fonts.css';
 import '@public/overrides.css';
-import 'react-datepicker/dist/react-datepicker.css';
+import 'react-calendar/dist/Calendar.css';
+import 'react-date-picker/dist/DatePicker.css';
+// import 'react-datepicker/dist/react-datepicker.css';
 
 const url = 'https://ton.vercel.app';
 

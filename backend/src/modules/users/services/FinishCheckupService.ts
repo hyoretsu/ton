@@ -8,7 +8,7 @@ import IUsersRepository from '../repositories/IUsersRepository';
 interface IRequest {
     answers: Record<string, string>;
     photos: Express.Multer.File[];
-    userId: string;
+    patientId: string;
 }
 
 @injectable()
@@ -24,9 +24,9 @@ export default class FinishCheckupService {
         private usersRepository: IUsersRepository,
     ) {}
 
-    public async execute({ answers, photos, userId }: IRequest): Promise<void> {
+    public async execute({ answers, photos, patientId }: IRequest): Promise<void> {
         const checkup = await this.checkupsRepository.create({
-            patientId: userId,
+            patientId,
         });
 
         Object.entries(answers).forEach(async ([question, answer]) => {
@@ -45,7 +45,11 @@ export default class FinishCheckupService {
             });
         });
 
-        const doctor = await this.usersRepository.findDoctorByPatientId(userId);
+        if (Object.entries(answers).length === 0) {
+            return;
+        }
+
+        const doctor = await this.usersRepository.findDoctorByPatientId(patientId);
         if (!doctor) {
             return;
         }

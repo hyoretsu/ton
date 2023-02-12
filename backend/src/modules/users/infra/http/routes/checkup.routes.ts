@@ -19,7 +19,8 @@ checkupRouter.post(
     celebrate({
         body: {
             // answers: Joi.object().required(),
-            answers: Joi.string().required(),
+            answers: Joi.string(),
+            patientId: Joi.string(),
         },
     }),
     checkupController.create,

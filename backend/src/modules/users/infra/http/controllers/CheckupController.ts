@@ -8,16 +8,16 @@ import UpdateCheckupService from '@modules/users/services/UpdateCheckupService';
 export default class CheckupController {
     public async create(req: Request, res: Response): Promise<Response> {
         const {
-            body: { answers },
+            body: { answers, patientId },
             files,
         } = req;
 
         const FinishCheckup = container.resolve(FinishCheckupService);
 
         const checkup = await FinishCheckup.execute({
-            answers: JSON.parse(answers),
+            answers: answers ? JSON.parse(answers) : {},
             photos: files as Express.Multer.File[],
-            userId: req.user.id,
+            patientId: patientId || req.user.id,
         });
 
         return res.json(checkup);

@@ -6,11 +6,14 @@ export const Styling = styled.div``;
 export const RegisterForm = styled(Form)`
     display: flex;
     flex-direction: column;
+
+    width: 40vw;
 `;
 
 export const FieldGroup = styled.div`
-    display: flex;
-    align-items: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 2vw;
 `;
 
 export const LabelInput = styled.div`
@@ -18,8 +21,4 @@ export const LabelInput = styled.div`
     flex-direction: column;
 
     margin-bottom: 1vh;
-
-    & + & {
-        margin-left: 2vw;
-    }
 `;

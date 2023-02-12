@@ -1,21 +1,23 @@
 import Modal from '@hyoretsu/components.modal';
+import { range } from '@hyoretsu/shared.utils';
 import { useAuth } from 'data/contexts/auth';
 import { format } from 'date-fns';
 import { Field, Formik } from 'formik';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import DatePicker from 'react-date-picker/dist/entry.nostyle';
 
 import api from '@api';
 
 import { FieldGroup, LabelInput, RegisterForm, Styling } from '@styles/admin/patients/register';
 
 interface FormFields {
-    appointmentsEnd: Date;
-    appointmentsStart: Date;
+    appointmentsEnd: number;
+    appointmentsStart: number;
     birthDate: Date;
     chartNumber: string;
+    checkupPhotos: Record<string, File>;
     city: string;
     email: string;
     name: string;
@@ -25,6 +27,17 @@ interface FormFields {
     phoneNumber: string;
 }
 
+const checkupSteps = [
+    'Sorriso aparente',
+    'Por dentro da bochecha direita',
+    'Por dentro da bochecha esquerda',
+    'Boca aberta com língua para frente',
+    'Boca aberta com língua para direita',
+    'Boca aberta com língua para esquerda',
+    'Debaixo da língua',
+    'Céu da boca',
+];
+
 const Register: React.FC = () => {
     const { user } = useAuth();
     const router = useRouter();
@@ -33,13 +46,6 @@ const Register: React.FC = () => {
     const [isDoctor, setIsDoctor] = useState(false);
 
     const finishRegister = async (values: FormFields): Promise<void> => {
-        const formatDate = (date: Date): number => {
-            return format(new Date(date), 'HH:mm')
-                .split(':')
-                .map((value, index) => (index === 1 ? Number(value) / 60 : Number(value)))
-                .reduce((sum, value) => sum + value, 0);
-        };
-
         try {
             if (isDoctor) {
                 let chartNumber, neoplasia, parentName;
@@ -47,18 +53,26 @@ const Register: React.FC = () => {
                 // eslint-disable-next-line prefer-const
                 ({ chartNumber, neoplasia, parentName, ...values } = values);
 
-                await api.post('/users', {
-                    ...values,
-                    appointmentsEnd: formatDate(values.appointmentsEnd),
-                    appointmentsStart: formatDate(values.appointmentsStart),
-                });
+                await api.post('/users', values);
             } else {
-                let appointmentsEnd, appointmentsStart;
+                let appointmentsEnd, appointmentsStart, checkupPhotos;
                 // @ts-ignore
                 // eslint-disable-next-line prefer-const
-                ({ appointmentsEnd, appointmentsStart, ...values } = values);
+                ({ appointmentsEnd, appointmentsStart, checkupPhotos, ...values } = values);
 
-                await api.post('/users', { ...values, doctorId: user.id });
+                const { data: patient } = await api.post('/users', { ...values, doctorId: user?.id });
+
+                const formData = new FormData();
+                Object.entries(checkupPhotos).forEach(([step, photo]) => {
+                    formData.append(step, photo);
+                });
+                formData.append('patientId', patient.id);
+
+                await api.post('/checkup', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
             }
 
             router.push('/admin/dashboard');
@@ -76,10 +90,11 @@ const Register: React.FC = () => {
             <Styling>
                 <Formik
                     initialValues={{
-                        appointmentsEnd: new Date(),
-                        appointmentsStart: new Date(),
+                        appointmentsEnd: 24,
+                        appointmentsStart: 0,
                         birthDate: new Date(),
                         chartNumber: '',
+                        checkupPhotos: {},
                         city: '',
                         email: '',
                         name: '',
@@ -121,26 +136,53 @@ const Register: React.FC = () => {
                                     <>
                                         <LabelInput>
                                             <label htmlFor="appointmentsStart">Início do atendimento</label>
-                                            <DatePicker
-                                                name="appointmentsStart"
-                                                selected={values.appointmentsStart}
-                                                onChange={date => setFieldValue('appointmentsStart', date)}
-                                                timeIntervals={30}
-                                                showTimeSelectOnly
-                                                dateFormat="p"
-                                            />
+                                            <select
+                                                title="appointmentsStart"
+                                                onChange={e => setFieldValue('appointmentsStart', e.target.value)}
+                                            >
+                                                {range(0, 24, 0.5).map((number, index) => {
+                                                    return (
+                                                        <option value={number} key={index}>
+                                                            {format(
+                                                                new Date(
+                                                                    new Date().setHours(
+                                                                        Math.floor(number / 1),
+                                                                        (number % 1) * 60,
+                                                                    ),
+                                                                ),
+                                                                'H:mm',
+                                                            )}
+                                                        </option>
+                                                    );
+                                                })}
+                                            </select>
                                         </LabelInput>
                                         <LabelInput>
                                             <label htmlFor="appointmentsEnd">Fim do atendimento</label>
-                                            <DatePicker
-                                                name="appointmentsEnd"
-                                                selected={values.appointmentsEnd}
-                                                onChange={date => setFieldValue('appointmentsEnd', date)}
-                                                minTime={values.appointmentsStart}
-                                                timeIntervals={30}
-                                                showTimeSelectOnly
-                                                dateFormat="p"
-                                            />
+                                            <select
+                                                title="appointmentsEnd"
+                                                onChange={e => setFieldValue('appointmentsEnd', e.target.value)}
+                                            >
+                                                {range(Number(values.appointmentsStart) + 0.5, 24 + 0.5, 0.5).map(
+                                                    (number, index) => {
+                                                        const newDate = new Date();
+
+                                                        return (
+                                                            <option key={index}>
+                                                                {format(
+                                                                    new Date(
+                                                                        newDate.setHours(
+                                                                            Math.floor(number / 1),
+                                                                            (number % 1) * 60,
+                                                                        ),
+                                                                    ),
+                                                                    'HH:mm',
+                                                                )}
+                                                            </option>
+                                                        );
+                                                    },
+                                                )}
+                                            </select>
                                         </LabelInput>
                                     </>
                                 ) : (
@@ -173,8 +215,8 @@ const Register: React.FC = () => {
                                     <label htmlFor="birthDate">Data de nascimento</label>
                                     <DatePicker
                                         name="birthDate"
-                                        selected={values.birthDate}
-                                        onChange={date => setFieldValue('birthDate', date)}
+                                        onChange={(date: Date) => setFieldValue('birthDate', date)}
+                                        value={values.birthDate}
                                     />
                                 </LabelInput>
 
@@ -187,6 +229,23 @@ const Register: React.FC = () => {
                                     />
                                 </LabelInput>
                             </FieldGroup>
+
+                            {!isDoctor && (
+                                <FieldGroup>
+                                    {checkupSteps.map((step, index) => (
+                                        <LabelInput key={index}>
+                                            <label htmlFor={`step-${index}`}>{step}</label>
+                                            <input
+                                                id={`step-${index}`}
+                                                type="file"
+                                                onChange={e =>
+                                                    setFieldValue(`checkupPhotos[${step}]`, (e.target.files || [])[0])
+                                                }
+                                            />
+                                        </LabelInput>
+                                    ))}
+                                </FieldGroup>
+                            )}
 
                             <button type="submit">Cadastrar</button>
                         </RegisterForm>

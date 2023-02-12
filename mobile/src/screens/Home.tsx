@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { vw } from '@units/viewport';
 import { Appointment } from 'backend';
-import { format } from 'date-fns';
+import { format, isAfter } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
@@ -42,7 +42,7 @@ const Home: React.FC = () => {
         const execute = async (): Promise<void> => {
             const { data } = await api.get('/appointments');
 
-            setAppointments(data);
+            setAppointments(data.filter((appointment: Appointment) => isAfter(new Date(appointment.time), new Date())));
         };
 
         execute();

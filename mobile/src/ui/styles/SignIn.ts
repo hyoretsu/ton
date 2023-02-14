@@ -12,8 +12,6 @@ export const Container = styled.View`
 export const AppInfo = styled.View`
     align-items: center;
 
-    width: 30vw;
-
     margin-top: 15vw;
 `;
 

@@ -13,6 +13,7 @@ interface ButtonProps extends RectButtonProperties {
     padding?: [number, number];
     paddingHorizontal?: number;
     paddingVertical?: number;
+    selected?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -25,6 +26,7 @@ const Button: React.FC<ButtonProps> = ({
     padding = [1.4 * vh, 6 * vw],
     paddingHorizontal,
     paddingVertical,
+    selected,
     children,
     style,
     ...rest
@@ -37,31 +39,30 @@ const Button: React.FC<ButtonProps> = ({
                     borderRadius: 50 * vw,
                     borderWidth: border ? 0.3 * vw : 0,
                 },
+                fill && {
+                    width: '100%',
+                },
                 style,
             ]}
         >
             <RectButton
-                style={[
-                    {
-                        alignItems: 'center',
-                        backgroundColor: background,
-                        borderRadius: 25,
-                        paddingBottom: paddingVertical || padding[0],
-                        paddingLeft: paddingHorizontal || padding[1],
-                        paddingRight: paddingHorizontal || padding[1],
-                        paddingTop: paddingVertical || padding[0],
-                    },
-                    fill && {
-                        width: '100%',
-                    },
-                ]}
+                style={{
+                    alignItems: 'center',
+                    backgroundColor: selected ? color : background,
+                    borderRadius: 25,
+                    paddingBottom: paddingVertical || padding[0],
+                    paddingLeft: paddingHorizontal || padding[1],
+                    paddingRight: paddingHorizontal || padding[1],
+                    paddingTop: paddingVertical || padding[0],
+                }}
                 {...rest}
             >
                 <Text
                     style={{
-                        color,
+                        color: selected ? background : color,
                         fontFamily: bold ? mainTheme.fontFamily.bold : mainTheme.fontFamily.regular,
                         fontSize,
+                        textAlign: 'center',
                     }}
                 >
                     {children}

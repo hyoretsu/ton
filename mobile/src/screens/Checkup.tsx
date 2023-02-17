@@ -10,8 +10,8 @@ import mainTheme from 'ui/theme/main';
 import BackButton from '@components/BackButton';
 import Button from '@components/Button';
 import Modal from '@components/Modal';
-import OpacityFilter from '@components/OpacityFilter';
 import SymptomQuestions from '@components/SymptomQuestions';
+import { useInfo } from '@contexts/info';
 import { useStorage } from '@contexts/storage';
 
 import {
@@ -30,50 +30,63 @@ import { titles } from 'assets/checkup.json';
 import MinLogoText from 'assets/minLogoText.svg';
 
 const Checkup: React.FC = () => {
+    const { setCurrentCheckupStep } = useInfo();
     const { navigate } = useNavigation();
-    const { checkupProgress } = useStorage();
+    const { checkupProgress, symptomAnswers } = useStorage();
 
     const [infoModalVisible, setInfoModalVisibility] = useState(false);
     const [symptomQuestionsVisible, setSymptomQuestionsVisibility] = useState(false);
     const [thanksModalVisible, setThanksModalVisibility] = useState(false);
 
     const continueCheckup = (): void => {
-        let nextStep = '';
+        if (Object.entries(checkupProgress).length === titles.length) {
+            return;
+        }
 
-        titles.forEach(title => {
-            if (!nextStep && !checkupProgress[title]) {
-                nextStep = title;
+        let nextStep: number;
+
+        titles.forEach((title, index) => {
+            // If it's either undefined or at 0 (falsy)
+            if (nextStep || nextStep === 0) {
+                return;
+            }
+
+            // If there isn't a progress for this step, it's the next step
+            if (!checkupProgress[title]) {
+                nextStep = index;
             }
         });
 
-        navigate('CheckupInstructions', { step: nextStep });
+        // @ts-ignore
+        setCurrentCheckupStep(nextStep);
+        navigate('CheckupInstructions');
     };
 
-    // const finishCheckup = async (): Promise<void> => {
-    //     if (Object.entries(answers).length < (Object.values(answers)[0] === 'Sim' ? 5 : 4)) {
-    //         return;
-    //     }
+    const finishCheckup = async (): Promise<void> => {
+        if (Object.entries(answers).length < (Object.values(answers)[0] === 'Sim' ? 5 : 4)) {
+            return;
+        }
 
-    //     const formData = new FormData();
+        const formData = new FormData();
 
-    //     // Analisar como enviar as respostas da sintomatologia
-    //     Object.entries(checkupProgress).forEach(([key, path]) =>
-    //         formData.append(key, {
-    //             uri: Platform.OS === 'android' ? `file:///${path}` : path,
-    //             type: 'image/jpeg',
-    //             name: (path.match(/mrousavy.*\.jpg/) as string[])[0],
-    //         }),
-    //     );
-    //     formData.append('answers', JSON.stringify(answers));
+        // Analisar como enviar as respostas da sintomatologia
+        Object.entries(checkupProgress).forEach(([key, path]) =>
+            formData.append(key, {
+                uri: Platform.OS === 'android' ? `file:///${path}` : path,
+                type: 'image/jpeg',
+                name: (path.match(/mrousavy.*\.jpg/) as string[])[0],
+            }),
+        );
+        formData.append('answers', JSON.stringify(answers));
 
-    //     await api.post('/checkup', formData, {
-    //         headers: {
-    //             'Content-Type': 'multipart/form-data',
-    //         },
-    //     });
+        await api.post('/checkup', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
 
-    //     await storeValue('checkupProgress', []);
-    // };
+        await storeValue('checkupProgress', []);
+    };
 
     return (
         <>
@@ -113,7 +126,13 @@ const Checkup: React.FC = () => {
                         {range(1, 8 + 1).map(number => (
                             <StepCircle
                                 key={number}
-                                onPress={() => navigate('CheckupInstructions', { step: titles[number - 1] })}
+                                onPress={() => {
+                                    if (checkupProgress[titles[number - 1]]) return;
+
+                                    setCurrentCheckupStep(number - 1);
+
+                                    navigate('CheckupInstructions');
+                                }}
                                 // @ts-ignore
                                 containerStyle={[
                                     {
@@ -152,7 +171,24 @@ const Checkup: React.FC = () => {
                     </CheckupText>
 
                     <SymptomsButton onPress={() => setSymptomQuestionsVisibility(true)}>
-                        <Icon name="edit-3" size={10 * vw} color={mainTheme.colors.purple} />
+                        {Object.entries(symptomAnswers).length >= 5 ? (
+                            <Checkmark
+                                width={15 * vw}
+                                height={5 * vh}
+                                color={mainTheme.colors.gold}
+                                style={{
+                                    marginLeft: 3 * vw,
+                                    marginBottom: 1.5 * vh,
+                                }}
+                            />
+                        ) : (
+                            <Icon
+                                name="edit-3"
+                                size={10 * vw}
+                                color={mainTheme.colors.purple}
+                                style={{ marginLeft: -1, marginTop: -2 }}
+                            />
+                        )}
                     </SymptomsButton>
 
                     <Button
@@ -160,45 +196,38 @@ const Checkup: React.FC = () => {
                         border="#fff"
                         paddingHorizontal={8 * vw}
                         paddingVertical={0.8 * vh}
+                        onPress={finishCheckup}
                     >
                         Enviar
                     </Button>
                 </GenericView>
             </Container>
 
-            {(infoModalVisible || symptomQuestionsVisible || thanksModalVisible) && (
-                <OpacityFilter>
-                    {infoModalVisible && (
-                        <Modal width={80} onConfirm={() => setInfoModalVisibility(false)}>
-                            {
-                                'Olá, vamos checar a saúde da boca do seu filho?\n\nPara isto, vamos precisar que você tire algumas fotos da boca dele, seguindo as instruções que vão aparecer na tela e o exemplo que será mostrado.\n\nApós tirar cada foto, você poderá conferir se realmente ficou boa.\nVamos lá?\n\nAntes de tirar as fotos, gire a tela do seu celular.'
-                            }
-                        </Modal>
-                    )}
+            {infoModalVisible && (
+                <Modal width={80} onConfirm={() => setInfoModalVisibility(false)}>
+                    {
+                        'Olá, vamos checar a saúde da boca do seu filho?\n\nPara isto, vamos precisar que você tire algumas fotos da boca dele, seguindo as instruções que vão aparecer na tela e o exemplo que será mostrado.\n\nApós tirar cada foto, você poderá conferir se realmente ficou boa.\nVamos lá?\n\nAntes de tirar as fotos, gire a tela do seu celular.'
+                    }
+                </Modal>
+            )}
 
-                    {symptomQuestionsVisible && (
-                        <SymptomQuestions
-                            icon={false}
-                            onConfirm={() => setSymptomQuestionsVisibility(false)}
-                            width={90}
-                        />
-                    )}
+            {symptomQuestionsVisible && (
+                <SymptomQuestions icon={false} onConfirm={() => setSymptomQuestionsVisibility(false)} width={90} />
+            )}
 
-                    {thanksModalVisible && (
-                        <Modal
-                            buttonBackground={mainTheme.colors.purple}
-                            buttonBold
-                            buttonText="Início"
-                            buttonTextColor="#fff"
-                            onConfirm={() => navigate('Home')}
-                            style={{ width: 80 * vw }}
-                        >
-                            {
-                                'Fim do exame desta semana! 😄\n\nObrigado por sua ajuda, vamos avaliar as fotos e damos notícias pelo chat.\n\nQualquer coisa, fique à vontade para entrar em contato conosco por lá também.'
-                            }
-                        </Modal>
-                    )}
-                </OpacityFilter>
+            {thanksModalVisible && (
+                <Modal
+                    buttonBackground={mainTheme.colors.purple}
+                    buttonBold
+                    buttonText="Início"
+                    buttonTextColor="#fff"
+                    onConfirm={() => navigate('Home')}
+                    width={80}
+                >
+                    {
+                        'Fim do exame desta semana! 😄\n\nObrigado por sua ajuda, vamos avaliar as fotos e damos notícias pelo chat.\n\nQualquer coisa, fique à vontade para entrar em contato conosco por lá também.'
+                    }
+                </Modal>
             )}
         </>
     );

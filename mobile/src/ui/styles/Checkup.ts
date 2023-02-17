@@ -63,8 +63,12 @@ export const SymptomsButton = styled(TouchableOpacity).attrs({
         marginBottom: 6 * vh,
     },
 })`
+    align-items: center;
+    justify-content: center;
+
+    height: 18vw;
+    width: 18vw;
     background-color: #fff;
 
-    padding: 4vw;
     border-radius: 50vw;
 `;

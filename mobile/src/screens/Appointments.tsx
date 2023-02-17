@@ -7,7 +7,6 @@ import { Text } from 'react-native';
 import BottomBar from '@components/BottomBar';
 import Button from '@components/Button';
 import Modal from '@components/Modal';
-import OpacityFilter from '@components/OpacityFilter';
 import { useAuth } from '@contexts/auth';
 
 import api from '@api';
@@ -81,11 +80,9 @@ const Appointments: React.FC = () => {
             <BottomBar />
 
             {confirmationModalVisible && (
-                <OpacityFilter>
-                    <Modal buttonText="Certo" onConfirm={goBack}>
-                        Agendamento marcado com sucesso!
-                    </Modal>
-                </OpacityFilter>
+                <Modal buttonText="Certo" onConfirm={goBack}>
+                    Agendamento marcado com sucesso!
+                </Modal>
             )}
         </>
     );

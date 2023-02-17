@@ -2,6 +2,7 @@ import styled from 'rn-css';
 
 export const Container = styled.View`
     align-items: center;
+    z-index: 5;
 
     background-color: ${({ theme }) => theme.colors.background};
 

@@ -7,7 +7,6 @@ import * as Yup from 'yup';
 import Button from '@components/Button';
 import Input from '@components/Input';
 import Modal from '@components/Modal';
-import OpacityFilter from '@components/OpacityFilter';
 import { useAuth } from '@contexts/auth';
 
 import api from '@api';
@@ -128,11 +127,9 @@ const SignIn: React.FC = () => {
             </Container>
 
             {modalVisible && (
-                <OpacityFilter>
-                    <Modal buttonText="Entendi" onConfirm={() => setModalVisibility(false)}>
-                        {modalMessage}
-                    </Modal>
-                </OpacityFilter>
+                <Modal buttonText="Entendi" onConfirm={() => setModalVisibility(false)}>
+                    {modalMessage}
+                </Modal>
             )}
         </ScrollView>
     );

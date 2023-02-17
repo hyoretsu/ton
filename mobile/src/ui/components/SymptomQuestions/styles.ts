@@ -1,7 +1,8 @@
 import { vw } from '@units/viewport';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';
-import mainTheme from 'ui/theme/main';
+
+import Button from '@components/Button';
 
 interface SelectionItemProps {
     horizontal?: boolean;
@@ -11,14 +12,6 @@ interface SelectionCircleProps {
     selected: boolean;
 }
 
-export const Container = styled(ScrollView).attrs({
-    contentContainerStyle: {
-        alignItems: 'center',
-    },
-})`
-    margin-bottom: 2vh;
-`;
-
 export const Title = styled.Text`
     font-family: ${({ theme }) => theme.fontFamily.bold};
     font-size: 1.7em;
@@ -27,18 +20,28 @@ export const Title = styled.Text`
 `;
 
 export const TitleDivision = styled.View`
-    width: 28%;
+    width: 15vw;
     height: 0;
 
     border-bottom: 1px ${({ theme }) => theme.colors.purple};
-    margin: 1vh 0;
+    margin-top: 4vh;
+`;
+
+export const Container = styled(ScrollView).attrs({
+    contentContainerStyle: {
+        alignItems: 'center',
+        flexGrow: 1,
+        justifyContent: 'center',
+    },
+})`
+    margin: 2vh 0 1vh;
 `;
 
 export const Symptom = styled.View`
     width: 100%;
     align-items: center;
 
-    margin-bottom: 3vh;
+    margin: 1vh 0 2vh;
 `;
 
 export const SymptomQuestion = styled.Text`
@@ -47,7 +50,7 @@ export const SymptomQuestion = styled.Text`
     color: ${({ theme }) => theme.colors.purple};
     text-align: center;
 
-    margin-bottom: 1vh;
+    margin-bottom: 2vh;
 `;
 
 export const Selection = styled.View`
@@ -65,18 +68,17 @@ export const SelectionItem = styled.View<SelectionItemProps>`
 
     ${({ horizontal }) => horizontal && { width: '100%' }};
 
-    margin: 0 3vw ${({ horizontal }) => (horizontal ? 1 : 0)}vh;
+    margin: 0 5vw ${({ horizontal }) => (horizontal ? 1 : 0)}vh;
 `;
 
 export const SelectionCircle = styled(TouchableOpacity).attrs<SelectionCircleProps>({
     containerStyle: {
         borderRadius: 50 * vw,
-        margin: 0.5 * vw,
     },
 })`
-    width: 5vw;
-    height: 5vw;
-    background-color: ${({ selected, theme }) => (selected ? theme.colors.gold : 'transparent')};
+    width: 6vw;
+    height: 6vw;
+    background-color: ${({ selected, theme }) => (selected ? theme.colors.purple : 'transparent')};
 
     border: 1.5px ${({ theme }) => theme.colors.purple};
     border-radius: 50vw;
@@ -85,25 +87,53 @@ export const SelectionCircle = styled(TouchableOpacity).attrs<SelectionCirclePro
 export const SelectionText = styled.Text`
     font-family: ${({ theme }) => theme.fontFamily.bold};
     color: ${({ theme }) => theme.colors.purple};
-    font-size: 1em;
+    font-size: 0.9em;
+
+    margin-top: 1vh;
 `;
 
-export const SelectionColumn = styled.View``;
+export const SelectionButton = styled(Button)``;
 
-export const SelectionRow = styled.View`
-    flex-direction: row;
-    justify-content: space-evenly;
-
-    margin-right: 5vw;
-`;
-
-export const SelectionInput = styled(TextInput).attrs({
-    placeholderTextColor: mainTheme.colors.purple,
-})`
+export const SelectionInput = styled(TextInput)`
     font-family: ${({ theme }) => theme.fontFamily.bold};
     color: ${({ theme }) => theme.colors.purple};
     font-size: 1em;
-    max-width: 13vw;
 
-    padding: 0;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+
+    border: 1.5px solid ${({ theme }) => theme.colors.purple};
+    border-radius: 50vw;
+`;
+
+export const Footer = styled.View`
+    flex-direction: row;
+    align-items: center;
+
+    width: 100%;
+
+    padding: 0 2vw 1vh;
+`;
+
+interface ProgressCircleProps {
+    current: number;
+}
+
+export const ProgressCircle = styled.View<ProgressCircleProps>`
+    width: 2vw;
+    height: 2vw;
+    background-color: ${({ current, theme }) => {
+        switch (Math.sign(current)) {
+            case -1:
+                return 'transparent';
+            case 1:
+                return theme.colors.purple;
+            default:
+                return theme.colors.gold;
+        }
+    }};
+
+    border: 1.5px ${({ current, theme }) => (current === 0 ? theme.colors.gold : theme.colors.purple)};
+    border-radius: 50vw;
 `;

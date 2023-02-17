@@ -1,17 +1,19 @@
 import { vh, vw } from '@units/viewport';
 import { ReactNode } from 'react';
-import { StyleProp, ViewProps } from 'react-native';
+import { ViewProps } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
 import mainTheme from 'ui/theme/main';
 
 import Button from '@components/Button';
+import OpacityFilter from '@components/OpacityFilter';
 
 import MinLogo from 'assets/minLogo.svg';
 
 import { Container, ModalInfo, ModalText, ModalTitle } from './styles';
 
-export interface ModalProps {
+export interface ModalProps extends ViewProps {
+    button?: boolean;
     buttonBackground?: string;
     buttonBold?: boolean;
     buttonText?: string;
@@ -19,11 +21,11 @@ export interface ModalProps {
     children: string | ReactNode;
     icon?: boolean;
     onConfirm: () => void;
-    style?: StyleProp<ViewProps>;
     width?: number;
 }
 
 const Modal: React.FC<ModalProps> = ({
+    button = true,
     buttonBackground = '',
     buttonBold = false,
     buttonText = 'Entendi',
@@ -35,30 +37,34 @@ const Modal: React.FC<ModalProps> = ({
     width = 67,
 }) => {
     return (
-        <Container style={[{ width: width * vw }, style]}>
-            <TouchableOpacity onPress={onConfirm} containerStyle={{ alignSelf: 'flex-end', borderRadius: 50 * vw }}>
-                <Icon name="x-circle" size={9 * vw} color={mainTheme.colors.purple} />
-            </TouchableOpacity>
+        <OpacityFilter>
+            <Container style={[{ width: width * vw }, style]}>
+                <TouchableOpacity onPress={onConfirm} containerStyle={{ alignSelf: 'flex-end', borderRadius: 50 * vw }}>
+                    <Icon name="x-circle" size={9 * vw} color={mainTheme.colors.purple} />
+                </TouchableOpacity>
 
-            {icon && (
-                <ModalInfo>
-                    <MinLogo height={5 * vh} width={15 * vw} style={{ marginTop: 3 * vh }} />
-                    <ModalTitle>TON</ModalTitle>
-                </ModalInfo>
-            )}
+                {icon && (
+                    <ModalInfo>
+                        <MinLogo height={5 * vh} width={15 * vw} style={{ marginTop: 3 * vh }} />
+                        <ModalTitle>TON</ModalTitle>
+                    </ModalInfo>
+                )}
 
-            {typeof children === 'string' ? <ModalText>{children}</ModalText> : children}
+                {typeof children === 'string' ? <ModalText>{children}</ModalText> : children}
 
-            <Button
-                bold={buttonBold}
-                onPress={onConfirm}
-                color={buttonTextColor}
-                background={buttonBackground}
-                padding={[0.8 * vh, 7 * vw]}
-            >
-                {buttonText}
-            </Button>
-        </Container>
+                {button && (
+                    <Button
+                        bold={buttonBold}
+                        onPress={onConfirm}
+                        color={buttonTextColor}
+                        background={buttonBackground}
+                        padding={[0.8 * vh, 7 * vw]}
+                    >
+                        {buttonText}
+                    </Button>
+                )}
+            </Container>
+        </OpacityFilter>
     );
 };
 

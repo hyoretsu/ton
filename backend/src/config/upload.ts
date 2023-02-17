@@ -24,7 +24,7 @@ export default {
                 return cb(null, uploadsFolder);
             },
             filename(req, file, cb) {
-                return cb(null, file.originalname);
+                return cb(null, `${req.user.id}_${file.originalname}`);
             },
         }),
     },

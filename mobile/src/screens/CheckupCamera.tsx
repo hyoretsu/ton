@@ -5,6 +5,7 @@ import {
     Dimensions,
     GestureResponderEvent,
     Linking,
+    StatusBar,
     StyleSheet,
     TouchableWithoutFeedback,
 } from 'react-native';
@@ -65,6 +66,7 @@ const CheckupCamera: React.FC = () => {
 
     return (
         <>
+            <StatusBar hidden />
             <Camera
                 ref={camera}
                 device={device}

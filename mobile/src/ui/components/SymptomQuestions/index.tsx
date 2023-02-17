@@ -1,20 +1,26 @@
-import { vh } from '@units/viewport';
+import { vh, vw } from '@units/viewport';
 import { useRef, useState } from 'react';
-import { View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Feather';
 import mainTheme from 'ui/theme/main';
 
 import Modal, { ModalProps } from '@components/Modal';
+import Row from '@components/Row';
 import { useStorage } from '@contexts/storage';
+
+import FacePain from 'assets/facePain.svg';
+import FaceSad from 'assets/faceSad.svg';
+import ForkKnife from 'assets/forkKnife.svg';
 
 import {
     Container,
+    Footer,
+    ProgressCircle,
     Selection,
+    SelectionButton,
     SelectionCircle,
-    SelectionColumn,
     SelectionInput,
     SelectionItem,
-    SelectionRow,
     SelectionText,
     Symptom,
     SymptomQuestion,
@@ -23,14 +29,14 @@ import {
 } from './styles';
 
 const SymptomQuestions: React.FC<Pick<ModalProps, 'onConfirm' | 'icon' | 'width'>> = ({ icon, onConfirm, width }) => {
-    const { storeValue } = useStorage();
+    const { storeValue, symptomAnswers: answers, setSymptomAnswers: setAnswers } = useStorage();
 
     const symptomInputRef = useRef<TextInput>(null);
-    const [answers, setAnswers] = useState<Record<string, string>>({});
+    const [symptomsStep, setSymptomsStep] = useState(0);
     const [question2Input, setQuestion2Input] = useState('');
 
     const questions = [
-        'Sentiu dor na boca esta semana?',
+        'Sente ou sentiu dor na boca esta semana?',
         'Se sim, onde foi a dor?',
         'Está se alimentando normal?',
         'Reclamou de sentir a boca mais seca? Com menos saliva que o normal?',
@@ -48,9 +54,7 @@ const SymptomQuestions: React.FC<Pick<ModalProps, 'onConfirm' | 'icon' | 'width'
     ];
 
     const finishQuestions = (): void => {
-        if (Object.values(answers).length >= 4) {
-            storeValue('checkupAnswers', answers);
-        }
+        storeValue('symptomAnswers', answers);
 
         onConfirm();
     };
@@ -58,182 +62,201 @@ const SymptomQuestions: React.FC<Pick<ModalProps, 'onConfirm' | 'icon' | 'width'
     return (
         <Modal
             icon={icon}
-            buttonText="Enviar"
-            buttonTextColor={mainTheme.colors.purple}
-            buttonBackground="transparent"
+            button={false}
             width={width}
             onConfirm={finishQuestions}
             style={{
-                marginBottom: 10 * vh,
-                marginTop: 10 * vh,
+                height: 90 * vh,
                 paddingBottom: 3 * vh,
             }}
         >
+            <Title>O paciente:</Title>
+            <TitleDivision />
             <Container showsVerticalScrollIndicator={false}>
-                <Title>O paciente:</Title>
-                <TitleDivision />
-                <Symptom>
-                    <SymptomQuestion>{questions[0]}</SymptomQuestion>
-                    <Selection>
-                        <SelectionItem>
-                            <SelectionCircle
-                                onPress={() => setAnswers(old => ({ ...old, [questions[0]]: 'Sim' }))}
-                                selected={answers[questions[0]] === 'Sim'}
-                            />
-                            <SelectionText>Sim</SelectionText>
-                        </SelectionItem>
-                        <SelectionItem>
-                            <SelectionCircle
-                                onPress={() => setAnswers(old => ({ ...old, [questions[0]]: 'Não' }))}
-                                selected={answers[questions[0]] === 'Não'}
-                            />
-                            <SelectionText>Não</SelectionText>
-                        </SelectionItem>
-                    </Selection>
-                </Symptom>
-                {answers[questions[0]] === 'Sim' && (
-                    <Symptom>
-                        <SymptomQuestion>{questions[1]}</SymptomQuestion>
-                        <Selection>
-                            <SelectionColumn>
-                                <SelectionItem horizontal>
+                {symptomsStep === 0 && (
+                    <>
+                        <FacePain height={10 * vw} width={10 * vw} />
+
+                        <Symptom>
+                            <SymptomQuestion>{questions[0]}</SymptomQuestion>
+                            <Selection>
+                                <SelectionItem>
                                     <SelectionCircle
-                                        onPress={() => setAnswers(old => ({ ...old, [questions[1]]: painOptions[0] }))}
-                                        selected={answers[questions[1]] === painOptions[0]}
+                                        onPress={() => setAnswers(old => ({ ...old, [questions[0]]: 'Sim' }))}
+                                        selected={answers[questions[0]] === 'Sim'}
                                     />
-                                    <SelectionText>{painOptions[0]}</SelectionText>
+                                    <SelectionText>Sim</SelectionText>
                                 </SelectionItem>
-                                <SelectionItem horizontal>
+                                <SelectionItem>
                                     <SelectionCircle
-                                        onPress={() => setAnswers(old => ({ ...old, [questions[1]]: painOptions[1] }))}
-                                        selected={answers[questions[1]] === painOptions[1]}
+                                        onPress={() => setAnswers(old => ({ ...old, [questions[0]]: 'Não' }))}
+                                        selected={answers[questions[0]] === 'Não'}
                                     />
-                                    <SelectionText>{painOptions[1]}</SelectionText>
+                                    <SelectionText>Não</SelectionText>
                                 </SelectionItem>
-                                <SelectionItem horizontal>
-                                    <SelectionCircle
-                                        onPress={() => setAnswers(old => ({ ...old, [questions[1]]: painOptions[2] }))}
-                                        selected={answers[questions[1]] === painOptions[2]}
-                                    />
-                                    <SelectionText>{painOptions[2]}</SelectionText>
-                                </SelectionItem>
-                            </SelectionColumn>
-                            <SelectionColumn>
-                                <SelectionItem horizontal>
-                                    <SelectionCircle
-                                        onPress={() => setAnswers(old => ({ ...old, [questions[1]]: painOptions[3] }))}
-                                        selected={answers[questions[1]] === painOptions[3]}
-                                    />
-                                    <SelectionText>{painOptions[3]}</SelectionText>
-                                </SelectionItem>
-                                <SelectionItem horizontal>
-                                    <SelectionCircle
-                                        onPress={() => setAnswers(old => ({ ...old, [questions[1]]: painOptions[4] }))}
-                                        selected={answers[questions[1]] === painOptions[4]}
-                                    />
-                                    <SelectionText>{painOptions[4]}</SelectionText>
-                                </SelectionItem>
-                                <SelectionItem horizontal>
-                                    <SelectionCircle
-                                        onPress={() => symptomInputRef.current?.focus()}
-                                        selected={
-                                            !!answers[questions[1]] && !painOptions.includes(answers[questions[1]])
-                                        }
-                                    />
+                            </Selection>
+                        </Symptom>
+
+                        {answers[questions[0]] === 'Sim' && (
+                            <Symptom>
+                                <SymptomQuestion>{questions[1]}</SymptomQuestion>
+                                <Selection style={{ flexDirection: 'column' }}>
+                                    {painOptions.slice(0, painOptions.length).map((painOption, index) => {
+                                        const selected = answers[questions[1]] === painOption;
+
+                                        return (
+                                            <SelectionButton
+                                                background={selected ? '#fff' : 'transparent'}
+                                                bold
+                                                color={mainTheme.colors.purple}
+                                                fill
+                                                key={index}
+                                                selected={selected}
+                                                onPress={() => {
+                                                    setQuestion2Input('');
+                                                    setAnswers(old => ({ ...old, [questions[1]]: painOption }));
+                                                }}
+                                                style={{
+                                                    marginBottom: 2 * vh,
+                                                }}
+                                            >
+                                                {painOption}
+                                            </SelectionButton>
+                                        );
+                                    })}
+
                                     <SelectionInput
                                         ref={symptomInputRef}
                                         placeholder="Outro..."
+                                        placeholderTextColor={mainTheme.colors.purple}
                                         value={question2Input}
                                         onChange={e => {
                                             e.persist();
                                             setQuestion2Input(e.nativeEvent.text);
                                             setAnswers(old => ({ ...old, [questions[1]]: e.nativeEvent.text }));
                                         }}
+                                        style={
+                                            !!answers[questions[1]] &&
+                                            !painOptions.includes(answers[questions[1]]) && {
+                                                backgroundColor: mainTheme.colors.purple,
+                                            }
+                                        }
                                     />
-                                </SelectionItem>
-                            </SelectionColumn>
+                                </Selection>
+                            </Symptom>
+                        )}
+                    </>
+                )}
+                {symptomsStep === 1 && (
+                    <Symptom>
+                        <ForkKnife height={10 * vw} width={10 * vw} />
+
+                        <SymptomQuestion>{questions[2]}</SymptomQuestion>
+                        <Selection style={{ flexDirection: 'column' }}>
+                            {eatingOptions.map((eatingOption, index) => {
+                                const selected = answers[questions[2]] === eatingOption;
+
+                                return (
+                                    <SelectionButton
+                                        background={selected ? '#fff' : 'transparent'}
+                                        bold
+                                        color={mainTheme.colors.purple}
+                                        fill
+                                        key={index}
+                                        selected={selected}
+                                        onPress={() => {
+                                            setQuestion2Input('');
+                                            setAnswers(old => ({ ...old, [questions[2]]: eatingOption }));
+                                        }}
+                                        style={{
+                                            marginBottom: 2 * vh,
+                                        }}
+                                    >
+                                        {eatingOption}
+                                    </SelectionButton>
+                                );
+                            })}
                         </Selection>
                     </Symptom>
                 )}
-                <Symptom>
-                    <SymptomQuestion>{questions[2]}</SymptomQuestion>
-                    <Selection style={{ flexDirection: 'column' }}>
-                        <SelectionItem horizontal style={{ justifyContent: 'center' }}>
-                            <SelectionCircle
-                                onPress={() => setAnswers(old => ({ ...old, [questions[2]]: eatingOptions[0] }))}
-                                selected={answers[questions[2]] === eatingOptions[0]}
-                            />
-                            <SelectionText>{eatingOptions[0]}</SelectionText>
-                        </SelectionItem>
-                        <View style={{ alignItems: 'center' }}>
-                            <SelectionRow>
-                                {eatingOptions.slice(1, 2 + 1).map((eatingOption, index) => (
-                                    <SelectionItem key={index} horizontal style={{ width: '40%' }}>
-                                        <SelectionCircle
-                                            onPress={() =>
-                                                setAnswers(old => ({ ...old, [questions[2]]: eatingOption }))
-                                            }
-                                            selected={answers[questions[2]] === eatingOption}
-                                        />
-                                        <SelectionText>{eatingOption}</SelectionText>
-                                    </SelectionItem>
-                                ))}
-                            </SelectionRow>
-                            <SelectionRow>
-                                {eatingOptions.slice(3, 4 + 1).map((eatingOption, index) => (
-                                    <SelectionItem key={index} horizontal style={{ width: '40%' }}>
-                                        <SelectionCircle
-                                            onPress={() =>
-                                                setAnswers(old => ({ ...old, [questions[2]]: eatingOption }))
-                                            }
-                                            selected={answers[questions[2]] === eatingOption}
-                                        />
-                                        <SelectionText>{eatingOption}</SelectionText>
-                                    </SelectionItem>
-                                ))}
-                            </SelectionRow>
-                        </View>
-                    </Selection>
-                </Symptom>
-                <Symptom>
-                    <SymptomQuestion>{questions[3]}</SymptomQuestion>
-                    <Selection>
-                        <SelectionItem>
-                            <SelectionCircle
-                                onPress={() => setAnswers(old => ({ ...old, [questions[3]]: 'Sim' }))}
-                                selected={answers[questions[3]] === 'Sim'}
-                            />
-                            <SelectionText>Sim</SelectionText>
-                        </SelectionItem>
-                        <SelectionItem>
-                            <SelectionCircle
-                                onPress={() => setAnswers(old => ({ ...old, [questions[3]]: 'Não' }))}
-                                selected={answers[questions[3]] === 'Não'}
-                            />
-                            <SelectionText>Não</SelectionText>
-                        </SelectionItem>
-                    </Selection>
-                </Symptom>
-                <Symptom>
-                    <SymptomQuestion>{questions[4]}</SymptomQuestion>
-                    <Selection>
-                        <SelectionItem>
-                            <SelectionCircle
-                                onPress={() => setAnswers(old => ({ ...old, [questions[4]]: 'Sim' }))}
-                                selected={answers[questions[4]] === 'Sim'}
-                            />
-                            <SelectionText>Sim</SelectionText>
-                        </SelectionItem>
-                        <SelectionItem>
-                            <SelectionCircle
-                                onPress={() => setAnswers(old => ({ ...old, [questions[4]]: 'Não' }))}
-                                selected={answers[questions[4]] === 'Não'}
-                            />
-                            <SelectionText>Não</SelectionText>
-                        </SelectionItem>
-                    </Selection>
-                </Symptom>
+                {symptomsStep === 2 && (
+                    <>
+                        <FaceSad height={10 * vw} width={10 * vw} />
+
+                        <Symptom>
+                            <SymptomQuestion>{questions[3]}</SymptomQuestion>
+                            <Selection>
+                                <SelectionItem>
+                                    <SelectionCircle
+                                        onPress={() => setAnswers(old => ({ ...old, [questions[3]]: 'Sim' }))}
+                                        selected={answers[questions[3]] === 'Sim'}
+                                    />
+                                    <SelectionText>Sim</SelectionText>
+                                </SelectionItem>
+                                <SelectionItem>
+                                    <SelectionCircle
+                                        onPress={() => setAnswers(old => ({ ...old, [questions[3]]: 'Não' }))}
+                                        selected={answers[questions[3]] === 'Não'}
+                                    />
+                                    <SelectionText>Não</SelectionText>
+                                </SelectionItem>
+                            </Selection>
+                        </Symptom>
+                        <Symptom>
+                            <SymptomQuestion>{questions[4]}</SymptomQuestion>
+                            <Selection>
+                                <SelectionItem>
+                                    <SelectionCircle
+                                        onPress={() => setAnswers(old => ({ ...old, [questions[4]]: 'Sim' }))}
+                                        selected={answers[questions[4]] === 'Sim'}
+                                    />
+                                    <SelectionText>Sim</SelectionText>
+                                </SelectionItem>
+                                <SelectionItem>
+                                    <SelectionCircle
+                                        onPress={() => setAnswers(old => ({ ...old, [questions[4]]: 'Não' }))}
+                                        selected={answers[questions[4]] === 'Não'}
+                                    />
+                                    <SelectionText>Não</SelectionText>
+                                </SelectionItem>
+                            </Selection>
+                        </Symptom>
+                    </>
+                )}
             </Container>
+
+            <Footer>
+                <TouchableOpacity
+                    onPress={() => setSymptomsStep(old => old - 1)}
+                    containerStyle={{ borderRadius: 50 * vw, marginRight: 'auto' }}
+                >
+                    <Icon name="arrow-left" size={symptomsStep > 0 ? 6 * vw : 0} color={mainTheme.colors.purple} />
+                </TouchableOpacity>
+
+                <Row
+                    style={{
+                        position: 'absolute',
+                        left: '46%',
+                    }}
+                >
+                    <TouchableOpacity onPress={() => setSymptomsStep(0)}>
+                        <ProgressCircle current={symptomsStep - 0} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setSymptomsStep(1)} containerStyle={{ marginHorizontal: 2 * vw }}>
+                        <ProgressCircle current={symptomsStep - 1} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setSymptomsStep(2)}>
+                        <ProgressCircle current={symptomsStep - 2} />
+                    </TouchableOpacity>
+                </Row>
+
+                <TouchableOpacity
+                    onPress={() => setSymptomsStep(old => old + 1)}
+                    containerStyle={{ borderRadius: 50 * vw, marginLeft: 'auto' }}
+                >
+                    <Icon name="arrow-right" size={symptomsStep < 2 ? 6 * vw : 0} color={mainTheme.colors.purple} />
+                </TouchableOpacity>
+            </Footer>
         </Modal>
     );
 };

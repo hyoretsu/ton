@@ -12,7 +12,6 @@ import * as Yup from 'yup';
 import Button from '@components/Button';
 import Input from '@components/Input';
 import Modal from '@components/Modal';
-import OpacityFilter from '@components/OpacityFilter';
 import PatientPhoto from '@components/PatientPhoto';
 import { useAuth } from '@contexts/auth';
 
@@ -191,11 +190,9 @@ const EditProfile: React.FC = () => {
             </Container>
 
             {modalVisible && (
-                <OpacityFilter>
-                    <Modal buttonText="Voltar" onConfirm={goBack}>
-                        Dados alterados com sucesso!
-                    </Modal>
-                </OpacityFilter>
+                <Modal buttonText="Voltar" onConfirm={goBack}>
+                    Dados alterados com sucesso!
+                </Modal>
             )}
         </>
     );

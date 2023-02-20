@@ -6,14 +6,17 @@ import { wait } from 'data/utils';
 import { format } from 'date-fns';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, StatusBar, Image, View } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import Tts from 'react-native-tts';
 import Icon from 'react-native-vector-icons/Feather';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { io, Socket } from 'socket.io-client';
 import mainTheme from 'ui/theme/main';
 
 import BackButton from '@components/BackButton';
 import BottomBar from '@components/BottomBar';
+import Button from '@components/Button';
+import EducationalHeader from '@components/EducationalHeader';
 import { useAuth } from '@contexts/auth';
 
 import api from '@api';
@@ -38,6 +41,11 @@ import {
     InputVoiceView,
     VoiceInput,
     MessageList,
+    AnswerSelection,
+    AnswerSelectionBackground,
+    AnswerSelectionText,
+    AnswerSelectionTitle,
+    AnswerSelectionLine,
 } from '@styles/Chat';
 
 import MinLogo from 'assets/minLogo.svg';
@@ -56,6 +64,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
 
     const messageListRef = useRef<ScrollView>(null);
     const [messages, setMessages] = useState<Message[]>([]);
+    const [answerSelectionVisible, showAnswerSelection] = useState(false);
     const [currentAnswers, setCurrentAnswers] = useState<ContentMessage[]>([]);
     const [currentMessage, setCurrentMessage] = useState('');
     const [dates, setDates] = useState<DateDict>({});
@@ -134,7 +143,6 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                 if (Object.values(old).includes(formattedDate)) {
                     return old;
                 }
-                console.log(message.body);
 
                 return {
                     ...old,
@@ -154,57 +162,24 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                 <>
                     <StatusBar backgroundColor={mainTheme.colors.purple} />
                     <Container>
-                        <InputView>
-                            <InputVoiceView>
-                                <UserInput
-                                    placeholder="Mensagem"
-                                    placeholderTextColor={mainTheme.colors.gray}
-                                    onChangeText={setCurrentMessage}
-                                    value={currentMessage}
-                                />
-                                <VoiceInput>
-                                    <Icon name="mic" size={6 * vw} color={mainTheme.colors.purple} />
-                                </VoiceInput>
-                            </InputVoiceView>
-                            <MessageSend onPress={() => sendMessage(currentMessage)}>
-                                <Send height={7 * vw} width={7 * vw} style={{ left: -2, top: 2 }} />
-                            </MessageSend>
-                        </InputView>
-
-                        {currentAnswers.length > 0 &&
-                            currentAnswers.map(answer => (
-                                <TouchableOpacity
-                                    key={answer.id}
-                                    onPress={async () => {
-                                        sendMessage(answer.body, answer.sequel?.id);
-                                        setCurrentAnswers([]);
-                                    }}
-                                    containerStyle={{
-                                        alignSelf: 'flex-end',
-                                        borderRadius: 3 * vw,
-                                        marginRight: 5 * vw,
-                                    }}
-                                >
-                                    <MessageView
-                                        sentFromUser
-                                        style={{
-                                            borderBottomRightRadius: 3 * vw,
-                                            maxWidth: 40 * vw,
-                                            paddingRight: 0,
-                                        }}
-                                    >
-                                        <MessageText
-                                            sentFromUser
-                                            style={{
-                                                fontFamily: mainTheme.fontFamily.bold,
-                                                width: '100%',
-                                            }}
-                                        >
-                                            {answer.body}
-                                        </MessageText>
-                                    </MessageView>
-                                </TouchableOpacity>
-                            ))}
+                        {!route.params?.content && (
+                            <InputView>
+                                <InputVoiceView>
+                                    <UserInput
+                                        placeholder="Mensagem"
+                                        placeholderTextColor={mainTheme.colors.gray}
+                                        onChangeText={setCurrentMessage}
+                                        value={currentMessage}
+                                    />
+                                    <VoiceInput>
+                                        <Icon name="mic" size={6 * vw} color={mainTheme.colors.purple} />
+                                    </VoiceInput>
+                                </InputVoiceView>
+                                <MessageSend onPress={() => sendMessage(currentMessage)}>
+                                    <Send height={7 * vw} width={7 * vw} style={{ left: -2, top: 2 }} />
+                                </MessageSend>
+                            </InputView>
+                        )}
 
                         <MessageList
                             ref={messageListRef}
@@ -263,17 +238,73 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                                     </View>
                                 );
                             })}
+
+                            {currentAnswers.length > 0 &&
+                                (currentAnswers.length > 1 ? (
+                                    <Button
+                                        bold
+                                        onPress={async () => {
+                                            showAnswerSelection(true);
+                                        }}
+                                        style={{
+                                            marginBottom: 2 * vh,
+                                            marginHorizontal: 5 * vw,
+                                        }}
+                                    >
+                                        Selecionar
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        onPress={async () => {
+                                            sendMessage(currentAnswers[0].body, currentAnswers[0].sequel?.id);
+                                            setCurrentAnswers([]);
+                                        }}
+                                        style={{
+                                            alignSelf: 'center',
+                                            marginBottom: 2 * vh,
+                                        }}
+                                    >
+                                        {currentAnswers[0].body}
+                                    </Button>
+                                ))}
                         </MessageList>
 
-                        <Header>
-                            <BackButton size={9 * vw} style={{ left: 3 * vw, position: 'absolute' }} />
-                            <LogoTitle>
-                                <MinLogo width={9 * vw} style={{ marginTop: 0.8 * vh }} />
-                                <HeaderTitle>TON</HeaderTitle>
-                            </LogoTitle>
-                        </Header>
+                        {route.params?.content ? (
+                            <EducationalHeader />
+                        ) : (
+                            <Header>
+                                <BackButton size={9 * vw} style={{ left: 3 * vw, position: 'absolute' }} />
+                                <LogoTitle>
+                                    <MinLogo width={9 * vw} style={{ marginTop: 0.8 * vh }} />
+                                    <HeaderTitle>TON</HeaderTitle>
+                                </LogoTitle>
+                            </Header>
+                        )}
                     </Container>
                 </>
+            )}
+
+            {answerSelectionVisible && (
+                <AnswerSelectionBackground>
+                    <AnswerSelection>
+                        <AnswerSelectionTitle>Selecionar resposta:</AnswerSelectionTitle>
+
+                        {currentAnswers.map(answer => (
+                            <AnswerSelectionLine
+                                key={answer.id}
+                                onPress={() => {
+                                    showAnswerSelection(false);
+                                    sendMessage(answer.body, answer.sequel?.id);
+                                    setCurrentAnswers([]);
+                                }}
+                            >
+                                <AnswerSelectionText>{answer.body}</AnswerSelectionText>
+
+                                <MaterialIcon name="arrow-right-circle" size={3.5 * vh} color="#fff" />
+                            </AnswerSelectionLine>
+                        ))}
+                    </AnswerSelection>
+                </AnswerSelectionBackground>
             )}
 
             <BottomBar />

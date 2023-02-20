@@ -49,10 +49,10 @@ const Button: React.FC<ButtonProps> = ({
                 style={{
                     alignItems: 'center',
                     backgroundColor: selected ? color : background,
-                    borderRadius: 25,
+                    borderRadius: 25 * vw,
                     paddingBottom: paddingVertical || padding[0],
-                    paddingLeft: paddingHorizontal || padding[1],
-                    paddingRight: paddingHorizontal || padding[1],
+                    paddingLeft: paddingHorizontal || padding[1] + 1,
+                    paddingRight: paddingHorizontal || padding[1] + 1,
                     paddingTop: paddingVertical || padding[0],
                 }}
                 {...rest}

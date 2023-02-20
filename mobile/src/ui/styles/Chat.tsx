@@ -1,4 +1,4 @@
-import { vh } from '@units/viewport';
+import { vh, vw } from '@units/viewport';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
 import styled from 'rn-css';
@@ -171,4 +171,52 @@ export const MessageSend = styled(TouchableOpacity)`
 
     margin-right: 5vw;
     border-radius: 50vw;
+`;
+
+export const AnswerSelectionBackground = styled.View`
+    justify-content: flex-end;
+    position: absolute;
+    top: 10vh;
+
+    width: 100vw;
+    height: 78vh;
+
+    background-color: rgba(23, 20, 36, 0.9);
+`;
+
+export const AnswerSelection = styled.View`
+    align-items: center;
+
+    background-color: ${({ theme }) => theme.colors.purple};
+
+    padding: 3vh 9vw 5vh 13vw;
+    border-top-left-radius: 6vw;
+    border-top-right-radius: 6vw;
+`;
+
+export const AnswerSelectionTitle = styled.Text`
+    font-family: ${({ theme }) => theme.fontFamily.bold};
+    font-size: 1.1em;
+    color: #fff;
+
+    margin-bottom: 1vh;
+`;
+
+export const AnswerSelectionLine = styled(TouchableOpacity).attrs({
+    containerStyle: {
+        borderRadius: 50 * vw,
+        marginTop: 2 * vh,
+        paddingVertical: 1 * vh,
+        width: '100%',
+    },
+})`
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+export const AnswerSelectionText = styled.Text`
+    font-family: ${({ theme }) => theme.fontFamily.regular};
+    font-size: 0.8em;
+    color: #fff;
 `;

@@ -1,4 +1,4 @@
-import { vw } from '@units/viewport';
+import { vh, vw } from '@units/viewport';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';
 
@@ -17,6 +17,8 @@ export const Title = styled.Text`
     font-size: 1.7em;
     color: ${({ theme }) => theme.colors.purple};
     text-align: center;
+
+    margin-top: 4vh;
 `;
 
 export const TitleDivision = styled.View`
@@ -41,7 +43,7 @@ export const Symptom = styled.View`
     width: 100%;
     align-items: center;
 
-    margin: 1vh 0 2vh;
+    margin: 1vh 0 1vh;
 `;
 
 export const SymptomQuestion = styled.Text`
@@ -92,9 +94,9 @@ export const SelectionText = styled.Text`
     margin-top: 1vh;
 `;
 
-export const SelectionButton = styled(Button)``;
+export const SelectionButton = styled(Button).attrs({ paddingVertical: 1 * vh })``;
 
-export const SelectionInput = styled(TextInput)`
+export const SelectionInput = styled(TextInput).attrs({ paddingVertical: 0.5 * vh })`
     font-family: ${({ theme }) => theme.fontFamily.bold};
     color: ${({ theme }) => theme.colors.purple};
     font-size: 1em;
@@ -103,7 +105,7 @@ export const SelectionInput = styled(TextInput)`
     width: 100%;
     text-align: center;
 
-    border: 1.5px solid ${({ theme }) => theme.colors.purple};
+    border: 1px solid ${({ theme }) => theme.colors.purple};
     border-radius: 50vw;
 `;
 

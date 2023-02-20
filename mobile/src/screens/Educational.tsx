@@ -35,7 +35,6 @@ const Educational: React.FC = () => {
             }
 
             const storedReadContents = await AsyncStorage.getItem('@ton:read_contents');
-            console.log(storedReadContents);
             if (storedReadContents) {
                 setReadContents(JSON.parse(storedReadContents));
             }
@@ -69,6 +68,10 @@ const Educational: React.FC = () => {
                                 key={content.id}
                                 onPress={async () => {
                                     setReadContents(old => {
+                                        if (old.includes(content.id)) {
+                                            return old;
+                                        }
+
                                         const newReadContents = [...old, content.id];
 
                                         AsyncStorage.setItem('@ton:read_contents', JSON.stringify(newReadContents));

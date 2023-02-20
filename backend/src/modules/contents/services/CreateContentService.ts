@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-await-in-loop */
 import { Content, ContentMessage } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
@@ -5,7 +7,7 @@ import ICreateContentDTO from '../dtos/ICreateContentDTO';
 import IContentsRepository from '../repositories/IContentsRepository';
 
 interface IRequest extends Omit<ICreateContentDTO, 'firstMessage'> {
-    answers: string[];
+    answers: Array<string | string[]>;
     messages: string[];
 }
 
@@ -27,19 +29,53 @@ export default class CreateContentService {
 
         const remainingMessages = messages.slice(1);
         let answerCount = 0;
-        let lastMessage: ContentMessage = firstMessage;
+        let lastMessage: ContentMessage[] = [firstMessage];
 
         for (let i = 0; i < remainingMessages.length; i++) {
             const body = remainingMessages[i];
 
             const messageIsAnswer = body === '%answer%';
 
-            // eslint-disable-next-line no-await-in-loop
-            lastMessage = await this.contentsRepository.registerMessage({
-                // eslint-disable-next-line no-plusplus
-                body: messageIsAnswer ? answers[answerCount++] : body,
-                [messageIsAnswer ? 'questionId' : 'prequelId']: lastMessage.id,
+            if (messageIsAnswer) {
+                if (Array.isArray(answers[answerCount])) {
+                    const questionId = lastMessage[0].id;
+                    const promises: Promise<ContentMessage>[] = [];
+
+                    // eslint-disable-next-line no-loop-func
+                    (answers[answerCount] as string[]).forEach(answer => {
+                        promises.push(
+                            this.contentsRepository.registerMessage({
+                                body: answer,
+                                questionId,
+                            }),
+                        );
+                    });
+                    answerCount += 1;
+
+                    lastMessage = await Promise.all(promises);
+
+                    continue;
+                }
+
+                const message = await this.contentsRepository.registerMessage({
+                    body: answers[answerCount++] as string,
+                    questionId: lastMessage[0].id,
+                });
+
+                lastMessage = [message];
+
+                continue;
+            }
+
+            const message = await this.contentsRepository.registerMessage({
+                body,
             });
+
+            lastMessage.forEach(currentMessage => {
+                this.contentsRepository.updateMessage(currentMessage.id, { sequelId: message.id });
+            });
+
+            lastMessage = [message];
         }
 
         return content;

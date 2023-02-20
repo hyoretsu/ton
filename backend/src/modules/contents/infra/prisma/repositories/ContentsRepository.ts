@@ -40,12 +40,7 @@ export default class ContentsRepository implements IContentsRepository {
         const message = await prisma.contentMessage.findFirst({
             where: { id },
             include: {
-                answers: {
-                    include: {
-                        sequel: true,
-                    },
-                },
-                sequel: true,
+                answers: true,
             },
         });
 
@@ -56,5 +51,16 @@ export default class ContentsRepository implements IContentsRepository {
         const content = await prisma.contentMessage.create({ data });
 
         return content;
+    }
+
+    public async updateMessage(id: string, data: Partial<ContentMessage>): Promise<ContentMessage> {
+        const updatedContent = await prisma.contentMessage.update({
+            where: {
+                id,
+            },
+            data,
+        });
+
+        return updatedContent;
     }
 }

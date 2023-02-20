@@ -51,9 +51,9 @@ model Content {
 model ContentMessage {
     id         String           @id @default(uuid())
     content    Content?
-    prequelId  String?          @unique
-    prequel    ContentMessage?  @relation(name: "prequel", fields: [prequelId], references: [id])
-    sequel     ContentMessage?  @relation("prequel")
+    sequelId   String?
+    sequel     ContentMessage?  @relation(name: "sequel", fields: [sequelId], references: [id])
+    prequel    ContentMessage[] @relation("sequel")
     questionId String?
     question   ContentMessage?  @relation(name: "question", fields: [questionId], references: [id])
     answers    ContentMessage[] @relation("question")

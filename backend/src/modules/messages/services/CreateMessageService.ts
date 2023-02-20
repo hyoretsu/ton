@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import { wait } from '@hyoretsu/shared.utils';
-import { Message } from '@prisma/client';
+import { Message, User } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
 import IContentsRepository from '@modules/contents/repositories/IContentsRepository';
@@ -11,7 +11,8 @@ import { io } from '@shared/infra/http/server';
 import ICreateMessageDTO from '../dtos/ICreateMessageDTO';
 import IMessagesRepository from '../repositories/IMessagesRepository';
 
-interface IRequest extends ICreateMessageDTO {
+interface IRequest extends Omit<ICreateMessageDTO, 'recipientId'> {
+    recipientId?: string;
     sequelId?: string;
     socketId: string;
 }
@@ -39,18 +40,27 @@ export default class CreateMessageService {
             throw new AppError("The given sender doesn't exist.");
         }
 
-        const recipient = await this.usersRepository.findById(recipientId);
-        if (!recipient) {
-            throw new AppError("The given recipient doesn't exist.");
+        if (recipientId) {
+            const recipient = await this.usersRepository.findById(recipientId);
+            if (!recipient) {
+                throw new AppError("The given recipient doesn't exist.");
+            }
         }
 
-        const message = await this.messagesRepository.create({ body, recipientId, senderId });
+        let bot: User | null = null;
+        if (!recipientId) {
+            bot = await this.usersRepository.findByEmail(process.env.MAIL_DEFAULT_ADDRESS as string);
+        }
+
+        const message = await this.messagesRepository.create({
+            body,
+            recipientId: bot?.id || (recipientId as string),
+            senderId,
+        });
 
         const foundContent = await this.contentsRepository.findByTitle(body);
 
         if (foundContent || sequelId) {
-            const bot = await this.usersRepository.findByEmail(process.env.MAIL_DEFAULT_ADDRESS as string);
-
             let nextMessage = await this.contentsRepository.findMessageById(
                 sequelId || (foundContent?.firstMessageId as string),
             );
@@ -66,7 +76,7 @@ export default class CreateMessageService {
                     senderId: bot?.id as string,
                 });
 
-                if (!nextMessage?.sequel) {
+                if (!nextMessage?.sequelId) {
                     if (nextMessage?.answers) {
                         io.emit('answer', nextMessage.answers);
                     }
@@ -74,7 +84,7 @@ export default class CreateMessageService {
                     break;
                 }
 
-                nextMessage = await this.contentsRepository.findMessageById(nextMessage.sequel.id);
+                nextMessage = await this.contentsRepository.findMessageById(nextMessage.sequelId);
             }
         }
 

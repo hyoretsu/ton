@@ -79,10 +79,10 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     }, []);
 
     const sendMessage = useCallback(
-        async (message: string, sequelId?: string) => {
+        async (message: string, sequelId?: string | null) => {
             await api.post('/messages', {
                 body: message,
-                recipientId: user.doctorId,
+                recipientId: typeof sequelId === 'undefined' ? user.doctorId : null,
                 sequelId,
             });
 
@@ -105,7 +105,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
             setSocket(io('http://192.168.0.98:3332'));
 
             if (route.params) {
-                sendMessage(route.params.content);
+                sendMessage(route.params.content, null);
             }
 
             Tts.getInitStatus().then(
@@ -256,7 +256,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                                 ) : (
                                     <Button
                                         onPress={async () => {
-                                            sendMessage(currentAnswers[0].body, currentAnswers[0].sequel?.id);
+                                            sendMessage(currentAnswers[0].body, currentAnswers[0].sequelId);
                                             setCurrentAnswers([]);
                                         }}
                                         style={{
@@ -294,7 +294,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                                 key={answer.id}
                                 onPress={() => {
                                     showAnswerSelection(false);
-                                    sendMessage(answer.body, answer.sequel?.id);
+                                    sendMessage(answer.body, answer.sequelId);
                                     setCurrentAnswers([]);
                                 }}
                             >

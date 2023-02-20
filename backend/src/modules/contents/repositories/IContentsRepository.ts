@@ -5,12 +5,7 @@ import ICreateContentMessageDTO from '../dtos/ICreateContentMessageDTO';
 
 export type CompleteContentMessage = Prisma.ContentMessageGetPayload<{
     include: {
-        answers: {
-            include: {
-                sequel: true;
-            };
-        };
-        sequel: true;
+        answers: true;
     };
 }>;
 
@@ -21,4 +16,5 @@ export default interface IContentsRepository {
     findMessageById(id: string): Promise<CompleteContentMessage | null>;
     filter(treatmentProgress: number): Promise<Content[]>;
     registerMessage(data: ICreateContentMessageDTO): Promise<ContentMessage>;
+    updateMessage(id: string, data: Partial<ContentMessage>): Promise<ContentMessage>;
 }

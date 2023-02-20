@@ -15,8 +15,8 @@ messagesRouter.post(
     celebrate({
         body: {
             body: Joi.string().required(),
-            recipientId: Joi.string().required(),
-            sequelId: Joi.string(),
+            recipientId: Joi.string().allow(null),
+            sequelId: Joi.string().allow(null),
         },
     }),
     messagesController.create,

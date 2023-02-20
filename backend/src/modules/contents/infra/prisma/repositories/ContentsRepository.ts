@@ -40,7 +40,7 @@ export default class ContentsRepository implements IContentsRepository {
         const message = await prisma.contentMessage.findFirst({
             where: { id },
             include: {
-                answer: {
+                answers: {
                     include: {
                         sequel: true,
                     },

@@ -56,7 +56,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
 
     const messageListRef = useRef<ScrollView>(null);
     const [messages, setMessages] = useState<Message[]>([]);
-    const [currentAnswer, setCurrentAnswer] = useState<ContentMessage | null>();
+    const [currentAnswers, setCurrentAnswers] = useState<ContentMessage[]>([]);
     const [currentMessage, setCurrentMessage] = useState('');
     const [dates, setDates] = useState<DateDict>({});
     const [loading, setLoading] = useState(true);
@@ -119,10 +119,10 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
         if (!socket) return;
 
         socket.on('chat', () => updateMessages());
-        socket.on('answer', async (answer: ContentMessage) => {
+        socket.on('answer', async (answers: ContentMessage[]) => {
             await updateMessages();
             await wait(2000);
-            setCurrentAnswer(answer);
+            setCurrentAnswers(answers);
         });
     }, [socket, updateMessages]);
 
@@ -171,38 +171,40 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                             </MessageSend>
                         </InputView>
 
-                        {currentAnswer && (
-                            <TouchableOpacity
-                                onPress={async () => {
-                                    sendMessage(currentAnswer.body, currentAnswer.sequel?.id);
-                                    setCurrentAnswer(null);
-                                }}
-                                containerStyle={{
-                                    alignSelf: 'flex-end',
-                                    borderRadius: 3 * vw,
-                                    marginRight: 5 * vw,
-                                }}
-                            >
-                                <MessageView
-                                    sentFromUser
-                                    style={{
-                                        borderBottomRightRadius: 3 * vw,
-                                        maxWidth: 40 * vw,
-                                        paddingRight: 0,
+                        {currentAnswers.length > 0 &&
+                            currentAnswers.map(answer => (
+                                <TouchableOpacity
+                                    key={answer.id}
+                                    onPress={async () => {
+                                        sendMessage(answer.body, answer.sequel?.id);
+                                        setCurrentAnswers([]);
+                                    }}
+                                    containerStyle={{
+                                        alignSelf: 'flex-end',
+                                        borderRadius: 3 * vw,
+                                        marginRight: 5 * vw,
                                     }}
                                 >
-                                    <MessageText
+                                    <MessageView
                                         sentFromUser
                                         style={{
-                                            fontFamily: mainTheme.fontFamily.bold,
-                                            width: '100%',
+                                            borderBottomRightRadius: 3 * vw,
+                                            maxWidth: 40 * vw,
+                                            paddingRight: 0,
                                         }}
                                     >
-                                        {currentAnswer.body}
-                                    </MessageText>
-                                </MessageView>
-                            </TouchableOpacity>
-                        )}
+                                        <MessageText
+                                            sentFromUser
+                                            style={{
+                                                fontFamily: mainTheme.fontFamily.bold,
+                                                width: '100%',
+                                            }}
+                                        >
+                                            {answer.body}
+                                        </MessageText>
+                                    </MessageView>
+                                </TouchableOpacity>
+                            ))}
 
                         <MessageList
                             ref={messageListRef}

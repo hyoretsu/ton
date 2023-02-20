@@ -47,11 +47,12 @@ export default class CreateMessageService {
         const message = await this.messagesRepository.create({ body, recipientId, senderId });
 
         const foundContent = await this.contentsRepository.findByTitle(body);
+
         if (foundContent || sequelId) {
-            const botId = await this.usersRepository.findByEmail(process.env.MAIL_DEFAULT_ADDRESS as string);
+            const bot = await this.usersRepository.findByEmail(process.env.MAIL_DEFAULT_ADDRESS as string);
 
             let nextMessage = await this.contentsRepository.findMessageById(
-                (sequelId || foundContent?.firstMessageId) as string,
+                sequelId || (foundContent?.firstMessageId as string),
             );
 
             while (true) {
@@ -62,12 +63,12 @@ export default class CreateMessageService {
                 await this.messagesRepository.create({
                     body: nextMessage?.body as string,
                     recipientId: senderId,
-                    senderId: botId?.id as string,
+                    senderId: bot?.id as string,
                 });
 
                 if (!nextMessage?.sequel) {
-                    if (nextMessage?.answer) {
-                        io.emit('answer', nextMessage.answer);
+                    if (nextMessage?.answers) {
+                        io.emit('answer', nextMessage.answers);
                     }
 
                     break;

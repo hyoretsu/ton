@@ -5,7 +5,7 @@ import ICreateContentMessageDTO from '../dtos/ICreateContentMessageDTO';
 
 export type CompleteContentMessage = Prisma.ContentMessageGetPayload<{
     include: {
-        answer: {
+        answers: {
             include: {
                 sequel: true;
             };

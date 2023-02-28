@@ -84,6 +84,13 @@ project.ext.react = [
     hermesCommand: '../../../node_modules/react-native/sdks/hermesc/%OS-BIN%/hermesc'
 ]
 
+project.ext.envConfigFiles = [
+    debug: ".env.development",
+    release: ".env.production",
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 apply from: "../../../node_modules/react-native/react.gradle"
 
 /**

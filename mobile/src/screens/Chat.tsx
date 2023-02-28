@@ -6,6 +6,7 @@ import { wait } from 'data/utils';
 import { format } from 'date-fns';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, StatusBar, Image, View } from 'react-native';
+import Config from 'react-native-config';
 import { ScrollView } from 'react-native-gesture-handler';
 import Tts from 'react-native-tts';
 import Icon from 'react-native-vector-icons/Feather';
@@ -102,7 +103,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
             await updateMessages();
             setLoading(false);
 
-            setSocket(io('http://192.168.0.98:3332'));
+            setSocket(io(Config.SOCKET_URL as string));
 
             if (route.params) {
                 sendMessage(route.params.content, null);
@@ -210,7 +211,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                                                     {message.body.startsWith('img:') ? (
                                                         <Image
                                                             source={{
-                                                                uri: `http://192.168.0.98:3333/files/${
+                                                                uri: `${Config.API_URL}/files/${
                                                                     message.body.split('img:')[1]
                                                                 }`,
                                                             }}

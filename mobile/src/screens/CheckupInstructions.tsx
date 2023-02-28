@@ -3,6 +3,7 @@ import { vh, vw } from '@units/viewport';
 import { DentalPhoto } from 'backend';
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
+import Config from 'react-native-config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
 import mainTheme from 'ui/theme/main';
@@ -72,7 +73,7 @@ const CheckupInstructions: React.FC = () => {
 
                 <StepTitle>{`${currentCheckupStep + 1} - ${titles[currentCheckupStep]}`}</StepTitle>
 
-                <Example source={example && { uri: `http://192.168.0.98:3333/files/${example.fileName}` }} />
+                <Example source={example && { uri: `${Config.API_URL}/files/${example.fileName}` }} />
 
                 <Button
                     background={mainTheme.colors.gold}

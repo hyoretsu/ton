@@ -243,6 +243,7 @@ importers:
       react-is: ^18.2.0
       react-native: ^0.70.6
       react-native-background-fetch: ^4.1.7
+      react-native-config: ^1.5.0
       react-native-gesture-handler: ^2.8.0
       react-native-gradle-plugin: ^0.71.12
       react-native-mask-input: ^1.2.2
@@ -276,6 +277,7 @@ importers:
       react-is: 18.2.0
       react-native: 0.70.6_rrp5rjlzavjwtpwddncroexzue
       react-native-background-fetch: 4.1.7
+      react-native-config: 1.5.0
       react-native-gesture-handler: 2.8.0_ed6hdicvoe3mtgaxburxkml6qq
       react-native-mask-input: 1.2.2_ed6hdicvoe3mtgaxburxkml6qq
       react-native-safe-area-context: 4.4.1_ed6hdicvoe3mtgaxburxkml6qq
@@ -11429,6 +11431,15 @@ packages:
     transitivePeerDependencies:
       - '@babel/preset-env'
       - supports-color
+
+  /react-native-config/1.5.0:
+    resolution: {integrity: sha512-slecooA/0tCwhb+RuWEbwLqtKirGh9vWPRpgDfH7uPAraCciqHNH2XjS9ylW+Spn4FUrHg5KWTqUGs9BdBADHg==}
+    peerDependencies:
+      react-native-windows: '>=0.61'
+    peerDependenciesMeta:
+      react-native-windows:
+        optional: true
+    dev: false
 
   /react-native-gesture-handler/2.8.0_ed6hdicvoe3mtgaxburxkml6qq:
     resolution: {integrity: sha512-poOSfz/w0IyD6Qwq7aaIRRfEaVTl1ecQFoyiIbpOpfNTjm2B1niY2FLrdVQIOtIOe+K9nH55Qal04nr4jGkHdQ==}

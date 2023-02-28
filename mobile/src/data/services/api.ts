@@ -1,8 +1,8 @@
 import axios from 'axios';
+import Config from 'react-native-config';
 
 const api = axios.create({
-    // baseURL: 'https://odontologiadigital.ccs.ufpb.br/ton,
-    baseURL: 'http://192.168.0.98:3333',
+    baseURL: Config.API_URL,
 });
 
 export default api;

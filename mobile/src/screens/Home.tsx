@@ -8,8 +8,8 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import BottomBar from '@components/BottomBar';
 import PatientPhoto from '@components/PatientPhoto';
-import { useAuth } from '@contexts/auth';
-import { useInfo } from '@contexts/info';
+import { useAuth } from '@context/auth';
+import { useInfo } from '@context/info';
 
 import api from '@api';
 
@@ -83,7 +83,6 @@ const Home: React.FC = () => {
                             <ObjectiveView completed={completed}>
                                 <ObjectiveTitle completed={completed}>{objective.title}</ObjectiveTitle>
 
-                                {/* @ts-ignore */}
                                 {completed ? <ObjectiveCheck /> : <ObjectiveLink>{'>'}</ObjectiveLink>}
                             </ObjectiveView>
                         </RectButton>

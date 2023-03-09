@@ -1,7 +1,0 @@
-{
-    "name": "TON",
-    "displayName": "TON",
-    "android": {
-        "enableDangerousExperimentalLeanBuilds": true
-    }
-}

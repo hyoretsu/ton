@@ -1,16 +1,16 @@
+import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import mainTheme from '@theme';
 import { vh } from '@units/viewport';
 import { Content } from 'backend';
 import { addWeeks, format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { StatusBar, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import mainTheme from 'ui/theme/main';
 
 import BottomBar from '@components/BottomBar';
 import EducationalHeader from '@components/EducationalHeader';
-import { useAuth } from '@contexts/auth';
+import { useAuth } from '@context/auth';
 
 import api from '@api';
 

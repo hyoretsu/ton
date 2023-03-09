@@ -1,7 +1,7 @@
+import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';
 import { Text, View } from 'react-native';
 import { RectButton, RectButtonProperties } from 'react-native-gesture-handler';
-import mainTheme from 'ui/theme/main';
 
 interface ButtonProps extends RectButtonProperties {
     background?: string;

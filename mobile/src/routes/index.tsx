@@ -1,6 +1,6 @@
 import { ActivityIndicator, View } from 'react-native';
 
-import { useAuth } from '@contexts/auth';
+import { useAuth } from '@context/auth';
 
 import AppRoutes from './app.routes';
 import AuthRoutes from './auth.routes';

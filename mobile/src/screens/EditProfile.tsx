@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import Icon from '@expo/vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';
 import { Formik } from 'formik';
 import { useRef, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Feather';
-import mainTheme from 'ui/theme/main';
 import * as Yup from 'yup';
 
 import Button from '@components/Button';
 import Input from '@components/Input';
 import Modal from '@components/Modal';
 import PatientPhoto from '@components/PatientPhoto';
-import { useAuth } from '@contexts/auth';
+import { useAuth } from '@context/auth';
 
 import api from '@api';
 
@@ -190,7 +190,13 @@ const EditProfile: React.FC = () => {
             </Container>
 
             {modalVisible && (
-                <Modal buttonText="Voltar" onConfirm={goBack}>
+                <Modal
+                    buttonBackground={mainTheme.colors.purple}
+                    buttonBold
+                    buttonText="Voltar"
+                    buttonTextColor="#fff"
+                    onConfirm={goBack}
+                >
                     Dados alterados com sucesso!
                 </Modal>
             )}

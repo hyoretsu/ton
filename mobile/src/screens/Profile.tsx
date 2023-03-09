@@ -1,13 +1,13 @@
+import Icon from '@expo/vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import mainTheme from '@theme';
 import { vw } from '@units/viewport';
 import { StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Feather';
-import mainTheme from 'ui/theme/main';
 
 import BottomBar from '@components/BottomBar';
 import PatientPhoto from '@components/PatientPhoto';
-import { useAuth } from '@contexts/auth';
+import { useAuth } from '@context/auth';
 
 import { PatientName } from '@styles/Home';
 import {

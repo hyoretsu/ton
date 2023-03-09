@@ -1,10 +1,10 @@
-import notifee from '@notifee/react-native';
+// import notifee from '@notifee/react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 
 import BottomBar from '@components/BottomBar';
 import ProgressCircle from '@components/ProgressCircle';
-import { useInfo } from '@contexts/info';
+import { useInfo } from '@context/info';
 
 import {
     Container,
@@ -29,14 +29,14 @@ const Diary: React.FC = () => {
         updateProgress(objectiveId, updatedProgress);
     };
 
-    useEffect(() => {
-        notifee.getInitialNotification().then(notification => {
-            if (notification) {
-                // @ts-ignore
-                navigate('Chat', { content: notification.notification.body });
-            }
-        });
-    }, [navigate]);
+    // useEffect(() => {
+    //     notifee.getInitialNotification().then(notification => {
+    //         if (notification) {
+    //             // @ts-ignore
+    //             navigate('Chat', { content: notification.notification.body });
+    //         }
+    //     });
+    // }, [navigate]);
 
     const handlePlus = (id: string, time: number | null): void => {
         if (!time) {

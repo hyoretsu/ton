@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import Button from '@components/Button';
 import Input from '@components/Input';
 import Modal from '@components/Modal';
-import { useAuth } from '@contexts/auth';
+import { useAuth } from '@context/auth';
 
 import api from '@api';
 

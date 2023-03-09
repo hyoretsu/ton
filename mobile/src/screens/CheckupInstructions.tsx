@@ -1,17 +1,17 @@
+import { API_URL } from '@env';
+import Icon from '@expo/vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';
 import { DentalPhoto } from 'backend';
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
-import Config from 'react-native-config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Feather';
-import mainTheme from 'ui/theme/main';
 
 import BackButton from '@components/BackButton';
 import Button from '@components/Button';
 import Modal from '@components/Modal';
-import { useInfo } from '@contexts/info';
+import { useInfo } from '@context/info';
 
 import api from '@api';
 
@@ -73,7 +73,7 @@ const CheckupInstructions: React.FC = () => {
 
                 <StepTitle>{`${currentCheckupStep + 1} - ${titles[currentCheckupStep]}`}</StepTitle>
 
-                <Example source={example && { uri: `${Config.API_URL}/files/${example.fileName}` }} />
+                <Example source={example && { uri: `${API_URL}/files/${example.fileName}` }} />
 
                 <Button
                     background={mainTheme.colors.gold}

@@ -1,7 +1,7 @@
 import 'rn-css';
 // import 'styled-components';
 
-import mainTheme from '../../ui/theme/main';
+import mainTheme from '@theme';
 
 declare module 'rn-css' {
     type MainTheme = typeof mainTheme;

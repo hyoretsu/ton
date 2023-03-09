@@ -1,9 +1,9 @@
+import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';
 import { ReactNode } from 'react';
 import { ViewProps } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Feather';
-import mainTheme from 'ui/theme/main';
+import Icon from '@expo/vector-icons/Feather';
 
 import Button from '@components/Button';
 import OpacityFilter from '@components/OpacityFilter';

@@ -1,24 +1,24 @@
+import { API_URL, SOCKET_URL } from '@env';
+import Icon from '@expo/vector-icons/Feather';
+import MaterialIcon from '@expo/vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';
+import { wait } from '@utils';
 import { ContentMessage, Message } from 'backend';
 import { RouteParams } from 'data/@types/navigation';
-import { wait } from 'data/utils';
 import { format } from 'date-fns';
+import * as Speech from 'expo-speech';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, StatusBar, Image, View } from 'react-native';
-import Config from 'react-native-config';
 import { ScrollView } from 'react-native-gesture-handler';
-import Tts from 'react-native-tts';
-import Icon from 'react-native-vector-icons/Feather';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { io, Socket } from 'socket.io-client';
-import mainTheme from 'ui/theme/main';
 
 import BackButton from '@components/BackButton';
 import BottomBar from '@components/BottomBar';
 import Button from '@components/Button';
 import EducationalHeader from '@components/EducationalHeader';
-import { useAuth } from '@contexts/auth';
+import { useAuth } from '@context/auth';
 
 import api from '@api';
 
@@ -47,6 +47,7 @@ import {
     AnswerSelectionText,
     AnswerSelectionTitle,
     AnswerSelectionLine,
+    MessageSpeaker,
 } from '@styles/Chat';
 
 import MinLogo from 'assets/minLogo.svg';
@@ -71,6 +72,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     const [dates, setDates] = useState<DateDict>({});
     const [loading, setLoading] = useState(true);
     const [socket, setSocket] = useState<Socket>(null as unknown as Socket);
+    const [voice, setTtsVoice] = useState('');
 
     const updateMessages = useCallback(async () => {
         const { data } = await api.get('/messages');
@@ -103,23 +105,15 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
             await updateMessages();
             setLoading(false);
 
-            setSocket(io(Config.SOCKET_URL as string));
+            setSocket(io(SOCKET_URL));
 
             if (route.params) {
                 sendMessage(route.params.content, null);
             }
 
-            Tts.getInitStatus().then(
-                () => {
-                    Tts.setDefaultLanguage('pt-BR');
-                    Tts.setDefaultRate(0.5);
-                },
-                err => {
-                    if (err.code === 'no_engine') {
-                        Tts.requestInstallEngine();
-                    }
-                },
-            );
+            const availableVoices = await Speech.getAvailableVoicesAsync();
+            const portugueseVoices = availableVoices.filter(voice2 => voice2.language === 'pt-BR');
+            setTtsVoice(portugueseVoices[0].identifier);
         };
 
         execute();
@@ -211,7 +205,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                                                     {message.body.startsWith('img:') ? (
                                                         <Image
                                                             source={{
-                                                                uri: `${Config.API_URL}/files/${
+                                                                uri: `${API_URL}/files/${
                                                                     message.body.split('img:')[1]
                                                                 }`,
                                                             }}
@@ -230,9 +224,16 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                                                         {format(new Date(message.createdAt), 'HH:mm')}
                                                     </MessageTime>
                                                 </View>
-                                                {/* {message.senderId !== user.id && (
-                                        <MessageSpeaker onPress={() => Tts.speak(message.body)} />
-                                    )} */}
+                                                {message.senderId !== user.id && (
+                                                    <MessageSpeaker
+                                                        onPress={async () =>
+                                                            Speech.speak(message.body, {
+                                                                rate: 1.1,
+                                                                voice,
+                                                            })
+                                                        }
+                                                    />
+                                                )}
                                             </MessageView>
                                             {sentFromUser && <MessageTriangle sentFromUser={sentFromUser} />}
                                         </MessageCompleteView>

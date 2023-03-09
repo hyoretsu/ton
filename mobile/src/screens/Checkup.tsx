@@ -1,18 +1,18 @@
+import Icon from '@expo/vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';
-import { range } from 'data/utils';
+import { range } from '@utils';
 import { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Feather';
-import mainTheme from 'ui/theme/main';
 
 import BackButton from '@components/BackButton';
 import Button from '@components/Button';
 import Modal from '@components/Modal';
 import SymptomQuestions from '@components/SymptomQuestions';
-import { useInfo } from '@contexts/info';
-import { useStorage } from '@contexts/storage';
+import { useInfo } from '@context/info';
+import { useStorage } from '@context/storage';
 
 import {
     CheckupText,

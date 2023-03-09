@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
+import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';
-import mainTheme from 'ui/theme/main';
 
 import Chat from 'assets/chat.svg';
 import Diary from 'assets/diary.svg';

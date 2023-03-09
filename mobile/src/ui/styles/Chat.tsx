@@ -1,6 +1,6 @@
+import Icon from '@expo/vector-icons/AntDesign';
 import { vh, vw } from '@units/viewport';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/AntDesign';
 import styled from 'rn-css';
 
 interface MessageProps {

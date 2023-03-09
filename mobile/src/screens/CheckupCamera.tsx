@@ -1,56 +1,38 @@
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useRef, useState } from 'react';
-import {
-    ActivityIndicator,
-    Dimensions,
-    GestureResponderEvent,
-    Linking,
-    StatusBar,
-    StyleSheet,
-    TouchableWithoutFeedback,
-} from 'react-native';
-import { Camera, useCameraDevices } from 'react-native-vision-camera';
-
-import FocusCircle from '@components/FocusCircle';
+import { Camera, CameraType, FlashMode } from 'expo-camera';
+import * as Linking from 'expo-linking';
+import { useEffect, useRef } from 'react';
+import { ActivityIndicator, Dimensions, StatusBar, StyleSheet } from 'react-native';
 
 import { CaptureButton, Guideline, Interface } from '@styles/CheckupCamera';
 
 const CheckupCamera: React.FC = () => {
     const { navigate } = useNavigation();
 
-    const [coords, setCoords] = useState<number[]>();
+    const [permission, requestPermission] = Camera.useCameraPermissions();
     const camera = useRef<Camera>(null);
 
     useEffect(() => {
-        Camera.getCameraPermissionStatus().then(cameraPermission => {
-            if (cameraPermission !== 'authorized') {
-                Camera.requestCameraPermission().then(cameraRequest => {
-                    if (cameraRequest !== 'authorized') {
-                        Linking.openSettings();
-                    }
-                });
+        const execute = async (): Promise<void> => {
+            if (!permission?.granted) {
+                const permissionAsked = await requestPermission();
+
+                if (!permissionAsked.granted) {
+                    Linking.openSettings();
+                }
             }
-        });
-    }, []);
+        };
 
-    const focus = (e: GestureResponderEvent): void => {
-        const { locationX: x, locationY: y } = e.nativeEvent;
-
-        camera.current?.focus({ x, y });
-        setCoords([x, y]);
-    };
+        execute();
+    }, [permission?.granted, requestPermission]);
 
     const takePhoto = async (): Promise<void> => {
-        const photo = await camera.current?.takePhoto({
-            flash: 'on',
-        });
+        const photo = await camera.current?.takePictureAsync();
 
-        navigate('CheckupConfirm', { filePath: photo?.path });
+        navigate('CheckupConfirm', { filePath: photo?.uri });
     };
 
-    const device = useCameraDevices().back;
-
-    if (device === undefined) {
+    if (!permission) {
         return (
             <ActivityIndicator
                 size={80}
@@ -67,28 +49,21 @@ const CheckupCamera: React.FC = () => {
     return (
         <>
             <StatusBar hidden />
+
             <Camera
                 ref={camera}
-                device={device}
-                photo
-                orientation="portrait"
-                enableZoomGesture
+                ratio="16:9"
+                // orientation="portrait"
+                focusDepth={1}
+                flashMode={FlashMode.on}
+                type={CameraType.back}
                 style={StyleSheet.absoluteFill}
-                isActive
             />
-            <TouchableWithoutFeedback onPress={focus}>
-                <Interface>
-                    {coords && (
-                        <FocusCircle
-                            size={60}
-                            style={{ position: 'absolute', left: coords[0] - 35, top: coords[1] - 35 }}
-                        />
-                    )}
 
-                    <Guideline />
-                    <CaptureButton onPress={takePhoto} />
-                </Interface>
-            </TouchableWithoutFeedback>
+            <Interface>
+                <Guideline />
+                <CaptureButton onPress={takePhoto} />
+            </Interface>
         </>
     );
 };

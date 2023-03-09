@@ -1,6 +1,7 @@
 {
     "extends": ["airbnb", "@shared/eslint"],
     "rules": {
+        "import/no-unresolved": ["error", { "ignore": ["@env"] }],
         "import/prefer-default-export": "off",
         "import-helpers/order-imports": [
             "warn",
@@ -8,7 +9,7 @@
                 "newlinesBetween": "always",
                 "groups": [
                     "module",
-                    ["/^@components/", "/^@contexts/"],
+                    ["/^@components/", "/^@context/"],
                     "/^@api/",
                     "/^@styles/",
                     "/assets/",

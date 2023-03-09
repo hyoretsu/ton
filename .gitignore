@@ -1,6 +1,7 @@
 *.log
 .env
 tmp/
+mobile/.expo
 
 # Android/IntelliJ
 build/
@@ -10,10 +11,6 @@ local.properties
 *.iml
 *.hprof
 .cxx/
-
-# BUCK
-buck-out/
-\.buckd/
 *.keystore
 !debug.keystore
 
@@ -62,3 +59,6 @@ DerivedData
 *.ipa
 *.xcuserstate
 ios/.xcode.env.local
+
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*

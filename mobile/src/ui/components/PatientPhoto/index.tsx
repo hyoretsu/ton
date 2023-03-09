@@ -1,10 +1,10 @@
+import Icon from '@expo/vector-icons/Feather';
+import mainTheme from '@theme';
 import { vw } from '@units/viewport';
 import { GestureResponderEvent, Image, StyleProp } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Feather';
-import mainTheme from 'ui/theme/main';
 
-import { useAuth } from '@contexts/auth';
+import { useAuth } from '@context/auth';
 
 import { PatientPhotoCircle } from './styles';
 

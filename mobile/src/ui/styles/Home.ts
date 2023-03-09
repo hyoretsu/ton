@@ -1,6 +1,6 @@
+import Icon from '@expo/vector-icons/Feather';
 import { vh, vw } from '@units/viewport';
 import { ScrollView } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Feather';
 import styled from 'rn-css';
 
 interface ObjectiveProps {
@@ -106,7 +106,7 @@ export const ObjectiveTitle = styled.Text<ObjectiveProps>`
     font-family: ${({ theme }) => theme.fontFamily.regular};
     font-size: 1.1em;
     color: ${({ completed, theme }) => (completed ? theme.colors.purple : '#fff')};
-    text-decoration: ${({ completed }) => (completed ? 'line-through' : 'none')};
+    text-decoration: ${({ completed }) => (completed ? 'line-through' : 'solid')};
 
     margin-right: auto;
 `;

@@ -7,7 +7,7 @@ import { Text } from 'react-native';
 import BottomBar from '@components/BottomBar';
 import Button from '@components/Button';
 import Modal from '@components/Modal';
-import { useAuth } from '@contexts/auth';
+import { useAuth } from '@context/auth';
 
 import api from '@api';
 

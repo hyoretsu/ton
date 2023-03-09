@@ -1,12 +1,12 @@
+import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';
 import { useRef, useState } from 'react';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Feather';
-import mainTheme from 'ui/theme/main';
+import Icon from '@expo/vector-icons/Feather';
 
 import Modal, { ModalProps } from '@components/Modal';
 import Row from '@components/Row';
-import { useStorage } from '@contexts/storage';
+import { useStorage } from '@context/storage';
 
 import FacePain from 'assets/facePain.svg';
 import FaceSad from 'assets/faceSad.svg';

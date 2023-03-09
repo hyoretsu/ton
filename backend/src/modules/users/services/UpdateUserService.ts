@@ -33,15 +33,21 @@ export default class UpdateUserService {
         }
 
         if (
+            (appointmentsStart || appointmentsEnd) &&
             (appointmentsEnd || (existingUser.appointmentsEnd as number)) <=
-            (appointmentsStart || (existingUser.appointmentsStart as number))
+                (appointmentsStart || (existingUser.appointmentsStart as number))
         ) {
             throw new AppError('Horário de consultas inválido.');
         }
 
         if (password) password = await this.hashProvider.generateHash(password);
 
-        const updatedUser = await this.usersRepository.update(userId, { ...data, password });
+        const updatedUser = await this.usersRepository.update(userId, {
+            ...data,
+            appointmentsEnd,
+            appointmentsStart,
+            password,
+        });
 
         return updatedUser;
     }

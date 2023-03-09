@@ -1,4 +1,4 @@
-import FeatherIcon from 'react-native-vector-icons/Feather';
+import FeatherIcon from '@expo/vector-icons/Feather';
 import styled from 'rn-css';
 
 export const Button = styled.View`

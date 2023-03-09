@@ -1,4 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import mainTheme from '@theme';
 import Appointments from 'screens/Appointments';
 import Chat, { ChatParams } from 'screens/Chat';
 import Checkup from 'screens/Checkup';
@@ -10,9 +11,8 @@ import EditProfile from 'screens/EditProfile';
 import Educational from 'screens/Educational';
 import Home from 'screens/Home';
 import Profile from 'screens/Profile';
-import mainTheme from 'ui/theme/main';
 
-import { InfoProvider } from '@contexts/info';
+import { InfoProvider } from '@context/info';
 
 export type RootStackParamList = {
     Appointments: undefined;

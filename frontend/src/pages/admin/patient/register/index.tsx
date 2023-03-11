@@ -10,7 +10,7 @@ import DatePicker from 'react-date-picker/dist/entry.nostyle';
 
 import api from '@api';
 
-import { FieldGroup, LabelInput, RegisterForm, Styling } from '@styles/admin/patients/register';
+import { FieldGroup, LabelInput, RegisterForm, Styling } from '@styles/admin/patient/register';
 
 interface FormFields {
     appointmentsEnd: number;

@@ -30,7 +30,9 @@ export default class UsersController {
     public async show(req: Request, res: Response): Promise<Response> {
         const listPatientsService = container.resolve(ListPatientsService);
 
-        const users = await listPatientsService.execute();
+        const users = await listPatientsService.execute({
+            userId: req.query.userId as string,
+        });
 
         return res.json(users);
     }

@@ -15,7 +15,7 @@ import { Patient, PatientButtons, PatientInfo, Patients, PatientTextGray, Stylin
 
 const Dashboard: React.FC = () => {
     const { loading, user } = useAuth();
-    const { replace } = useRouter();
+    const { push, replace } = useRouter();
 
     const [patients, setPatients] = useState<User[]>([]);
 
@@ -59,7 +59,10 @@ const Dashboard: React.FC = () => {
                                     </span>
                                 </PatientInfo>
                                 <PatientButtons>
-                                    <button type="button">
+                                    <button
+                                        onClick={() => push(`/admin/patient/${patient.id}/objectives`)}
+                                        type="button"
+                                    >
                                         <FiTarget color="#555" size={20} />
                                     </button>
                                     <button type="button">
@@ -69,7 +72,7 @@ const Dashboard: React.FC = () => {
                             </Patient>
                         );
                     })}
-                    <Link href="/admin/patients/register">
+                    <Link href="/admin/patient/register">
                         <Patient id="addUser" style={{ alignItems: 'center', justifyContent: 'center' }}>
                             <BsPlusSquareFill color="#555" size={120} />
                         </Patient>

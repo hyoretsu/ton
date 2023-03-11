@@ -16,11 +16,9 @@ export default class ProgressController {
     }
 
     public async show(req: Request, res: Response): Promise<Response> {
-        const { id: userId } = req.user;
-
         const listProgressService = container.resolve(ListProgressService);
 
-        const progress = await listProgressService.execute(userId);
+        const progress = await listProgressService.execute((req.query.userId as string) || req.user.id);
 
         return res.json(progress);
     }

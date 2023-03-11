@@ -7,7 +7,7 @@ import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { BsChatLeftTextFill, BsPlusSquareFill } from 'react-icons/bs';
-import { FiTarget } from 'react-icons/fi';
+import { FiClipboard, FiTarget } from 'react-icons/fi';
 
 import api from '@api';
 
@@ -59,14 +59,17 @@ const Dashboard: React.FC = () => {
                                     </span>
                                 </PatientInfo>
                                 <PatientButtons>
+                                    <button onClick={() => push(`/admin/patient/${patient.id}/checkups`)} type="button">
+                                        <FiClipboard size={20} color="#555" />
+                                    </button>
                                     <button
                                         onClick={() => push(`/admin/patient/${patient.id}/objectives`)}
                                         type="button"
                                     >
-                                        <FiTarget color="#555" size={20} />
+                                        <FiTarget size={20} color="#555" />
                                     </button>
                                     <button type="button">
-                                        <BsChatLeftTextFill color="#555" size={20} />
+                                        <BsChatLeftTextFill size={20} color="#555" />
                                     </button>
                                 </PatientButtons>
                             </Patient>
@@ -74,7 +77,7 @@ const Dashboard: React.FC = () => {
                     })}
                     <Link href="/admin/patient/register">
                         <Patient id="addUser" style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <BsPlusSquareFill color="#555" size={120} />
+                            <BsPlusSquareFill size={120} color="#555" />
                         </Patient>
                     </Link>
                 </Patients>

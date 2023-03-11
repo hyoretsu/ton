@@ -5,13 +5,25 @@ import multer from 'multer';
 import uploadConfig from '@config/upload';
 
 import CheckupController from '../controllers/CheckupController';
+import CheckupPhotosController from '../controllers/CheckupPhotosController';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const checkupRouter = Router();
 const checkupController = new CheckupController();
+const checkupPhotosController = new CheckupPhotosController();
 
 const upload = multer(uploadConfig.multer);
 
+checkupRouter.get(
+    '/',
+    ensureAuthenticated,
+    celebrate({
+        body: {
+            patientId: Joi.string(),
+        },
+    }),
+    checkupController.show,
+);
 checkupRouter.post(
     '/',
     ensureAuthenticated,
@@ -45,7 +57,7 @@ checkupRouter.post(
             category: Joi.string().required(),
         },
     }),
-    checkupController.show,
+    checkupPhotosController.show,
 );
 
 export default checkupRouter;

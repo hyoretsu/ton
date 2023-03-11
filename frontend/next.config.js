@@ -9,7 +9,7 @@ module.exports = phase => {
             ignoreDuringBuilds: true,
         },
         images: {
-            domains: [''],
+            domains: ['localhost', 'odontologiadigital.ccs.ufpb.br'],
         },
         productionBrowserSourceMaps: true,
         reactStrictMode: true,

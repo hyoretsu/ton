@@ -60,7 +60,8 @@ export const MessageView = styled.View<MessageProps>`
 
     border-radius: 3vw;
     ${({ sentFromUser }) => ({ [`borderBottom${sentFromUser ? 'Right' : 'Left'}Radius`]: 0 })};
-    padding: 1vh 2.8vw 0.5vh ${({ sentFromUser }) => (!sentFromUser ? 6 : 3)}vw;
+    padding: 1vh ${({ sentFromUser }) => (!sentFromUser ? 5.8 : 2.8)}vw 0.5vh
+        ${({ sentFromUser }) => (!sentFromUser ? 6 : 3)}vw;
 `;
 
 export const MessageTriangle = styled.View<MessageProps>`
@@ -100,11 +101,14 @@ export const MessageTime = styled.Text<MessageProps>`
     color: ${({ sentFromUser, theme }) => (sentFromUser ? '#fff' : theme.colors.purple)};
 `;
 
-export const MessageSpeaker = styled(TouchableOpacity).attrs({ children: <Icon name="sound" size={20} /> })`
-    flex: 1;
+export const MessageSpeaker = styled(TouchableOpacity).attrs({
+    children: <Icon name="sound" size={20} />,
+    containerStyle: {
+        position: 'absolute',
+        right: 3 * vw,
+    },
+})`
     justify-content: center;
-
-    margin-left: 8px;
 `;
 
 export const DateSection = styled.View`

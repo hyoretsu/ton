@@ -47,21 +47,17 @@ const Checkups: React.FC = () => {
                             </div>
                             <p>Fotos:</p>
                             <PhotosDiv>
-                                {checkup.photos.map(photo => {
-                                    const fixedCategory = photo.category.replace('Ã­', 'í').replace('Ã©', 'é');
-
-                                    return (
-                                        <PhotoCategoryDiv key={photo.id}>
-                                            <span>{fixedCategory}</span>
-                                            <Image
-                                                src={`${process.env.NEXT_PUBLIC_API_URL}/files/${photo.fileName}`}
-                                                alt={fixedCategory}
-                                                width={600}
-                                                height={338}
-                                            />
-                                        </PhotoCategoryDiv>
-                                    );
-                                })}
+                                {checkup.photos.map(photo => (
+                                    <PhotoCategoryDiv key={photo.id}>
+                                        <span>{photo.category}</span>
+                                        <Image
+                                            src={`${process.env.NEXT_PUBLIC_API_URL}/files/${photo.fileName}`}
+                                            alt={photo.category}
+                                            width={600}
+                                            height={338}
+                                        />
+                                    </PhotoCategoryDiv>
+                                ))}
                             </PhotosDiv>
                         </CheckupDiv>
                     );

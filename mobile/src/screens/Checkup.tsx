@@ -14,6 +14,8 @@ import SymptomQuestions from '@components/SymptomQuestions';
 import { useInfo } from '@context/info';
 import { useStorage } from '@context/storage';
 
+import api from '@api';
+
 import {
     CheckupText,
     CheckupTitle,
@@ -31,8 +33,8 @@ import MinLogoText from 'assets/minLogoText.svg';
 
 const Checkup: React.FC = () => {
     const { setCurrentCheckupStep } = useInfo();
-    const { navigate } = useNavigation();
-    const { checkupProgress, symptomAnswers } = useStorage();
+    const { goBack, navigate } = useNavigation();
+    const { checkupProgress, storeValue, symptomAnswers } = useStorage();
 
     const [infoModalVisible, setInfoModalVisibility] = useState(false);
     const [symptomQuestionsVisible, setSymptomQuestionsVisibility] = useState(false);
@@ -63,21 +65,17 @@ const Checkup: React.FC = () => {
     };
 
     const finishCheckup = async (): Promise<void> => {
-        if (Object.entries(answers).length < (Object.values(answers)[0] === 'Sim' ? 5 : 4)) {
-            return;
-        }
-
         const formData = new FormData();
 
         // Analisar como enviar as respostas da sintomatologia
-        Object.entries(checkupProgress).forEach(([key, path]) =>
+        Object.entries(checkupProgress).forEach(([key, uri]) =>
             formData.append(key, {
-                uri: Platform.OS === 'android' ? `file:///${path}` : path,
+                uri,
                 type: 'image/jpeg',
-                name: (path.match(/mrousavy.*\.jpg/) as string[])[0],
+                name: (uri.match(/cache\/Camera\/(.*.jpg)/) as string[])[1],
             }),
         );
-        formData.append('answers', JSON.stringify(answers));
+        formData.append('answers', JSON.stringify(symptomAnswers));
 
         await api.post('/checkup', formData, {
             headers: {
@@ -85,7 +83,10 @@ const Checkup: React.FC = () => {
             },
         });
 
-        await storeValue('checkupProgress', []);
+        await storeValue('checkupProgress', {});
+        await storeValue('symptomAnswers', {});
+
+        setThanksModalVisibility(true);
     };
 
     return (
@@ -171,7 +172,7 @@ const Checkup: React.FC = () => {
                     </CheckupText>
 
                     <SymptomsButton onPress={() => setSymptomQuestionsVisibility(true)}>
-                        {Object.entries(symptomAnswers).length >= 5 ? (
+                        {Object.entries(symptomAnswers).length >= 4 ? (
                             <Checkmark
                                 width={15 * vw}
                                 height={5 * vh}
@@ -191,15 +192,17 @@ const Checkup: React.FC = () => {
                         )}
                     </SymptomsButton>
 
-                    <Button
-                        background="transparent"
-                        border="#fff"
-                        paddingHorizontal={8 * vw}
-                        paddingVertical={0.8 * vh}
-                        onPress={finishCheckup}
-                    >
-                        Enviar
-                    </Button>
+                    {Object.entries(checkupProgress).length === 8 && Object.entries(symptomAnswers).length >= 4 && (
+                        <Button
+                            background="transparent"
+                            border="#fff"
+                            paddingHorizontal={8 * vw}
+                            paddingVertical={0.8 * vh}
+                            onPress={finishCheckup}
+                        >
+                            Enviar
+                        </Button>
+                    )}
                 </GenericView>
             </Container>
 
@@ -221,7 +224,7 @@ const Checkup: React.FC = () => {
                     buttonBold
                     buttonText="Início"
                     buttonTextColor="#fff"
-                    onConfirm={() => navigate('Home')}
+                    onConfirm={goBack}
                     width={80}
                 >
                     {

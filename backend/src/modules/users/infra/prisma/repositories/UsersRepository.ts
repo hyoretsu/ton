@@ -57,10 +57,13 @@ export default class UsersRepository implements IUsersRepository {
         const patient = await prisma.user.findUnique({
             where: { id },
         });
+        if (!patient?.doctorId) {
+            return null;
+        }
 
         const doctor = await prisma.user.findFirst({
             where: {
-                id: patient?.doctorId as string,
+                id: patient.doctorId,
             },
         });
 

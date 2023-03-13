@@ -13,12 +13,17 @@ export const CheckupDiv = styled.div`
 
     padding: 1vw;
 
+    border: 3px solid #000;
+    border-radius: 1vw;
+
     & + & {
         margin-top: 3vh;
     }
 
-    border: 3px solid #000;
-    border-radius: 1vw;
+    p,
+    span {
+        text-align: center;
+    }
 `;
 
 export const PhotosDiv = styled.div`
@@ -30,5 +35,4 @@ export const PhotosDiv = styled.div`
 export const PhotoCategoryDiv = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
 `;

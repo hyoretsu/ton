@@ -32,20 +32,31 @@ const Checkups: React.FC = () => {
                     return (
                         <CheckupDiv key={checkup.id}>
                             <span>Exame de {format(new Date(checkup.createdAt), 'dd/MM/yyyy')}</span>
+
+                            <br />
+
                             <p>Respostas:</p>
+
+                            <br />
+
                             <div>
                                 {checkup.answers.length > 0 ? (
                                     checkup.answers.map(answer => (
                                         <>
                                             <p key={answer.id}>{answer.question}</p>
-                                            <span>{answer.answer}</span>
+                                            <p>{answer.answer}</p>
                                         </>
                                     ))
                                 ) : (
                                     <span>---</span>
                                 )}
+
+                                <br />
                             </div>
                             <p>Fotos:</p>
+
+                            <br />
+
                             <PhotosDiv>
                                 {checkup.photos.map(photo => (
                                     <PhotoCategoryDiv key={photo.id}>
@@ -53,8 +64,8 @@ const Checkups: React.FC = () => {
                                         <Image
                                             src={`${process.env.NEXT_PUBLIC_API_URL}/files/${photo.fileName}`}
                                             alt={photo.category}
-                                            width={600}
-                                            height={338}
+                                            width={338}
+                                            height={600}
                                         />
                                     </PhotoCategoryDiv>
                                 ))}

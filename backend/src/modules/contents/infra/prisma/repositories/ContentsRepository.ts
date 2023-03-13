@@ -2,7 +2,10 @@ import { Content, ContentMessage } from '@prisma/client';
 
 import ICreateContentDTO from '@modules/contents/dtos/ICreateContentDTO';
 import ICreateContentMessageDTO from '@modules/contents/dtos/ICreateContentMessageDTO';
-import IContentsRepository, { CompleteContentMessage } from '@modules/contents/repositories/IContentsRepository';
+import IContentsRepository, {
+    CompleteContent,
+    CompleteContentMessage,
+} from '@modules/contents/repositories/IContentsRepository';
 import { prisma } from '@shared/infra/http/server';
 
 export default class ContentsRepository implements IContentsRepository {
@@ -12,20 +15,27 @@ export default class ContentsRepository implements IContentsRepository {
         return content;
     }
 
-    public async filter(treatmentProgress: number): Promise<Content[]> {
+    public async filter(treatmentProgress: number): Promise<CompleteContent[]> {
         const contents = await prisma.content.findMany({
             where: {
                 condition: {
                     lte: treatmentProgress,
                 },
             },
+            include: {
+                firstMessage: true,
+            },
         });
 
         return contents;
     }
 
-    public async findAll(): Promise<Content[]> {
-        const contents = await prisma.content.findMany();
+    public async findAll(): Promise<CompleteContent[]> {
+        const contents = await prisma.content.findMany({
+            include: {
+                firstMessage: true,
+            },
+        });
 
         return contents;
     }

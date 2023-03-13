@@ -22,17 +22,29 @@ import Routes from './routes';
 
 SplashScreen.preventAutoHideAsync();
 
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+    }),
+});
+
+// Educational content check task
 TaskManager.defineTask('educational-check', async ({ data, error, executionInfo }) => {
     const storedContents = (await AsyncStorage.getItem('@ton:contents')) as string;
     const { data: contents } = await api.get('/contents');
 
     if (contents.length - JSON.parse(storedContents || "['']").length) {
+        const {
+            firstMessage: { body },
+        } = contents[contents.length - 1];
+
         await Notifications.scheduleNotificationAsync({
             content: {
-                title: 'Há um novo conteudo educacional disponível!',
-                body: contents[contents.length - 1].title,
+                body,
                 data: {
-                    educationalContent: true,
+                    url: `ton://Chat?content=${body}`,
                 },
             },
             trigger: null,
@@ -42,14 +54,6 @@ TaskManager.defineTask('educational-check', async ({ data, error, executionInfo 
     }
 
     return BackgroundFetch.BackgroundFetchResult.NoData;
-});
-
-Notifications.addNotificationResponseReceivedListener(response => {
-    const { data, title } = response.notification.request.content;
-
-    if (data.content) {
-        Linking.openURL(`ton://Contents?content=${title}`);
-    }
 });
 
 const App: React.FC = () => {
@@ -79,22 +83,29 @@ const App: React.FC = () => {
                 }
             }
 
-            await Notifications.scheduleNotificationAsync({
-                content: {
-                    title: 'Há um novo conteudo educacional disponível!',
-                    body: 'Apresentação Ton',
-                    data: {
-                        educationalContent: true,
-                    },
-                },
-                trigger: null,
-            });
-
+            // Register weekly educational content check
             await BackgroundFetch.registerTaskAsync('educational-check', {
                 minimumInterval: 24 * 60 * 60, // 24h
                 stopOnTerminate: false,
                 startOnBoot: true,
             });
+
+            const notFirstLaunch = await AsyncStorage.getItem('@ton:launchedBefore');
+            if (!notFirstLaunch) {
+                const body = 'Apresentação Ton';
+
+                await Notifications.scheduleNotificationAsync({
+                    content: {
+                        body,
+                        data: {
+                            url: `ton://Chat?content=${body}`,
+                        },
+                    },
+                    trigger: null,
+                });
+
+                await AsyncStorage.setItem('@ton:launchedBefore', 'true');
+            }
         };
 
         execute();
@@ -116,9 +127,7 @@ const App: React.FC = () => {
 
                     // Listen to expo push notifications
                     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
-                        if (response.notification.request.content.data.educationalContent || false) {
-                            listener('Educational');
-                        }
+                        listener(response.notification.request.content.data.url);
                     });
 
                     return () => {

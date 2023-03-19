@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { Hematology, User } from '@prisma/client';
 
 import ICreateUserDTO, { PeriodicInfo } from '@modules/users/dtos/ICreateUserDTO';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -95,6 +95,19 @@ export default class UsersRepository implements IUsersRepository {
         });
 
         return doctor;
+    }
+
+    public async findHematology(userId: string): Promise<Hematology[]> {
+        const hematology = await prisma.hematology.findMany({
+            where: {
+                patientId: userId,
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+        });
+
+        return hematology;
     }
 
     public async update(id: string, data: Partial<User>): Promise<User> {

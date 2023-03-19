@@ -75,10 +75,10 @@ model DentalPhoto {
 model Hematology {
     id          String   @id @default(uuid())
     date        DateTime @default(now())
-    redCells    Float
-    platelets   Float
-    leukocytes  Float
-    neutrophils Float
+    redCells    String
+    platelets   String
+    leukocytes  String
+    neutrophils String
     patientId   String
     patient     User     @relation(fields: [patientId], references: [id])
     createdAt   DateTime @default(now())

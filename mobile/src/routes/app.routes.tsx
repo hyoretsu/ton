@@ -9,6 +9,7 @@ import CheckupInstructions from 'screens/CheckupInstructions';
 import Diary from 'screens/Diary';
 import EditProfile from 'screens/EditProfile';
 import Educational from 'screens/Educational';
+import HealthProfile from 'screens/HealthProfile';
 import Home from 'screens/Home';
 import PersonalData from 'screens/PersonalData';
 import Profile from 'screens/Profile';
@@ -25,6 +26,7 @@ export type RootStackParamList = {
     Diary: undefined;
     EditProfile: undefined;
     Educational: undefined;
+    HealthProfile: undefined;
     Home: undefined;
     Profile: undefined;
     PersonalData: undefined;
@@ -53,6 +55,7 @@ const AppRoutes: React.FC = () => {
                 <App.Screen name="Diary" component={Diary} />
                 <App.Screen name="EditProfile" component={EditProfile} />
                 <App.Screen name="Educational" component={Educational} />
+                <App.Screen name="HealthProfile" component={HealthProfile} />
                 <App.Screen name="Home" component={Home} />
                 <App.Screen name="Profile" component={Profile} />
                 <App.Screen name="PersonalData" component={PersonalData} />

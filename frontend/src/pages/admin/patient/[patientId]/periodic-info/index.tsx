@@ -9,7 +9,7 @@ import api from '@api';
 import { PeriodicInfoForm, Styling } from '@styles/admin/patient/[patientId]/periodic-info';
 
 interface FormFields {
-    hematology: Record<string, number>;
+    hematology: Record<string, string>;
     medicine: Array<{
         name: string;
         dosage: string;
@@ -31,9 +31,7 @@ const PeriodicInfo: React.FC = () => {
             values = { ...values, medicine: values.medicine.slice(1, -1) };
         }
 
-        const hematologySum = Object.values(values.hematology).reduce((sum, value) => sum + value, 0);
-
-        if (hematologySum === 0 || values.medicine.length < 1) return;
+        if (values.medicine.length < 1) return;
 
         await api.post('/users/periodic_info', {
             patientId,
@@ -53,7 +51,7 @@ const PeriodicInfo: React.FC = () => {
 
                 <Formik
                     initialValues={{
-                        hematology: { redCells: 0, platelets: 0, leukocytes: 0, neutrophils: 0 },
+                        hematology: { redCells: '', platelets: '', leukocytes: '', neutrophils: '' },
                         medicine: [{ name: '', dosage: '' }],
                         medicineEnd: new Date(),
                     }}
@@ -65,7 +63,6 @@ const PeriodicInfo: React.FC = () => {
                                 <label htmlFor="redCells">Hemácias</label>
                                 <input
                                     id="redCells"
-                                    type="number"
                                     value={values.hematology.redCells}
                                     onChange={e => setFieldValue('hematology.redCells', Number(e.target.value))}
                                 />
@@ -74,7 +71,6 @@ const PeriodicInfo: React.FC = () => {
                                 <label htmlFor="platelets">Plaquetas</label>
                                 <input
                                     id="platelets"
-                                    type="number"
                                     value={values.hematology.platelets}
                                     onChange={e => setFieldValue('hematology.platelets', Number(e.target.value))}
                                 />
@@ -83,7 +79,6 @@ const PeriodicInfo: React.FC = () => {
                                 <label htmlFor="leukocytes">Leucócitos</label>
                                 <input
                                     id="leukocytes"
-                                    type="number"
                                     value={values.hematology.leukocytes}
                                     onChange={e => setFieldValue('hematology.leukocytes', Number(e.target.value))}
                                 />
@@ -92,7 +87,6 @@ const PeriodicInfo: React.FC = () => {
                                 <label htmlFor="neutrophils">Neutrófilos</label>
                                 <input
                                     id="neutrophils"
-                                    type="number"
                                     value={values.hematology.neutrophils}
                                     onChange={e => setFieldValue('hematology.neutrophils', Number(e.target.value))}
                                 />

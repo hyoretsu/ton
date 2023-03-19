@@ -21,7 +21,7 @@ interface FormFields {
     checkupPhotos: Record<string, File>;
     city: string;
     email: string;
-    hematology: Record<string, number>;
+    hematology: Record<string, string>;
     medicine: Array<{
         name: string;
         dosage: string;
@@ -104,7 +104,7 @@ const Register: React.FC = () => {
                         checkupPhotos: {},
                         city: '',
                         email: '',
-                        hematology: { redCells: 0, platelets: 0, leukocytes: 0, neutrophils: 0 },
+                        hematology: { redCells: '', platelets: '', leukocytes: '', neutrophils: '' },
                         medicine: [{ name: '', dosage: '' }],
                         medicineEnd: new Date(),
                         name: '',
@@ -256,21 +256,17 @@ const Register: React.FC = () => {
                                                 <label htmlFor="redCells">Hemácias</label>
                                                 <input
                                                     id="redCells"
-                                                    type="number"
                                                     value={values.hematology.redCells}
-                                                    onChange={e =>
-                                                        setFieldValue('hematology.redCells', Number(e.target.value))
-                                                    }
+                                                    onChange={e => setFieldValue('hematology.redCells', e.target.value)}
                                                 />
                                             </LabelInput>
                                             <LabelInput>
                                                 <label htmlFor="platelets">Plaquetas</label>
                                                 <input
                                                     id="platelets"
-                                                    type="number"
                                                     value={values.hematology.platelets}
                                                     onChange={e =>
-                                                        setFieldValue('hematology.platelets', Number(e.target.value))
+                                                        setFieldValue('hematology.platelets', e.target.value)
                                                     }
                                                 />
                                             </LabelInput>
@@ -278,10 +274,9 @@ const Register: React.FC = () => {
                                                 <label htmlFor="leukocytes">Leucócitos</label>
                                                 <input
                                                     id="leukocytes"
-                                                    type="number"
                                                     value={values.hematology.leukocytes}
                                                     onChange={e =>
-                                                        setFieldValue('hematology.leukocytes', Number(e.target.value))
+                                                        setFieldValue('hematology.leukocytes', e.target.value)
                                                     }
                                                 />
                                             </LabelInput>
@@ -289,10 +284,9 @@ const Register: React.FC = () => {
                                                 <label htmlFor="neutrophils">Neutrófilos</label>
                                                 <input
                                                     id="neutrophils"
-                                                    type="number"
                                                     value={values.hematology.neutrophils}
                                                     onChange={e =>
-                                                        setFieldValue('hematology.neutrophils', Number(e.target.value))
+                                                        setFieldValue('hematology.neutrophils', e.target.value)
                                                     }
                                                 />
                                             </LabelInput>

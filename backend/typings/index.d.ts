@@ -1,4 +1,4 @@
-import { DentalPhoto, Objective, Prisma, User } from '@prisma/client';
+import { DentalPhoto, Hematology, Objective, Prisma, User } from '@prisma/client';
 
 import {
     CompleteContent as Content,
@@ -10,4 +10,4 @@ type Appointment = Prisma.AppointmentGetPayload<{ include: { doctor: true; patie
 type Message = Prisma.MessageGetPayload<{ include: { sender: true } }>;
 type Progress = Prisma.ProgressGetPayload<{ include: { objective: true } }>;
 
-export { Appointment, Checkup, Content, ContentMessage, DentalPhoto, Message, Objective, Progress, User };
+export { Appointment, Checkup, Content, ContentMessage, DentalPhoto, Hematology, Message, Objective, Progress, User };

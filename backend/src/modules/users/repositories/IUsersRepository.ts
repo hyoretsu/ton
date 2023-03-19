@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { Hematology, User } from '@prisma/client';
 
 import ICreateUserDTO, { PeriodicInfo } from '../dtos/ICreateUserDTO';
 
@@ -11,6 +11,7 @@ export default interface IUsersRepository {
     findById(id: string): Promise<User | null>;
     findByPhone(phoneNumber: string): Promise<User | null>;
     findDoctorByPatientId(id: string): Promise<User | null>;
+    findHematology(userId: string): Promise<Hematology[]>;
     update(userId: string, updatedInfo: Partial<User>): Promise<User>;
     updatePeriodicInfo(patientId: string, periodicInfo: PeriodicInfo): Promise<void>;
 }

@@ -57,16 +57,20 @@ const Button: React.FC<ButtonProps> = ({
                 }}
                 {...rest}
             >
-                <Text
-                    style={{
-                        color: selected ? background : color,
-                        fontFamily: bold ? mainTheme.fontFamily.bold : mainTheme.fontFamily.regular,
-                        fontSize,
-                        textAlign: 'center',
-                    }}
-                >
-                    {children}
-                </Text>
+                {typeof children === 'string' ? (
+                    <Text
+                        style={{
+                            color: selected ? background : color,
+                            fontFamily: bold ? mainTheme.fontFamily.bold : mainTheme.fontFamily.regular,
+                            fontSize,
+                            textAlign: 'center',
+                        }}
+                    >
+                        {children}
+                    </Text>
+                ) : (
+                    children
+                )}
             </RectButton>
         </View>
     );

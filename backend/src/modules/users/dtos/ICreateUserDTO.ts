@@ -1,8 +1,8 @@
 type Hematology = {
-    redCells: number;
-    platelets: number;
-    leukocytes: number;
-    neutrophils: number;
+    redCells: string;
+    platelets: string;
+    leukocytes: string;
+    neutrophils: string;
 };
 
 type Medicine = {

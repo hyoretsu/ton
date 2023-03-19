@@ -2,6 +2,7 @@ import { celebrate, Joi } from 'celebrate';
 import { Router } from 'express';
 
 import ForgotPasswordController from '../controllers/ForgotPasswordController';
+import HematologyController from '../controllers/HematologyController';
 import PeriodicInfoController from '../controllers/PeriodicInfoController';
 import SessionsController from '../controllers/SessionsController';
 import UsersController from '../controllers/UsersController';
@@ -9,6 +10,7 @@ import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const usersRouter = Router();
 const forgotPasswordController = new ForgotPasswordController();
+const hematologyController = new HematologyController();
 const periodicInfoController = new PeriodicInfoController();
 const usersController = new UsersController();
 const sessionsController = new SessionsController();
@@ -82,6 +84,8 @@ usersRouter.post(
     }),
     forgotPasswordController.create,
 );
+
+usersRouter.get('/hematology', ensureAuthenticated, hematologyController.show);
 
 usersRouter.post(
     '/periodic_info',

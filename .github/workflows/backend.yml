@@ -11,68 +11,43 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    # - name: Setup Node.js environment
-    #   uses: actions/setup-node@main
-    #   with:
-    #     node-version: 'lts/*'
-
-    # - name: Enable PNPM
-    #   uses: pnpm/action-setup@v2
-    #   with:
-    #     version: 'latest'
-
-    # - name: Get PNPM store directory
-    #   id: pnpm-cache
-    #   shell: bash
-    #   run: |
-    #     echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-    # - name: Cache dependencies
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-    #     key: ${{ runner.os }}-pnpm
-    #     restore-keys: |
-    #       ${{ runner.os }}-pnpm
-
-    # - name: Install dependencies
-    #   run: pnpm i
-
-    - name: Clean local changes on server
-      uses: appleboy/ssh-action@master
+    - name: Setup Node.js environment
+      uses: actions/setup-node@main
       with:
-        host: ${{ secrets.SSH_HOST }}
-        password: ${{ secrets.SSH_PASS }}
-        port: ${{ secrets.SSH_PORT }}
-        username: ${{ secrets.SSH_USER }}
-        script: |
-          cd /srv/ton
-          git reset --hard
-          git clean -fd
+        node-version: 'lts/*'
 
-    - name: Pull changes to server
-      uses: appleboy/ssh-action@master
+    - name: Enable PNPM
+      uses: pnpm/action-setup@v2
       with:
-        host: ${{ secrets.SSH_HOST }}
-        password: ${{ secrets.SSH_PASS }}
-        port: ${{ secrets.SSH_PORT }}
-        username: ${{ secrets.SSH_USER }}
-        script: |
-          cd /srv/ton
-          git pull
+        version: 'latest'
 
-    - name: Update dependencies on server
-      uses: appleboy/ssh-action@master
+    - name: Get PNPM store directory
+      id: pnpm-cache
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+    - name: Cache dependencies
+      uses: actions/cache@v3
       with:
-        host: ${{ secrets.SSH_HOST }}
-        password: ${{ secrets.SSH_PASS }}
-        port: ${{ secrets.SSH_PORT }}
-        username: ${{ secrets.SSH_USER }}
-        script: |
-          cd /srv/ton
-          pnpm i --ignore-scripts
+        path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm
+        restore-keys: |
+          ${{ runner.os }}-pnpm
 
-    - name: Run DB migrations and generate types on server
+    - name: Install dependencies
+      run: pnpm i
+
+    - name: Build the app
+      run: pnpm -F backend build
+
+    - name: Install sshpass
+      run: sudo apt-get install sshpass
+
+    - name: Copy relevant files to deploy server
+      run: sshpass -p ${{ secrets.SSH_PASS }} scp -o StrictHostKeyChecking=no -r backend/dist backend/prisma ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton/backend
+
+    - name: Run DB migrations
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -82,32 +57,6 @@ jobs:
         script: |
           cd /srv/ton/backend
           pnpm prisma migrate deploy
-          pnpm prisma generate
-
-    # - name: Build the app
-    #   run: pnpm -F backend build
-
-    - name: Build the app
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        password: ${{ secrets.SSH_PASS }}
-        port: ${{ secrets.SSH_PORT }}
-        username: ${{ secrets.SSH_USER }}
-        script: |
-          cd /srv/ton
-          pnpm -F backend build
-
-    # - name: Install sshpass
-    #   run: sudo apt-get install sshpass
-
-    # - name: Copy relevant files to deploy server
-    #   run: |
-    #     sshpass -p ${{ secrets.SSH_PASS }} scp -o StrictHostKeyChecking=no -r package.json ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton
-    #     sshpass -p ${{ secrets.SSH_PASS }} scp -r pnpm-lock.yaml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton
-    #     sshpass -p ${{ secrets.SSH_PASS }} scp -r backend/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton/backend
-    #     sshpass -p ${{ secrets.SSH_PASS }} scp -r backend/prisma ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton/backend
-    #     sshpass -p ${{ secrets.SSH_PASS }} scp -r backend/package.json ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton/backend
 
     - name: Restart backend
       uses: appleboy/ssh-action@master
@@ -118,4 +67,4 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         script: |
           cd /srv/ton
-          pnpx pm2 restart ton
+          pnpx pm2 restart ton --update-env

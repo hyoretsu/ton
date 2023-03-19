@@ -38,32 +38,19 @@ jobs:
     # - name: Install dependencies
     #   run: pnpm i
 
-    # - name: Build the app
-    #   run: pnpm -F backend build
+    - name: Clean local changes on server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        password: ${{ secrets.SSH_PASS }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USER }}
+        script: |
+          cd /srv/ton
+          git reset --hard
+          git clean -fd
 
-    # - name: Install sshpass
-    #   run: sudo apt-get install sshpass
-
-    # - name: Copy relevant files to deploy server
-    #   run: |
-    #     sshpass -p ${{ secrets.SSH_PASS }} scp -o StrictHostKeyChecking=no -r package.json ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton
-    #     sshpass -p ${{ secrets.SSH_PASS }} scp -r pnpm-lock.yaml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton
-    #     sshpass -p ${{ secrets.SSH_PASS }} scp -r backend/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton/backend
-    #     sshpass -p ${{ secrets.SSH_PASS }} scp -r backend/prisma ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton/backend
-    #     sshpass -p ${{ secrets.SSH_PASS }} scp -r backend/package.json ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton/backend
-
-    # - name: Install dependencies on server
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ secrets.SSH_HOST }}
-    #     password: ${{ secrets.SSH_PASS }}
-    #     port: ${{ secrets.SSH_PORT }}
-    #     username: ${{ secrets.SSH_USER }}
-    #     script: |
-    #       cd /srv/ton
-    #       pnpm i --ignore-scripts
-
-    - name: Update server and dependencies
+    - name: Pull changes to server
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -73,8 +60,17 @@ jobs:
         script: |
           cd /srv/ton
           git pull
+
+    - name: Update dependencies on server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        password: ${{ secrets.SSH_PASS }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USER }}
+        script: |
+          cd /srv/ton
           pnpm i --ignore-scripts
-          pnpm -F backend build
 
     - name: Run DB migrations and generate types on server
       uses: appleboy/ssh-action@master
@@ -87,6 +83,31 @@ jobs:
           cd /srv/ton/backend
           pnpm prisma migrate deploy
           pnpm prisma generate
+
+    # - name: Build the app
+    #   run: pnpm -F backend build
+
+    - name: Build the app
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        password: ${{ secrets.SSH_PASS }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USER }}
+        script: |
+          cd /srv/ton
+          pnpm -F backend build
+
+    # - name: Install sshpass
+    #   run: sudo apt-get install sshpass
+
+    # - name: Copy relevant files to deploy server
+    #   run: |
+    #     sshpass -p ${{ secrets.SSH_PASS }} scp -o StrictHostKeyChecking=no -r package.json ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton
+    #     sshpass -p ${{ secrets.SSH_PASS }} scp -r pnpm-lock.yaml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton
+    #     sshpass -p ${{ secrets.SSH_PASS }} scp -r backend/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton/backend
+    #     sshpass -p ${{ secrets.SSH_PASS }} scp -r backend/prisma ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton/backend
+    #     sshpass -p ${{ secrets.SSH_PASS }} scp -r backend/package.json ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton/backend
 
     - name: Restart backend
       uses: appleboy/ssh-action@master

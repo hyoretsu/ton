@@ -47,6 +47,10 @@ const PeriodicInfo: React.FC = () => {
         <>
             <NextSeo title="Informações Periódicas" nofollow noindex />
             <Styling>
+                <button type="button" onClick={back} style={{ left: '2vw', position: 'absolute' }}>
+                    Voltar
+                </button>
+
                 <Formik
                     initialValues={{
                         hematology: { redCells: 0, platelets: 0, leukocytes: 0, neutrophils: 0 },

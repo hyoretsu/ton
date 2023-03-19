@@ -11,6 +11,7 @@ import { CheckupDiv, PhotoCategoryDiv, PhotosDiv, Styling } from '@styles/admin/
 
 const Checkups: React.FC = () => {
     const {
+        back,
         query: { patientId },
     } = useRouter();
     const [checkups, setCheckups] = useState<Checkup[]>([]);
@@ -28,6 +29,10 @@ const Checkups: React.FC = () => {
         <>
             <NextSeo title="Exames" nofollow noindex />
             <Styling>
+                <button type="button" onClick={back} style={{ left: '2vw', position: 'absolute' }}>
+                    Voltar
+                </button>
+
                 {checkups.map(checkup => {
                     return (
                         <CheckupDiv key={checkup.id}>

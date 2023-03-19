@@ -2,6 +2,7 @@
 .env
 tmp/
 mobile/.expo
+**/.pnpm-store
 
 # Android/IntelliJ
 build/

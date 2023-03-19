@@ -7,10 +7,11 @@ import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import DatePicker from 'react-date-picker/dist/entry.nostyle';
+import { FiPlusCircle } from 'react-icons/fi';
 
 import api from '@api';
 
-import { FieldGroup, LabelInput, RegisterForm, Styling } from '@styles/admin/patient/register';
+import { FormBody, HematologyDiv, LabelInput, RegisterForm, Styling } from '@styles/admin/patient/register';
 
 interface FormFields {
     appointmentsEnd: number;
@@ -20,6 +21,12 @@ interface FormFields {
     checkupPhotos: Record<string, File>;
     city: string;
     email: string;
+    hematology: Record<string, number>;
+    medicine: Array<{
+        name: string;
+        dosage: string;
+    }>;
+    medicineEnd: Date;
     name: string;
     neoplasia: string;
     password: string;
@@ -48,10 +55,10 @@ const Register: React.FC = () => {
     const finishRegister = async (values: FormFields): Promise<void> => {
         try {
             if (isDoctor) {
-                let chartNumber, neoplasia, parentName;
+                let chartNumber, hematology, medicine, neoplasia, parentName;
                 // @ts-ignore
                 // eslint-disable-next-line prefer-const
-                ({ chartNumber, neoplasia, parentName, ...values } = values);
+                ({ chartNumber, hematology, medicine, neoplasia, parentName, ...values } = values);
 
                 await api.post('/users', values);
             } else {
@@ -97,6 +104,9 @@ const Register: React.FC = () => {
                         checkupPhotos: {},
                         city: '',
                         email: '',
+                        hematology: { redCells: 0, platelets: 0, leukocytes: 0, neutrophils: 0 },
+                        medicine: [{ name: '', dosage: '' }],
+                        medicineEnd: new Date(),
                         name: '',
                         neoplasia: '',
                         password: '',
@@ -107,20 +117,20 @@ const Register: React.FC = () => {
                 >
                     {({ setFieldValue, values }) => (
                         <RegisterForm>
-                            <FieldGroup>
+                            <FormBody>
                                 <LabelInput>
                                     <label htmlFor="name">Nome do paciente</label>
                                     <Field name="name" />
                                 </LabelInput>
-                                {!isDoctor && (
+                                {!isDoctor ? (
                                     <LabelInput>
                                         <label htmlFor="parentName">Nome do responsável</label>
                                         <Field name="parentName" />
                                     </LabelInput>
+                                ) : (
+                                    <div />
                                 )}
-                            </FieldGroup>
 
-                            <FieldGroup>
                                 <LabelInput>
                                     <label htmlFor="email">Email</label>
                                     <Field name="email" />
@@ -129,9 +139,7 @@ const Register: React.FC = () => {
                                     <label htmlFor="password">Senha</label>
                                     <Field name="password" type="password" />
                                 </LabelInput>
-                            </FieldGroup>
 
-                            <FieldGroup>
                                 {isDoctor ? (
                                     <>
                                         <LabelInput>
@@ -197,9 +205,7 @@ const Register: React.FC = () => {
                                         </LabelInput>
                                     </>
                                 )}
-                            </FieldGroup>
 
-                            <FieldGroup>
                                 <LabelInput>
                                     <label htmlFor="city">Cidade</label>
                                     <Field name="city" />
@@ -208,9 +214,7 @@ const Register: React.FC = () => {
                                     <label htmlFor="phoneNumber">Telefone</label>
                                     <Field name="phoneNumber" />
                                 </LabelInput>
-                            </FieldGroup>
 
-                            <FieldGroup>
                                 <LabelInput>
                                     <label htmlFor="birthDate">Data de nascimento</label>
                                     <DatePicker
@@ -228,26 +232,134 @@ const Register: React.FC = () => {
                                         onChange={e => setIsDoctor(e.target.checked)}
                                     />
                                 </LabelInput>
-                            </FieldGroup>
 
-                            {!isDoctor && (
-                                <FieldGroup>
-                                    {checkupSteps.map((step, index) => (
-                                        <LabelInput key={index}>
-                                            <label htmlFor={`step-${index}`}>{step}</label>
-                                            <input
-                                                id={`step-${index}`}
-                                                type="file"
-                                                onChange={e =>
-                                                    setFieldValue(`checkupPhotos[${step}]`, (e.target.files || [])[0])
-                                                }
+                                {!isDoctor && (
+                                    <>
+                                        {checkupSteps.map((step, index) => (
+                                            <LabelInput key={index}>
+                                                <label htmlFor={`step-${index}`}>{step}</label>
+                                                <input
+                                                    id={`step-${index}`}
+                                                    type="file"
+                                                    onChange={e =>
+                                                        setFieldValue(
+                                                            `checkupPhotos[${step}]`,
+                                                            (e.target.files || [])[0],
+                                                        )
+                                                    }
+                                                />
+                                            </LabelInput>
+                                        ))}
+
+                                        <HematologyDiv style={{ marginBottom: 'auto' }}>
+                                            <LabelInput>
+                                                <label htmlFor="redCells">Hemácias</label>
+                                                <input
+                                                    id="redCells"
+                                                    type="number"
+                                                    value={values.hematology.redCells}
+                                                    onChange={e =>
+                                                        setFieldValue('hematology.redCells', Number(e.target.value))
+                                                    }
+                                                />
+                                            </LabelInput>
+                                            <LabelInput>
+                                                <label htmlFor="platelets">Plaquetas</label>
+                                                <input
+                                                    id="platelets"
+                                                    type="number"
+                                                    value={values.hematology.platelets}
+                                                    onChange={e =>
+                                                        setFieldValue('hematology.platelets', Number(e.target.value))
+                                                    }
+                                                />
+                                            </LabelInput>
+                                            <LabelInput>
+                                                <label htmlFor="leukocytes">Leucócitos</label>
+                                                <input
+                                                    id="leukocytes"
+                                                    type="number"
+                                                    value={values.hematology.leukocytes}
+                                                    onChange={e =>
+                                                        setFieldValue('hematology.leukocytes', Number(e.target.value))
+                                                    }
+                                                />
+                                            </LabelInput>
+                                            <LabelInput>
+                                                <label htmlFor="neutrophils">Neutrófilos</label>
+                                                <input
+                                                    id="neutrophils"
+                                                    type="number"
+                                                    value={values.hematology.neutrophils}
+                                                    onChange={e =>
+                                                        setFieldValue('hematology.neutrophils', Number(e.target.value))
+                                                    }
+                                                />
+                                            </LabelInput>
+                                        </HematologyDiv>
+
+                                        <LabelInput>
+                                            <span>Remédios</span>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nome</th>
+                                                        <th>Dosagem</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {values.medicine.map((medicine, index) => (
+                                                        <tr key={index}>
+                                                            <td>
+                                                                <input
+                                                                    type="text"
+                                                                    value={medicine.name}
+                                                                    onChange={e =>
+                                                                        setFieldValue(
+                                                                            `medicine[${index}].name`,
+                                                                            e.target.value,
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    type="text"
+                                                                    value={medicine.dosage}
+                                                                    onChange={e =>
+                                                                        setFieldValue(
+                                                                            `medicine[${index}].dosage`,
+                                                                            e.target.value,
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+
+                                            <button
+                                                type="button"
+                                                onClick={() => setFieldValue('medicine', [...values.medicine, {}])}
+                                            >
+                                                <FiPlusCircle size="1.5vw" style={{ alignSelf: 'center' }} />
+                                            </button>
+
+                                            <label htmlFor="medicineEnd">Término do regime quimioterápico</label>
+                                            <DatePicker
+                                                name="medicineEnd"
+                                                onChange={(date: Date) => setFieldValue('medicineEnd', date)}
+                                                value={values.medicineEnd}
                                             />
                                         </LabelInput>
-                                    ))}
-                                </FieldGroup>
-                            )}
+                                    </>
+                                )}
+                            </FormBody>
 
-                            <button type="submit">Cadastrar</button>
+                            <button type="submit" style={{ margin: '0 auto' }}>
+                                Cadastrar
+                            </button>
                         </RegisterForm>
                     )}
                 </Formik>

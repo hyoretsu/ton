@@ -2,12 +2,14 @@ import { celebrate, Joi } from 'celebrate';
 import { Router } from 'express';
 
 import ForgotPasswordController from '../controllers/ForgotPasswordController';
+import PeriodicInfoController from '../controllers/PeriodicInfoController';
 import SessionsController from '../controllers/SessionsController';
 import UsersController from '../controllers/UsersController';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const usersRouter = Router();
 const forgotPasswordController = new ForgotPasswordController();
+const periodicInfoController = new PeriodicInfoController();
 const usersController = new UsersController();
 const sessionsController = new SessionsController();
 
@@ -23,6 +25,8 @@ usersRouter.post(
             city: Joi.string().required(),
             doctorId: Joi.string().uuid(),
             email: Joi.string().email().required(),
+            hematologyInfo: Joi.object(),
+            medicine: Joi.array().items(Joi.object()),
             name: Joi.string().required(),
             neoplasia: Joi.string(),
             parentName: Joi.string(),
@@ -77,6 +81,19 @@ usersRouter.post(
         },
     }),
     forgotPasswordController.create,
+);
+
+usersRouter.post(
+    '/periodic_info',
+    celebrate({
+        body: {
+            patientId: Joi.string().required(),
+            hematology: Joi.object().required(),
+            medicine: Joi.array().items(Joi.object()).required(),
+            medicineEnd: Joi.date().required(),
+        },
+    }),
+    periodicInfoController.create,
 );
 
 export default usersRouter;

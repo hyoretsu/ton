@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Hematology" ALTER COLUMN "date" SET DEFAULT CURRENT_TIMESTAMP;

@@ -2,6 +2,8 @@
 /coverage
 /dist
 /node_modules
+storage/*
+!storage/.gitkeep
 tmp/*
 !tmp/uploads/.gitkeep
 *.log

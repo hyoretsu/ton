@@ -6,7 +6,7 @@ import { differenceInYears } from 'date-fns';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { BsChatLeftTextFill, BsPlusSquareFill } from 'react-icons/bs';
+import { BsChatLeftTextFill, BsPlusSquareFill, BsUpload } from 'react-icons/bs';
 import { FiClipboard, FiTarget } from 'react-icons/fi';
 
 import api from '@api';
@@ -59,17 +59,23 @@ const Dashboard: React.FC = () => {
                                     </span>
                                 </PatientInfo>
                                 <PatientButtons>
-                                    <button onClick={() => push(`/admin/patient/${patient.id}/checkups`)} type="button">
+                                    <button type="button" onClick={() => push(`/admin/patient/${patient.id}/checkups`)}>
                                         <FiClipboard size={20} color="#555" />
                                     </button>
                                     <button
-                                        onClick={() => push(`/admin/patient/${patient.id}/objectives`)}
                                         type="button"
+                                        onClick={() => push(`/admin/patient/${patient.id}/objectives`)}
                                     >
                                         <FiTarget size={20} color="#555" />
                                     </button>
                                     <button type="button">
                                         <BsChatLeftTextFill size={20} color="#555" />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => push(`/admin/patient/${patient.id}/periodic-info`)}
+                                    >
+                                        <BsUpload size={20} color="#555" />
                                     </button>
                                 </PatientButtons>
                             </Patient>

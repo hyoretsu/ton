@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 
-import ICreateUserDTO from '../dtos/ICreateUserDTO';
+import ICreateUserDTO, { PeriodicInfo } from '../dtos/ICreateUserDTO';
 
 export default interface IUsersRepository {
     create(data: ICreateUserDTO): Promise<User>;
@@ -11,4 +11,5 @@ export default interface IUsersRepository {
     findByPhone(phoneNumber: string): Promise<User | null>;
     findDoctorByPatientId(id: string): Promise<User | null>;
     update(userId: string, updatedInfo: Partial<User>): Promise<User>;
+    updatePeriodicInfo(patientId: string, periodicInfo: PeriodicInfo): Promise<void>;
 }

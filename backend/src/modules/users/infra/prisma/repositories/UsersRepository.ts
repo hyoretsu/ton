@@ -1,12 +1,39 @@
 import { User } from '@prisma/client';
 
-import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import ICreateUserDTO, { PeriodicInfo } from '@modules/users/dtos/ICreateUserDTO';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import { prisma } from '@shared/infra/http/server';
 
 export default class UsersRepository implements IUsersRepository {
-    public async create(data: ICreateUserDTO): Promise<User> {
+    public async create({ hematology, medicine, medicineEnd, ...data }: ICreateUserDTO): Promise<User> {
         const user = await prisma.user.create({ data });
+
+        if (hematology) {
+            await prisma.hematology.create({
+                data: {
+                    ...hematology,
+                    patientId: user.id,
+                },
+            });
+        }
+
+        if (medicine) {
+            const medicineRelation = await prisma.medicineRelation.create({
+                data: {
+                    endDate: medicineEnd as Date,
+                    patientId: user.id,
+                },
+            });
+
+            medicine.forEach(async receivedMedicine =>
+                prisma.medicine.create({
+                    data: {
+                        ...receivedMedicine,
+                        relationId: medicineRelation.id,
+                    },
+                }),
+            );
+        }
 
         return user;
     }
@@ -77,5 +104,37 @@ export default class UsersRepository implements IUsersRepository {
         });
 
         return updatedUser;
+    }
+
+    public async updatePeriodicInfo(
+        patientId: string,
+        { hematology, medicine, medicineEnd }: PeriodicInfo,
+    ): Promise<void> {
+        if (hematology) {
+            await prisma.hematology.create({
+                data: {
+                    ...hematology,
+                    patientId,
+                },
+            });
+        }
+
+        if (medicine) {
+            const medicineRelation = await prisma.medicineRelation.create({
+                data: {
+                    endDate: medicineEnd as Date,
+                    patientId,
+                },
+            });
+
+            medicine.forEach(async receivedMedicine =>
+                prisma.medicine.create({
+                    data: {
+                        ...receivedMedicine,
+                        relationId: medicineRelation.id,
+                    },
+                }),
+            );
+        }
     }
 }

@@ -25,6 +25,11 @@ export default class FinishCheckupService {
     ) {}
 
     public async execute({ answers, photos, patientId }: IRequest): Promise<void> {
+        const user = await this.usersRepository.findById(patientId);
+        if (!user) {
+            throw new Error('User not found');
+        }
+
         const checkup = await this.checkupsRepository.create({
             patientId,
         });

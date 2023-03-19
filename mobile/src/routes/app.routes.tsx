@@ -5,11 +5,12 @@ import Chat, { ChatParams } from 'screens/Chat';
 import Checkup from 'screens/Checkup';
 import CheckupCamera from 'screens/CheckupCamera';
 import CheckupConfirm, { CheckupConfirmParams } from 'screens/CheckupConfirm';
-import CheckupInstructions, { CheckupInstructionsParams } from 'screens/CheckupInstructions';
+import CheckupInstructions from 'screens/CheckupInstructions';
 import Diary from 'screens/Diary';
 import EditProfile from 'screens/EditProfile';
 import Educational from 'screens/Educational';
 import Home from 'screens/Home';
+import PersonalData from 'screens/PersonalData';
 import Profile from 'screens/Profile';
 
 import { InfoProvider } from '@context/info';
@@ -20,12 +21,13 @@ export type RootStackParamList = {
     Checkup: undefined;
     CheckupCamera: undefined;
     CheckupConfirm: CheckupConfirmParams;
-    CheckupInstructions: CheckupInstructionsParams;
+    CheckupInstructions: undefined;
     Diary: undefined;
     EditProfile: undefined;
     Educational: undefined;
     Home: undefined;
     Profile: undefined;
+    PersonalData: undefined;
 };
 
 const App = createStackNavigator<RootStackParamList>();
@@ -53,6 +55,7 @@ const AppRoutes: React.FC = () => {
                 <App.Screen name="Educational" component={Educational} />
                 <App.Screen name="Home" component={Home} />
                 <App.Screen name="Profile" component={Profile} />
+                <App.Screen name="PersonalData" component={PersonalData} />
             </App.Navigator>
         </InfoProvider>
     );

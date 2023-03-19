@@ -47,7 +47,7 @@ const Profile: React.FC = () => {
                     </PatientNameEditView>
                 </PatientInfo>
 
-                <ProfileOption onPress={() => navigate('EditProfile')}>
+                <ProfileOption onPress={() => navigate('PersonalData')}>
                     <ProfileOptionText>Dados pessoais</ProfileOptionText>
 
                     <Icon name="chevron-right" size={8 * vw} color={mainTheme.colors.purple} />

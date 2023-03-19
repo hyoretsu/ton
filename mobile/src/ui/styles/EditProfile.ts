@@ -51,3 +51,17 @@ export const Form = styled.View`
 
     margin: 0 6vw;
 `;
+
+export const MinLogoView = styled.View`
+    align-self: flex-end;
+    position: absolute;
+    bottom: -0.5vh;
+    right: -1vw;
+
+    background-color: #fff;
+
+    padding: 4vh 7vw 4vh 4vw;
+    border-radius: 8vw 3vw 0 3vw;
+    border-bottom-right-radius: 0;
+    margin-left: 5vw;
+`;

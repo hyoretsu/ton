@@ -1,4 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { vh, vw } from '@units/viewport';
+import * as Notifications from 'expo-notifications';
 import { Formik } from 'formik';
 import { useRef, useState } from 'react';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
@@ -45,6 +47,23 @@ const SignIn: React.FC = () => {
             const res = await api.post('/users/login', credentials);
 
             await finishLogin(res.data);
+
+            const notFirstLaunch = await AsyncStorage.getItem('@ton:launchedBefore');
+            if (!notFirstLaunch) {
+                const body = 'Apresentação Ton';
+
+                await Notifications.scheduleNotificationAsync({
+                    content: {
+                        body,
+                        data: {
+                            url: `ton://Chat?content=${body}`,
+                        },
+                    },
+                    trigger: null,
+                });
+
+                await AsyncStorage.setItem('@ton:launchedBefore', 'true');
+            }
         } catch {
             setModalMessage('E-mail e/ou senha incorretos.');
 

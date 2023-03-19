@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable global-require */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
@@ -89,23 +90,6 @@ const App: React.FC = () => {
                 stopOnTerminate: false,
                 startOnBoot: true,
             });
-
-            const notFirstLaunch = await AsyncStorage.getItem('@ton:launchedBefore');
-            if (!notFirstLaunch) {
-                const body = 'Apresentação Ton';
-
-                await Notifications.scheduleNotificationAsync({
-                    content: {
-                        body,
-                        data: {
-                            url: `ton://Chat?content=${body}`,
-                        },
-                    },
-                    trigger: null,
-                });
-
-                await AsyncStorage.setItem('@ton:launchedBefore', 'true');
-            }
         };
 
         execute();

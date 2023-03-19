@@ -25,10 +25,12 @@ import {
     EditPhotoView,
     EditTitle,
     Form,
+    MinLogoView,
     PhotoView,
 } from '@styles/EditProfile';
 
 import EditSvg from 'assets/edit.svg';
+import MinLogoPurple from 'assets/minLogoPurple.svg';
 
 interface FormTypes {
     city: string;
@@ -78,7 +80,7 @@ const EditProfile: React.FC = () => {
                             paddingBottom: 13 * vh,
                             paddingHorizontal: 8 * vw,
                             paddingTop: 8 * vh,
-                            height: 100 * vh,
+                            height: 102 * vh,
                         },
                     ]}
                 >
@@ -186,6 +188,10 @@ const EditProfile: React.FC = () => {
                             )}
                         </Formik>
                     </ContentView>
+
+                    <MinLogoView>
+                        <MinLogoPurple width={10 * vw} height={3 * vh} />
+                    </MinLogoView>
                 </ScrollView>
             </Container>
 

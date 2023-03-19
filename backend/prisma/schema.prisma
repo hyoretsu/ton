@@ -151,7 +151,7 @@ model User {
     neoplasia         String?
     doctorId          String?
     doctor            User?            @relation("UsersToUsers", fields: [doctorId], references: [id])
-    chartNumber       String?
+    chartNumber       String?          @unique
     patients          User[]           @relation("UsersToUsers")
     appointmentsStart Float?
     appointmentsEnd   Float?

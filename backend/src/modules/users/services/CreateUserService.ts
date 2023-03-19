@@ -53,6 +53,14 @@ export default class CreateUserService {
             throw new AppError('Data inválida.');
         }
 
+        if (chartNumber) {
+            const sameChartNumber = await this.usersRepository.findByChartNumber(chartNumber);
+
+            if (sameChartNumber) {
+                throw new AppError('Um paciente com este número de prontuário já foi cadastrado.');
+            }
+        }
+
         const sameEmail = await this.usersRepository.findByEmail(email);
         if (sameEmail) {
             throw new AppError('Um paciente com este e-mail já foi cadastrado.');

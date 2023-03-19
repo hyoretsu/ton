@@ -11,15 +11,17 @@ export default class MessagesRepository implements IMessagesRepository {
         return message;
     }
 
-    public async findMessages(userId: string): Promise<Message[]> {
+    public async findMessages(userId: string, patientId?: string): Promise<Message[]> {
         const messages = await prisma.message.findMany({
             where: {
                 OR: [
                     {
+                        senderId: patientId,
                         recipientId: userId,
                     },
                     {
                         senderId: userId,
+                        recipientId: patientId,
                     },
                 ],
             },

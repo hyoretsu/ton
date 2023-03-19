@@ -20,7 +20,7 @@ export default class MessagesController {
 
         const listMessage = container.resolve(ListMessagesService);
 
-        const messages = await listMessage.execute(userId);
+        const messages = await listMessage.execute(userId, req.query.patientId as string);
 
         return res.json(messages);
     }

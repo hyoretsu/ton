@@ -68,7 +68,7 @@ const Dashboard: React.FC = () => {
                                     >
                                         <FiTarget size={20} color="#555" />
                                     </button>
-                                    <button type="button">
+                                    <button type="button" onClick={() => push(`/admin/patient/${patient.id}/chat`)}>
                                         <BsChatLeftTextFill size={20} color="#555" />
                                     </button>
                                     <button

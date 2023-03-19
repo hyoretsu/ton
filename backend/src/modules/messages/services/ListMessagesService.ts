@@ -10,8 +10,8 @@ export default class ListMessagesService {
         private messagesRepository: IMessagesRepository,
     ) {}
 
-    public async execute(userId: string): Promise<Message[]> {
-        const messages = await this.messagesRepository.findMessages(userId);
+    public async execute(userId: string, patientId?: string): Promise<Message[]> {
+        const messages = await this.messagesRepository.findMessages(userId, patientId);
 
         return messages;
     }

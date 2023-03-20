@@ -3,6 +3,7 @@ import { Router } from 'express';
 
 import ForgotPasswordController from '../controllers/ForgotPasswordController';
 import HematologyController from '../controllers/HematologyController';
+import MedicineController from '../controllers/MedicineController';
 import PeriodicInfoController from '../controllers/PeriodicInfoController';
 import SessionsController from '../controllers/SessionsController';
 import UsersController from '../controllers/UsersController';
@@ -10,6 +11,7 @@ import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const usersRouter = Router();
 const forgotPasswordController = new ForgotPasswordController();
+const medicineController = new MedicineController();
 const hematologyController = new HematologyController();
 const periodicInfoController = new PeriodicInfoController();
 const usersController = new UsersController();
@@ -86,6 +88,8 @@ usersRouter.post(
 );
 
 usersRouter.get('/hematology', ensureAuthenticated, hematologyController.show);
+
+usersRouter.get('/medicine', ensureAuthenticated, medicineController.show);
 
 usersRouter.post(
     '/periodic_info',

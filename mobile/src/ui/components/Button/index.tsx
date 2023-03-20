@@ -7,6 +7,7 @@ interface ButtonProps extends RectButtonProperties {
     background?: string;
     bold?: boolean;
     border?: string;
+    borderRadius?: number;
     color?: string;
     fontSize?: number;
     fill?: boolean;
@@ -20,6 +21,7 @@ const Button: React.FC<ButtonProps> = ({
     background = mainTheme.colors.purple,
     bold = false,
     border = mainTheme.colors.purple,
+    borderRadius = 50 * vw,
     color = '#fff',
     fill = false,
     fontSize = 16,
@@ -36,7 +38,7 @@ const Button: React.FC<ButtonProps> = ({
             style={[
                 {
                     borderColor: border,
-                    borderRadius: 50 * vw,
+                    borderRadius,
                     borderWidth: border ? 0.3 * vw : 0,
                 },
                 fill && {
@@ -49,11 +51,12 @@ const Button: React.FC<ButtonProps> = ({
                 style={{
                     alignItems: 'center',
                     backgroundColor: selected ? color : background,
-                    borderRadius: 25 * vw,
-                    paddingBottom: paddingVertical || padding[0],
+                    borderRadius: borderRadius - 1,
+                    marginRight: -1,
+                    paddingBottom: paddingVertical || padding[0] + 1,
                     paddingLeft: paddingHorizontal || padding[1] + 1,
                     paddingRight: paddingHorizontal || padding[1] + 1,
-                    paddingTop: paddingVertical || padding[0],
+                    paddingTop: paddingVertical || padding[0] + 1,
                 }}
                 {...rest}
             >

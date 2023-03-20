@@ -13,6 +13,7 @@ import HealthProfile from 'screens/HealthProfile';
 import Home from 'screens/Home';
 import PersonalData from 'screens/PersonalData';
 import Profile from 'screens/Profile';
+import Treatment from 'screens/Treatment';
 
 import { InfoProvider } from '@context/info';
 
@@ -30,6 +31,7 @@ export type RootStackParamList = {
     Home: undefined;
     Profile: undefined;
     PersonalData: undefined;
+    Treatment: undefined;
 };
 
 const App = createStackNavigator<RootStackParamList>();
@@ -59,6 +61,7 @@ const AppRoutes: React.FC = () => {
                 <App.Screen name="Home" component={Home} />
                 <App.Screen name="Profile" component={Profile} />
                 <App.Screen name="PersonalData" component={PersonalData} />
+                <App.Screen name="Treatment" component={Treatment} />
             </App.Navigator>
         </InfoProvider>
     );

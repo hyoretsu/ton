@@ -59,6 +59,12 @@ const Profile: React.FC = () => {
                     <Icon name="chevron-right" size={8 * vw} color={mainTheme.colors.purple} />
                 </ProfileOption>
 
+                <ProfileOption onPress={() => navigate('Treatment')}>
+                    <ProfileOptionText>Tratamento</ProfileOptionText>
+
+                    <Icon name="chevron-right" size={8 * vw} color={mainTheme.colors.purple} />
+                </ProfileOption>
+
                 <LogoutButton onPress={signOut}>
                     <LogoutText>Desconectar</LogoutText>
                     <Icon name="log-out" size={4 * vw} color={mainTheme.colors.gold} />

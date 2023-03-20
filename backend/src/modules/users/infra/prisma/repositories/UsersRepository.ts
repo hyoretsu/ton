@@ -1,7 +1,7 @@
 import { Hematology, User } from '@prisma/client';
 
 import ICreateUserDTO, { PeriodicInfo } from '@modules/users/dtos/ICreateUserDTO';
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IUsersRepository, { CompleteMedicineRelation } from '@modules/users/repositories/IUsersRepository';
 import { prisma } from '@shared/infra/http/server';
 
 export default class UsersRepository implements IUsersRepository {
@@ -108,6 +108,22 @@ export default class UsersRepository implements IUsersRepository {
         });
 
         return hematology;
+    }
+
+    public async findMedicine(userId: string): Promise<CompleteMedicineRelation[]> {
+        const medicine = await prisma.medicineRelation.findMany({
+            where: {
+                patientId: userId,
+            },
+            include: {
+                medicine: true,
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+        });
+
+        return medicine;
     }
 
     public async update(id: string, data: Partial<User>): Promise<User> {

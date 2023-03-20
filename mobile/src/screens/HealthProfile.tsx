@@ -7,7 +7,7 @@ import { Share, Text, View } from 'react-native';
 
 import BottomBar from '@components/BottomBar';
 import Button from '@components/Button';
-import InfoHeader from '@components/InfoHeader';
+import ProfileInfoHeader from '@components/ProfileInfoHeader';
 import Row from '@components/Row';
 import { useAuth } from '@context/auth';
 
@@ -47,14 +47,12 @@ const HealthProfile: React.FC = () => {
     return (
         <>
             <Container>
-                <InfoHeader>Perfil de saúde</InfoHeader>
+                <ProfileInfoHeader>Perfil de saúde</ProfileInfoHeader>
 
-                <HealthProfileDescription>
-                    Estas são as informações fornecidas pelo seu dentista referentes ao seu tratamento
-                </HealthProfileDescription>
+                <HealthProfileDescription>Condição clínica atual</HealthProfileDescription>
 
                 <HealthProfileView>
-                    <HealthProfileTitle>Diagnóstico do câncer:</HealthProfileTitle>
+                    <HealthProfileTitle>Diagnóstico de base:</HealthProfileTitle>
                     <Text>{user.neoplasia}</Text>
 
                     <Row style={{ alignItems: 'center' }}>

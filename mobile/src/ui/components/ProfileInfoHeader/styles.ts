@@ -19,5 +19,6 @@ export const Title = styled.Text`
     color: ${({ theme }) => theme.colors.purple};
     font-size: 1.5em;
 
-    margin-left: 10vw;
+    margin-left: -5vw;
+    margin-right: auto;
 `;

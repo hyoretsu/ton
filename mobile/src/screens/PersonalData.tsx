@@ -3,8 +3,8 @@ import { format } from 'date-fns';
 import { View } from 'react-native';
 
 import BottomBar from '@components/BottomBar';
-import InfoHeader from '@components/InfoHeader';
 import PatientPhoto from '@components/PatientPhoto';
+import ProfileInfoHeader from '@components/ProfileInfoHeader';
 import { useAuth } from '@context/auth';
 
 import { Container, InfoText, InfoTitle, InfosView } from '@styles/PersonalData';
@@ -27,7 +27,7 @@ const PersonalData: React.FC = () => {
     return (
         <>
             <Container>
-                <InfoHeader>Dados pessoais</InfoHeader>
+                <ProfileInfoHeader>Dados pessoais</ProfileInfoHeader>
 
                 <MinLogoPurple width={8 * vw} style={{ alignSelf: 'center' }} />
 

@@ -15,7 +15,7 @@ export const HealthProfileDescription = styled.Text`
     font-size: 1.1em;
     text-align: center;
 
-    margin-top: 6vh;
+    margin-top: 4vh;
 `;
 
 export const HealthProfileView = styled.View`
@@ -26,7 +26,7 @@ export const HealthProfileView = styled.View`
     border-radius: 12vw;
 
     padding: 2vh 7vw 4vh;
-    margin-top: 2vh;
+    margin-top: 3vh;
 `;
 
 export const HealthProfileTitle = styled.Text`

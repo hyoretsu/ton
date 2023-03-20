@@ -27,7 +27,10 @@ export default class ListContentsService {
                 throw new AppError('O usuário autenticado não foi encontrado.');
             }
 
-            const contents = await this.contentsRepository.filter(differenceInWeeks(new Date(), user.createdAt));
+            const contents = await this.contentsRepository.filter(
+                differenceInWeeks(new Date(), user.createdAt),
+                user.treatment,
+            );
 
             return contents;
         }

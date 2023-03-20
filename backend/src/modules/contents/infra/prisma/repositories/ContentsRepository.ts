@@ -15,12 +15,13 @@ export default class ContentsRepository implements IContentsRepository {
         return content;
     }
 
-    public async filter(treatmentProgress: number): Promise<CompleteContent[]> {
+    public async filter(treatmentProgress: number, treatment?: string): Promise<CompleteContent[]> {
         const contents = await prisma.content.findMany({
             where: {
                 condition: {
                     lte: treatmentProgress,
                 },
+                ...(treatment && { treatment }),
             },
             include: {
                 firstMessage: true,

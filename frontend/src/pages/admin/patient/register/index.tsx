@@ -339,7 +339,14 @@ const Register: React.FC = () => {
                                             >
                                                 <FiPlusCircle size="1.5vw" style={{ alignSelf: 'center' }} />
                                             </button>
+                                        </LabelInput>
 
+                                        <LabelInput>
+                                            <label htmlFor="treatment">Tratamento</label>
+                                            <Field name="treatment" />
+                                        </LabelInput>
+
+                                        <LabelInput>
                                             <label htmlFor="medicineEnd">Término do regime quimioterápico</label>
                                             <DatePicker
                                                 name="medicineEnd"

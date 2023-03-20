@@ -17,6 +17,7 @@ contentsRouter.post(
             condition: Joi.number().required(),
             messages: Joi.array().items(Joi.string()).required(),
             title: Joi.string().required(),
+            treatment: Joi.string(),
         },
     }),
     contentsController.create,

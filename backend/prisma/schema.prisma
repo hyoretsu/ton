@@ -43,6 +43,7 @@ model Content {
     title          String
     firstMessageId String         @unique
     firstMessage   ContentMessage @relation(fields: [firstMessageId], references: [id])
+    treatment      String?
     condition      Int
     createdAt      DateTime       @default(now())
     updatedAt      DateTime       @updatedAt
@@ -149,6 +150,7 @@ model User {
     city              String
     checkups          Checkup[]
     neoplasia         String?
+    treatment         String?
     doctorId          String?
     doctor            User?            @relation("UsersToUsers", fields: [doctorId], references: [id])
     chartNumber       String?          @unique

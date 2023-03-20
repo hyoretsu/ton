@@ -20,7 +20,7 @@ export default interface IContentsRepository {
     findAll(): Promise<CompleteContent[]>;
     findByTitle(title: string): Promise<Content | null>;
     findMessageById(id: string): Promise<CompleteContentMessage | null>;
-    filter(treatmentProgress: number): Promise<CompleteContent[]>;
+    filter(treatmentProgress: number, treatment?: string): Promise<CompleteContent[]>;
     registerMessage(data: ICreateContentMessageDTO): Promise<ContentMessage>;
     updateMessage(id: string, data: Partial<ContentMessage>): Promise<ContentMessage>;
 }

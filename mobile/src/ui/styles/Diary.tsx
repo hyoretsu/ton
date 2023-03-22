@@ -7,7 +7,7 @@ interface ProgressProps extends ViewProps {
     progress: number;
 }
 interface ProgressSignProps extends RectButtonProps {
-    sign: string;
+    sign: 'plus' | 'minus';
 }
 
 export const Container = styled(ScrollView)``;
@@ -60,9 +60,9 @@ export const ProgressBarText = styled.Text`
     font-size: 16px;
 `;
 
-export const ProgressSign = styled(RectButton).attrs((props: ProgressSignProps) => ({
+export const ProgressSign = styled(RectButton).attrs<ProgressSignProps>((props: ProgressSignProps) => ({
     children: <Icon name={props.sign} size={20} />,
-}))<ProgressSignProps>`
+}))`
     position: absolute;
 
     ${({ sign }) =>

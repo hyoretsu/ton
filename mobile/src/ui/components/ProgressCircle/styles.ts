@@ -36,9 +36,9 @@ export const CircleHalf = styled.View<CircleHalfProps>`
     height: ${({ radius }) => radius * 2}px;
     width: ${({ radius }) => radius}px;
     background-color: ${({ background, color, degree }) => (degree === -180 ? background : color)};
-    transform: translateX(${({ half, radius }) => (half === 'first' ? -radius : radius) / 2}px)
+    transform: translateX(${({ half, radius }) => (half === 'first' ? radius : -radius) / 2}px)
         rotate(${({ degree }) => (degree === -180 ? 360 : degree)}deg)
-        translateX(${({ half, radius }) => (half === 'first' ? radius : -radius) / 2}px);
+        translateX(${({ half, radius }) => (half === 'first' ? -radius : radius) / 2}px);
 
     border-radius: ${({ radius }) => radius}px;
     ${({ half }) => (half === 'first' ? 'border-top-right-radius' : 'border-top-left-radius')}: 0;

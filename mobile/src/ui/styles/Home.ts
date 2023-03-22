@@ -1,4 +1,4 @@
-import Icon from '@expo/vector-icons/Feather';
+import { Feather as Icon } from '@expo/vector-icons';
 import { vh, vw } from '@units/viewport';
 import { ScrollView } from 'react-native-gesture-handler';
 import styled from 'rn-css';

@@ -1,4 +1,4 @@
-import Icon from '@expo/vector-icons/AntDesign';
+import { AntDesign as Icon } from '@expo/vector-icons';
 import { vh, vw } from '@units/viewport';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';

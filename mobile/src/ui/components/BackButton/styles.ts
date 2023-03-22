@@ -1,4 +1,4 @@
-import FeatherIcon from '@expo/vector-icons/Feather';
+import { Feather as FeatherIcon } from '@expo/vector-icons';
 import styled from 'rn-css';
 
 export const Button = styled.View`

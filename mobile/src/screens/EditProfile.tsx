@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import Icon from '@expo/vector-icons/Feather';
+import { Feather as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';

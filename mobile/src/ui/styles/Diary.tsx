@@ -1,6 +1,6 @@
+import { Feather as Icon } from '@expo/vector-icons';
 import { ViewProps } from 'react-native';
 import { RectButton, RectButtonProps, ScrollView } from 'react-native-gesture-handler';
-import Icon from '@expo/vector-icons/Feather';
 import styled from 'rn-css';
 
 interface ProgressProps extends ViewProps {

@@ -1,6 +1,5 @@
 import { API_URL, SOCKET_URL } from '@env';
-import Icon from '@expo/vector-icons/Feather';
-import MaterialIcon from '@expo/vector-icons/MaterialCommunityIcons';
+import { Feather as Icon } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';
@@ -302,7 +301,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                             >
                                 <AnswerSelectionText>{answer.body}</AnswerSelectionText>
 
-                                <MaterialIcon name="arrow-right-circle" size={3.5 * vh} color="#fff" />
+                                <Icon name="arrow-right-circle" size={3.5 * vh} color="#fff" />
                             </AnswerSelectionLine>
                         ))}
                     </AnswerSelection>

@@ -1,4 +1,4 @@
-import Icon from '@expo/vector-icons/Feather';
+import { Feather as Icon } from '@expo/vector-icons';
 import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';
 import { useRef, useState } from 'react';

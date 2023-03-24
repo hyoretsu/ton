@@ -39,7 +39,7 @@ export default class ForgotPasswordService {
                 name: foundUser.parentName || foundUser.name,
             },
             subject: 'TON - Senha Temporária',
-            body: `Olá! Sua nova senha é:\n${newPassword}`,
+            body: `Olá! Sua nova senha é:\n${newPassword}\n\nPor favor, ao entrar, redefina sua senha na tela de Dados Pessoais.`,
         });
     }
 }

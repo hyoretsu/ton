@@ -1,3 +1,5 @@
+import { vw } from '@units/viewport';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';
 
 export const Container = styled.View`
@@ -47,10 +49,17 @@ export const AppointmentViewMarker = styled.View`
     border-radius: 8vw 0 0 8vw;
 `;
 
-export const AppointmentViewMarkerCircle = styled.View`
-    background-color: ${({ theme }) => theme.colors.purple};
-    height: 40%;
-    width: 40%;
+export const AppointmentViewMarkerCircle = styled(TouchableOpacity).attrs({
+    containerStyle: {
+        borderRadius: 50 * vw,
+    },
+})`
+    align-items: center;
+    justify-content: center;
+
+    background-color: ${({ theme }) => theme.colors.gold};
+    height: 7vh;
+    width: 7vh;
 
     border-radius: 50vw;
 `;

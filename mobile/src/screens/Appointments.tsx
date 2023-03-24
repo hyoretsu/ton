@@ -1,6 +1,6 @@
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
@@ -12,7 +12,6 @@ import { useAuth } from '@context/auth';
 import api from '@api';
 
 import { AppointmentButton, AppointmentTimes, Container } from '@styles/Appointments';
-import { Title } from '@styles/Profile';
 
 const Appointments: React.FC = () => {
     const { user } = useAuth();
@@ -29,7 +28,7 @@ const Appointments: React.FC = () => {
             setTimes([]);
 
             const { data } = await api.post('/appointments/times/find', { date, doctorId: user.doctorId });
-            setTimes(data);
+            if (data[0] !== null) setTimes(data);
         };
 
         execute();
@@ -53,7 +52,7 @@ const Appointments: React.FC = () => {
     return (
         <>
             <Container>
-                <Title>Marcar consulta</Title>
+                <Text>Marcar consulta</Text>
                 <AppointmentButton background="#a3bee9" onPress={() => showDatePicker(true)}>
                     {format(date, 'dd/MM')}
                 </AppointmentButton>
@@ -67,7 +66,7 @@ const Appointments: React.FC = () => {
                             onPress={() => selectTime(time)}
                             style={{ marginBottom: 8, marginRight: 8 }}
                         >
-                            {format(parseISO(time), 'HH:mm')}
+                            {format(new Date(time), 'HH:mm')}
                         </AppointmentButton>
                     ))}
                 </AppointmentTimes>

@@ -1,3 +1,4 @@
+import { Feather as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { vh, vw } from '@units/viewport';
 import { Appointment } from 'backend';
@@ -55,10 +56,12 @@ const Home: React.FC = () => {
 
                 <AppointmentView>
                     <AppointmentViewMarker>
-                        <AppointmentViewMarkerCircle />
+                        <AppointmentViewMarkerCircle onPress={() => navigate('Appointments')}>
+                            <Icon name="calendar" size={7 * vw} color="#fff" />
+                        </AppointmentViewMarkerCircle>
                     </AppointmentViewMarker>
                     <AppointmentInfo>
-                        <AppointmentText>Sua próxima consulta é para o dia:</AppointmentText>
+                        <AppointmentText>Sua próxima consulta{'\n'}odontológica é dia:</AppointmentText>
                         <AppointmentDate>
                             {appointments[0]?.time
                                 ? format(new Date(appointments[0].time), 'dd/MM/yyyy')

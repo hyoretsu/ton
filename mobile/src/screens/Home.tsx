@@ -1,15 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
-import { vw } from '@units/viewport';
+import { vh, vw } from '@units/viewport';
 import { Appointment } from 'backend';
 import { format, isAfter } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
 
 import BottomBar from '@components/BottomBar';
+import ObjectivesList from '@components/ObjectivesList';
 import PatientPhoto from '@components/PatientPhoto';
 import { useAuth } from '@context/auth';
-import { useInfo } from '@context/info';
 
 import api from '@api';
 
@@ -21,11 +20,6 @@ import {
     AppointmentViewMarker,
     AppointmentViewMarkerCircle,
     Container,
-    ObjectiveCheck,
-    ObjectiveLink,
-    ObjectiveTitle,
-    ObjectiveView,
-    ObjectivesText,
     PatientGreeting,
     PatientInfo,
     PatientName,
@@ -34,7 +28,6 @@ import {
 const Home: React.FC = () => {
     const { user } = useAuth();
     const { navigate } = useNavigation();
-    const { objectives, progress } = useInfo();
 
     const [appointments, setAppointments] = useState<Appointment[]>([]);
 
@@ -74,20 +67,7 @@ const Home: React.FC = () => {
                     </AppointmentInfo>
                 </AppointmentView>
 
-                <ObjectivesText>Metas do dia:</ObjectivesText>
-                {objectives.map(objective => {
-                    const completed = (progress[objective.id] || 0) === objective.goal;
-
-                    return (
-                        <RectButton key={objective.id} onPress={() => navigate('Diary')}>
-                            <ObjectiveView completed={completed}>
-                                <ObjectiveTitle completed={completed}>{objective.title}</ObjectiveTitle>
-
-                                {completed ? <ObjectiveCheck /> : <ObjectiveLink>{'>'}</ObjectiveLink>}
-                            </ObjectiveView>
-                        </RectButton>
-                    );
-                })}
+                <ObjectivesList style={{ marginTop: 3 * vh }} />
             </Container>
             <BottomBar />
         </>

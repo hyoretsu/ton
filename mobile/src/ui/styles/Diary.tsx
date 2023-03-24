@@ -1,83 +1,76 @@
-import { Feather as Icon } from '@expo/vector-icons';
-import { ViewProps } from 'react-native';
-import { RectButton, RectButtonProps, ScrollView } from 'react-native-gesture-handler';
 import styled from 'rn-css';
 
-interface ProgressProps extends ViewProps {
-    progress: number;
-}
-interface ProgressSignProps extends RectButtonProps {
-    sign: 'plus' | 'minus';
-}
+export const Header = styled.View`
+    flex-direction: row;
+    align-items: center;
 
-export const Container = styled(ScrollView)``;
+    background-color: #fff;
+    height: 15vh;
 
-export const DailyObjectiveText = styled.Text`
-    font-size: 15px;
-    color: #fffa;
+    padding: 0 8vw 0 20vw;
 `;
 
-export const ObjectiveView = styled.View`
-    flex-direction: column;
+export const HeaderCircle = styled.View`
+    position: absolute;
 
-    background-color: #a3bee9;
+    height: 15vh;
+    width: 15vh;
 
-    border: 2px #0006;
-    border-radius: 20px;
-    padding: 8px 16px 12px;
-    margin-bottom: 20px;
+    border-radius: 50vw;
 `;
 
-export const ObjectiveTitle = styled.Text`
-    font-size: 20px;
+export const HeaderTitle = styled.Text`
+    font-family: ${({ theme }) => theme.fontFamily.bold};
+    color: ${({ theme }) => theme.colors.purple};
+    font-size: 2em;
 `;
 
-export const ProgressBar = styled.View`
-    position: relative;
+export const HeaderPhotoDesc = styled.Text`
+    font-family: ${({ theme }) => theme.fontFamily.regular};
+    color: ${({ theme }) => theme.colors.purple};
+
+    margin-right: 2vw;
+    margin-left: auto;
+`;
+
+export const HeaderPhotoView = styled.View`
+    height: 9vh;
+    width: 9vh;
+`;
+
+export const Container = styled.View`
+    flex: 1;
+    align-items: center;
+
+    padding: 0 7vw 7vh;
+`;
+
+export const InfoTitle = styled.Text`
+    font-family: ${({ theme }) => theme.fontFamily.bold};
+    color: ${({ theme }) => theme.colors.purple};
+    font-size: 1.8em;
+
+    margin-bottom: 3vh;
+`;
+
+export const InfoView = styled.View`
+    align-items: center;
+`;
+
+export const InfoCircle = styled.View`
     align-items: center;
     justify-content: center;
 
-    width: 100%;
-    height: 28px;
-    background-color: #0004;
+    background-color: #fff;
+    width: 17vw;
+    height: 17vw;
 
-    border-radius: 20px;
-    margin-top: 40px;
+    border-radius: 50vw;
 `;
 
-export const ProgressBarColor = styled.View<ProgressProps>`
-    position: absolute;
-    left: 0;
+export const InfoCircleText = styled.Text`
+    font-family: ${({ theme }) => theme.fontFamily.regular};
+    color: ${({ theme }) => theme.colors.purple};
 
-    width: ${({ progress }) => progress * 100}%;
-    height: 100%;
-    background-color: #0f0;
-
-    border-radius: 20px;
-`;
-
-export const ProgressBarText = styled.Text`
-    font-size: 16px;
-`;
-
-export const ProgressSign = styled(RectButton).attrs<ProgressSignProps>((props: ProgressSignProps) => ({
-    children: <Icon name={props.sign} size={20} />,
-}))`
-    position: absolute;
-
-    ${({ sign }) =>
-        sign === 'plus'
-            ? {
-                  right: 0,
-                  paddingRight: 4,
-                  paddingVertical: 2,
-              }
-            : {
-                  left: 0,
-                  paddingLeft: 4,
-                  paddingVertical: 2,
-              }}
-
-    border: 2px #0006;
-    border-radius: 20px;
+    margin-top: 1vh;
 `;

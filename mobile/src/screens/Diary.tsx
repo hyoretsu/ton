@@ -1,89 +1,85 @@
-import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
+import { StatusBar } from 'react-native';
 
 import BottomBar from '@components/BottomBar';
-import ProgressCircle from '@components/ProgressCircle';
-import { useInfo } from '@context/info';
+import ObjectivesList from '@components/ObjectivesList';
+import PatientPhoto from '@components/PatientPhoto';
+import Row from '@components/Row';
 
 import {
     Container,
-    DailyObjectiveText,
-    ObjectiveView,
-    ObjectiveTitle,
-    ProgressBar,
-    ProgressBarColor,
-    ProgressBarText,
-    ProgressSign,
+    Header,
+    HeaderTitle,
+    HeaderCircle,
+    HeaderPhotoView,
+    HeaderPhotoDesc,
+    InfoTitle,
+    InfoCircle,
+    InfoCircleText,
+    InfoView,
 } from '@styles/Diary';
 
+import HealthProfileSvg from 'assets/healthProfile.svg';
+import PersonalDataSvg from 'assets/personalData.svg';
+import TreatmentSvg from 'assets/treatment.svg';
+
 const Diary: React.FC = () => {
-    const { objectives, progress, updateProgress } = useInfo();
-
-    const [timer, setTimer] = useState<[string, number]>(['', 0]);
-
-    const handlePlusMinus = async (action: string, objectiveId: string): Promise<void> => {
-        const updatedProgress = (progress[objectiveId] || 0) + (action === 'plus' ? 1 : -1);
-
-        updateProgress(objectiveId, updatedProgress);
-    };
-
-    const handlePlus = (id: string, time: number | null): void => {
-        if (!time) {
-            handlePlusMinus('plus', id).then(() => setTimer(['', 0]));
-            return;
-        }
-
-        setTimer([id, time]);
-
-        for (let i = 1; i <= time; i++) {
-            setTimeout(() => setTimer(old => [old[0], old[1] - 1]), 1000 * i);
-        }
-
-        setTimeout(() => {
-            handlePlusMinus('plus', id).then(() => setTimer(['', 0]));
-        }, 1000 * time);
-    };
+    const { navigate } = useNavigation();
 
     return (
         <>
-            <Container
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ padding: 20, paddingBottom: 0, flex: 1 }}
-            >
-                {(objectives || []).map(objective => (
-                    <ObjectiveView key={objective.id}>
-                        <ObjectiveTitle>{objective.title}</ObjectiveTitle>
-                        {objective.isDaily && <DailyObjectiveText>Missão diária</DailyObjectiveText>}
-                        <ProgressBar>
-                            <ProgressBarColor progress={progress[objective.id] / objective.goal} />
-                            {progress[objective.id] > 0 && (
-                                <ProgressSign
-                                    sign="minus"
-                                    onPress={() => handlePlusMinus('minus', objective.id)}
-                                    style={{}}
-                                />
-                            )}
-                            <ProgressBarText>
-                                {progress[objective.id] || 0} / {objective.goal}
-                            </ProgressBarText>
-                            {(progress[objective.id] || 0) < objective.goal && (
-                                <ProgressSign sign="plus" onPress={() => handlePlus(objective.id, objective.time)} />
-                            )}
-                        </ProgressBar>
+            <StatusBar backgroundColor="#fff" />
 
-                        {timer[0] === objective.id && objective.time && (
-                            <ProgressCircle
-                                progress={timer[1] / objective.time || objective.time}
-                                radius={100}
-                                color="#c4d3f2"
-                                background="#a3bee9"
-                                text={`${Math.floor((timer[1] || objective.time) / 60)}:${String(
-                                    (timer[1] || objective.time) % 60,
-                                ).padStart(2, '0')}`}
-                                style={{ marginTop: 12 }}
-                            />
-                        )}
-                    </ObjectiveView>
-                ))}
+            <Header>
+                <HeaderCircle
+                    style={{
+                        backgroundColor: mainTheme.colors.purple,
+                        left: -0.5 * 15 * vh,
+                    }}
+                />
+                <HeaderCircle
+                    style={{
+                        backgroundColor: mainTheme.colors.gold,
+                        left: -0.75 * 15 * vh,
+                        top: 6 * vh,
+                    }}
+                />
+
+                <HeaderTitle>Diário</HeaderTitle>
+
+                <HeaderPhotoDesc>Meu perfil</HeaderPhotoDesc>
+                <HeaderPhotoView>
+                    <PatientPhoto size={5 * vh} onPress={() => navigate('Profile')} />
+                </HeaderPhotoView>
+            </Header>
+
+            <ObjectivesList style={{ flex: 1, paddingBottom: 7 * vh, paddingHorizontal: 7 * vw, paddingTop: 6 * vh }} />
+
+            <Container>
+                <InfoTitle>Informações:</InfoTitle>
+
+                <Row style={{ justifyContent: 'space-between', width: '100%' }}>
+                    <InfoView>
+                        <InfoCircle>
+                            <PersonalDataSvg height={4 * vh} />
+                        </InfoCircle>
+                        <InfoCircleText>Dados pessoais</InfoCircleText>
+                    </InfoView>
+                    <InfoView>
+                        <InfoCircle>
+                            <HealthProfileSvg width={9 * vw} />
+                        </InfoCircle>
+                        <InfoCircleText>Perfil de saúde</InfoCircleText>
+                    </InfoView>
+                    <InfoView>
+                        <InfoCircle>
+                            <TreatmentSvg height={4 * vh} />
+                        </InfoCircle>
+                        <InfoCircleText>Tratamento</InfoCircleText>
+                    </InfoView>
+                </Row>
             </Container>
 
             <BottomBar />

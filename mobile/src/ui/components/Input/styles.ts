@@ -25,7 +25,8 @@ export const CustomInput = styled(TextInput)`
     color: ${({ theme }) => theme.colors.purple};
     font-size: 16px;
 
-    border-left: 1px solid ${({ theme }) => theme.colors.purple};
+    border-left-width: 1px;
+    border-left-color: ${({ theme }) => theme.colors.purple};
     padding: -1vh 0;
     padding-left: 4vw;
 `;

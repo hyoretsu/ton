@@ -91,8 +91,10 @@ export const MedicineName = styled.Text`
     width: 57%;
 
     padding: 1vh 3vw;
-    border-bottom: 1px ${({ theme }) => theme.colors.purple};
-    border-right: 1px ${({ theme }) => theme.colors.purple};
+    border-bottom-width: 1px;
+    border-bottom-color: ${({ theme }) => theme.colors.purple};
+    border-right-width: 1px;
+    border-right-color: ${({ theme }) => theme.colors.purple};
 `;
 
 export const MedicineDosage = styled.Text`
@@ -105,5 +107,6 @@ export const MedicineDosage = styled.Text`
     background-color: #fff;
 
     padding: 1vh 3vw;
-    border-bottom: 1px ${({ theme }) => theme.colors.purple};
+    border-bottom-width: 1px;
+    border-bottom-color: ${({ theme }) => theme.colors.purple};
 `;

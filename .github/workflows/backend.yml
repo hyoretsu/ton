@@ -11,32 +11,19 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup Node.js environment
-      uses: actions/setup-node@main
-      with:
-        node-version: 'lts/*'
-
     - name: Enable PNPM
       uses: pnpm/action-setup@v2
       with:
         version: 'latest'
 
-    - name: Get PNPM store directory
-      id: pnpm-cache
-      shell: bash
-      run: |
-        echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-    - name: Cache dependencies
-      uses: actions/cache@v3
+    - name: Setup Node.js environment
+      uses: actions/setup-node@main
       with:
-        path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-        key: ${{ runner.os }}-pnpm
-        restore-keys: |
-          ${{ runner.os }}-pnpm
+        node-version: 'lts/*'
+        cache: 'pnpm'
 
     - name: Install dependencies
-      run: pnpm i
+      run: pnpm i --no-frozen-lockfile
 
     - name: Build the app
       run: pnpm -F backend build

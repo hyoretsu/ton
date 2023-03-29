@@ -10,7 +10,7 @@ import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
 import * as TaskManager from 'expo-task-manager';
 import React, { useEffect } from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { Platform, StatusBar, Text } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from 'rn-css';
 
@@ -21,7 +21,7 @@ import api from '@api';
 
 import Routes from './routes';
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -59,7 +59,7 @@ TaskManager.defineTask('educational-check', async ({ data, error, executionInfo 
 
 const App: React.FC = () => {
     // Load custom fonts
-    const [fontsLoaded] = useFonts({
+    const [fontsLoaded, fontsError] = useFonts({
         'CeraCompactPro-Bold': require('./assets/fonts/CeraCompactPro-Bold.ttf'),
         'CeraCompactPro-Medium': require('./assets/fonts/CeraCompactPro-Medium.ttf'),
         'CeraCompactPro-Regular': require('./assets/fonts/CeraCompactPro-Regular.ttf'),
@@ -96,9 +96,15 @@ const App: React.FC = () => {
     }, []);
 
     if (!fontsLoaded) {
-        return null;
+        return (
+            <>
+                <Text>Fonts</Text>
+                <Text>{fontsError?.name}</Text>
+                <Text>{fontsError?.message}</Text>
+            </>
+        );
     } else {
-        SplashScreen.hideAsync();
+        // SplashScreen.hideAsync();
     }
 
     return (

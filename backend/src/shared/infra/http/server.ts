@@ -51,7 +51,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     });
 });
 
-httpServer.listen(3332);
-app.listen(3333, () => {
+httpServer.listen(3333, () => {
     console.log('Server started on port 3333!');
 });

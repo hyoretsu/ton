@@ -1,0 +1,46 @@
+{
+    "expo": {
+        "android": {
+            "adaptiveIcon": {
+                "backgroundColor": "#eaf7f9",
+                "foregroundImage": "./src/assets/adaptive-icon.png"
+            },
+            "package": "com.hyoretsu.ton",
+            "permissions": [
+                "android.permission.CAMERA",
+                "android.permission.RECORD_AUDIO"
+            ]
+        },
+        "extra": {
+            "eas": {
+                "projectId": "1bcb1358-4fa3-4259-8967-d12b22862066"
+            }
+        },
+        "icon": "./src/assets/icon.png",
+        "ios": {
+            "bundleIdentifier": "com.hyoretsu.ton"
+        },
+        "name": "Ton",
+        "plugins": [
+            [
+                "expo-camera",
+                {
+                    "cameraPermission": "Conceda acesso à câmera para $(PRODUCT_NAME)."
+                }
+            ]
+        ],
+        "scheme": "ton",
+        "slug": "ton",
+        "splash": {
+            "image": "./src/assets/splash.png",
+            "backgroundColor": "#eaf7f9"
+        },
+        "version": "1.0.0",
+        "runtimeVersion": {
+            "policy": "sdkVersion"
+        },
+        "updates": {
+            "url": "https://u.expo.dev/1bcb1358-4fa3-4259-8967-d12b22862066"
+        }
+    }
+}

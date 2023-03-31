@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable global-require */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import mainTheme from '@theme';
@@ -10,7 +9,7 @@ import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
 import * as TaskManager from 'expo-task-manager';
 import React, { useEffect } from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { Platform, StatusBar, Text } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from 'rn-css';
 
@@ -59,10 +58,10 @@ TaskManager.defineTask('educational-check', async ({ data, error, executionInfo 
 
 const App: React.FC = () => {
     // Load custom fonts
-    const [fontsLoaded] = useFonts({
-        'CeraCompactPro-Bold': require('./assets/fonts/CeraCompactPro-Bold.ttf'),
-        'CeraCompactPro-Medium': require('./assets/fonts/CeraCompactPro-Medium.ttf'),
-        'CeraCompactPro-Regular': require('./assets/fonts/CeraCompactPro-Regular.ttf'),
+    const [fontsLoaded, fontsError] = useFonts({
+        'CeraCompactPro-Bold': 'https://hyoretsu-fonts.s3.amazonaws.com/Cera+Compact+Pro+(Bold).ttf',
+        'CeraCompactPro-Medium': 'https://hyoretsu-fonts.s3.amazonaws.com/Cera+Compact+Pro+(Medium).ttf',
+        'CeraCompactPro-Regular': 'https://hyoretsu-fonts.s3.amazonaws.com/Cera+Compact+Pro+(Regular).ttf',
     });
 
     useEffect(() => {
@@ -95,7 +94,15 @@ const App: React.FC = () => {
         execute();
     }, []);
 
-    if (!fontsLoaded) {
+    if (fontsError) {
+        return (
+            <>
+                <Text>Fonts</Text>
+                <Text>{fontsError?.name}</Text>
+                <Text>{fontsError?.message}</Text>
+            </>
+        );
+    } else if (!fontsLoaded) {
         return null;
     } else {
         SplashScreen.hideAsync();

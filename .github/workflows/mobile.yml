@@ -1,0 +1,38 @@
+name: Mobile CD
+
+on:
+  push:
+    branches:
+      - main
+    paths: [ 'mobile/**' ]
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏗 Checkout repo
+      uses: actions/checkout@v3
+
+    - name: 🏗 Enable PNPM
+      uses: pnpm/action-setup@v2
+      with:
+        version: latest
+
+    - name: 🏗 Setup Node.js environment
+      uses: actions/setup-node@main
+      with:
+        node-version: lts/*
+        cache: pnpm
+
+    - name: 🏗 Setup EAS
+      uses: expo/expo-github-action@v8
+      with:
+        eas-version: latest
+        token: ${{ secrets.EXPO_TOKEN }}
+
+    - name: 📦 Install dependencies
+      run: pnpm i --no-frozen-lockfile
+
+    - name: 🚀 Create app update
+      run: eas update --branch production --non-interactive

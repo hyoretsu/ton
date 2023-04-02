@@ -7,6 +7,7 @@ import { wait } from '@utils';
 import { ContentMessage, Message } from 'backend';
 import { RouteParams } from 'data/@types/navigation';
 import { format } from 'date-fns';
+import { ResizeMode, Video } from 'expo-av';
 import * as Speech from 'expo-speech';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, StatusBar, Image, View } from 'react-native';
@@ -111,7 +112,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
             }
 
             const availableVoices = await Speech.getAvailableVoicesAsync();
-            const portugueseVoices = availableVoices.filter(voice2 => voice2.language === 'pt-BR');
+            const portugueseVoices = availableVoices.filter(voice2 => voice2.language.includes('pt'));
             setTtsVoice(portugueseVoices[0].identifier);
         };
 
@@ -201,38 +202,61 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                                                     <MessageSender sentFromUser={sentFromUser}>
                                                         {message.sender.name}
                                                     </MessageSender>
-                                                    {message.body.startsWith('img:') ? (
-                                                        <Image
-                                                            source={{
-                                                                uri: `${API_URL}/files/${
-                                                                    message.body.split('img:')[1]
-                                                                }`,
-                                                            }}
-                                                            style={{
-                                                                height: 50 * vh,
-                                                                width: 60 * vw,
-                                                            }}
-                                                            resizeMode="contain"
-                                                        />
-                                                    ) : (
-                                                        <MessageText sentFromUser={sentFromUser}>
-                                                            {message.body}
-                                                        </MessageText>
-                                                    )}
+                                                    {(() => {
+                                                        const identifier = message.body.substring(0, 3);
+                                                        const file = message.body.substring(4);
+
+                                                        if (identifier === 'img') {
+                                                            return (
+                                                                <Image
+                                                                    source={{
+                                                                        uri: `${API_URL}/files/${file}`,
+                                                                    }}
+                                                                    style={{
+                                                                        height: 50 * vh,
+                                                                        width: 60 * vw,
+                                                                    }}
+                                                                    resizeMode="contain"
+                                                                />
+                                                            );
+                                                        } else if (identifier === 'vid') {
+                                                            return (
+                                                                <Video
+                                                                    source={{
+                                                                        uri: `${API_URL}/files/${file}`,
+                                                                    }}
+                                                                    style={{
+                                                                        height: 50 * vh,
+                                                                        width: 60 * vw,
+                                                                    }}
+                                                                    useNativeControls
+                                                                    // @ts-ignore
+                                                                    resizeMode={ResizeMode.CONTAIN}
+                                                                />
+                                                            );
+                                                        }
+
+                                                        return (
+                                                            <MessageText sentFromUser={sentFromUser}>
+                                                                {message.body}
+                                                            </MessageText>
+                                                        );
+                                                    })()}
                                                     <MessageTime sentFromUser={sentFromUser}>
                                                         {format(new Date(message.createdAt), 'HH:mm')}
                                                     </MessageTime>
                                                 </View>
-                                                {message.senderId !== user.id && (
-                                                    <MessageSpeaker
-                                                        onPress={async () =>
-                                                            Speech.speak(message.body, {
-                                                                rate: 1.1,
-                                                                voice,
-                                                            })
-                                                        }
-                                                    />
-                                                )}
+                                                {message.senderId !== user.id &&
+                                                    !message.body.substring(0, 4).match(/img|vid/) && (
+                                                        <MessageSpeaker
+                                                            onPress={async () =>
+                                                                Speech.speak(message.body, {
+                                                                    rate: 1.1,
+                                                                    voice,
+                                                                })
+                                                            }
+                                                        />
+                                                    )}
                                             </MessageView>
                                             {sentFromUser && <MessageTriangle sentFromUser={sentFromUser} />}
                                         </MessageCompleteView>

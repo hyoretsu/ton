@@ -1,5 +1,5 @@
-import Link from '@hyoretsu/components.next-link';
-import { formatPhoneNumber } from '@hyoretsu/shared.utils';
+import { Link } from '@hyoretsu/react-components';
+import { formatPhoneNumber } from '@hyoretsu/utils';
 import { User } from 'backend';
 import { useAuth } from 'data/contexts/auth';
 import { differenceInYears } from 'date-fns';

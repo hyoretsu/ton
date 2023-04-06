@@ -1,5 +1,5 @@
-import Modal from '@hyoretsu/components.modal';
-import { range } from '@hyoretsu/shared.utils';
+import { Modal } from '@hyoretsu/react-components';
+import { range } from '@hyoretsu/utils';
 import { useAuth } from 'data/contexts/auth';
 import { format } from 'date-fns';
 import { Field, Formik } from 'formik';

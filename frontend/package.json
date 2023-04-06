@@ -7,9 +7,8 @@
         "export": "next export"
     },
     "dependencies": {
-        "@hyoretsu/components.modal": "^0.0.3",
-        "@hyoretsu/components.next-link": "^0.0.2",
-        "@hyoretsu/shared.utils": "^0.0.8",
+        "@hyoretsu/react-components": "^1.0.1",
+        "@hyoretsu/utils": "^1.1.0",
         "axios": "^1.2.0",
         "backend": "workspace:*",
         "date-fns": "^2.29.3",

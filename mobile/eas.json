@@ -1,5 +1,4 @@
 {
-    "autoIncrement": true,
     "cli": {
         "appVersionSource": "remote",
         "version": ">= 3.8.1"
@@ -15,10 +14,16 @@
             "channel": "preview"
         },
         "production": {
-            "channel": "production"
+            "channel": "main",
+            "autoIncrement": true
         }
     },
     "submit": {
-        "production": {}
+        "production": {
+            "android": {
+                "track": "production",
+                "serviceAccountKeyPath": "/tmp/key.json"
+            }
+        }
     }
 }

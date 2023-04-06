@@ -3,6 +3,7 @@
 tmp/
 mobile/.expo
 **/.pnpm-store
+**/dist
 
 # Android/IntelliJ
 build/

@@ -31,8 +31,15 @@ jobs:
         eas-version: latest
         token: ${{ secrets.EXPO_TOKEN }}
 
+    - name: 🏗 Copy Google Services JSON key to /tmp
+      run: echo "$GOOGLE_SERVICE_ACCOUNT" >> /tmp/key.json
+      env:
+        GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+
     - name: 📦 Install dependencies
       run: pnpm i --no-frozen-lockfile
 
-    - name: 🚀 Create app update
-      run: eas update --branch production --non-interactive
+    - name: 🚀 Build app and release update
+      run: |
+        cd mobile
+        eas build --auto-submit -p android --profile production --non-interactive --no-wait

@@ -6,7 +6,7 @@ import { inject, injectable } from 'tsyringe';
 import ICreateContentDTO from '../dtos/ICreateContentDTO';
 import IContentsRepository from '../repositories/IContentsRepository';
 
-interface IRequest extends Omit<ICreateContentDTO, 'firstMessage'> {
+interface IRequest extends Omit<ICreateContentDTO, 'firstMessageId'> {
     answers: Array<string | string[]>;
     messages: string[];
 }

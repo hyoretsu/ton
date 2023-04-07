@@ -44,7 +44,17 @@ export default class UsersRepository implements IUsersRepository {
         });
     }
 
-    public async findAllPatients(): Promise<User[]> {
+    public async findAllPatients(doctorId?: string): Promise<User[]> {
+        if (doctorId) {
+            const patients = await prisma.user.findMany({
+                where: {
+                    doctorId,
+                },
+            });
+
+            return patients;
+        }
+
         let users = await prisma.user.findMany();
 
         users = users.filter(user => user.doctorId != null);

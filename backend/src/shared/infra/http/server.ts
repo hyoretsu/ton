@@ -28,7 +28,7 @@ export const prisma = new PrismaClient({ log: ['error', 'info', 'warn'] });
 
 app.use(cors({ origin: process.env.APP_WEB_URL }));
 app.use(express.json());
-app.use('/files', express.static(uploadConfig.uploadsFolder));
+app.use(`${process.env.NODE_ENV === 'production' ? '/ton' : ''}/files`, express.static(uploadConfig.uploadsFolder));
 app.use(process.env.NODE_ENV === 'production' ? '/ton' : '', routes);
 
 app.use(errors());

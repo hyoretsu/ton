@@ -4,6 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
+    doctorId?: string;
     userId: string;
 }
 
@@ -14,7 +15,7 @@ export default class ListUsersService {
         private usersRepository: IUsersRepository,
     ) {}
 
-    public async execute({ userId }: IRequest): Promise<User | User[]> {
+    public async execute({ doctorId, userId }: IRequest): Promise<User | User[]> {
         if (userId) {
             const user = await this.usersRepository.findById(userId);
             if (!user) {
@@ -24,7 +25,7 @@ export default class ListUsersService {
             return user;
         }
 
-        const users = await this.usersRepository.findAllPatients();
+        const users = await this.usersRepository.findAllPatients(doctorId);
 
         return users;
     }

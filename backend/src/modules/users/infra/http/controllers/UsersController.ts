@@ -31,6 +31,7 @@ export default class UsersController {
         const listPatientsService = container.resolve(ListPatientsService);
 
         const users = await listPatientsService.execute({
+            doctorId: req.user.id,
             userId: req.query.userId as string,
         });
 

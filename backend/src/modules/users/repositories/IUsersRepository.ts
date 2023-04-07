@@ -11,7 +11,7 @@ export type CompleteMedicineRelation = Prisma.MedicineRelationGetPayload<{
 export default interface IUsersRepository {
     create(data: ICreateUserDTO): Promise<User>;
     delete(userId: string): Promise<void>;
-    findAllPatients(): Promise<User[]>;
+    findAllPatients(doctorId?: string): Promise<User[]>;
     findByChartNumber(chartNumber: string): Promise<User | null>;
     findByEmail(email: string): Promise<User | null>;
     findById(id: string): Promise<User | null>;

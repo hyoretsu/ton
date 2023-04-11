@@ -38,7 +38,9 @@ const HealthProfile: React.FC = () => {
         const execute = async (): Promise<void> => {
             const { data } = await api.get('/users/hematology');
 
-            setHematology(data[0]);
+            if (data.length > 0) {
+                setHematology(data[0]);
+            }
         };
 
         execute();

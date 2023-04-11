@@ -8,7 +8,7 @@ import { Border, Container, Title } from './styles';
 
 interface ProfileInfoHeaderProps {
     children: string;
-    style: ViewStyle;
+    style?: ViewStyle;
 }
 
 const ProfileInfoHeader: React.FC<ProfileInfoHeaderProps> = ({ children, style }) => {

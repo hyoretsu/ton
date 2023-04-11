@@ -6,7 +6,7 @@ import { Field, Formik } from 'formik';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import DatePicker from 'react-date-picker/dist/entry.nostyle';
+import DatePicker from 'react-date-picker';
 import { FiPlusCircle } from 'react-icons/fi';
 
 import api from '@api';

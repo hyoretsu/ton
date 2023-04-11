@@ -3,7 +3,7 @@ import { isWithinInterval } from 'date-fns';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import DatePicker from 'react-date-picker/dist/entry.nostyle';
+import DatePicker from 'react-date-picker';
 
 import api from '@api';
 

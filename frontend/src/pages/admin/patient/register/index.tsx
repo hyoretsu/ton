@@ -55,10 +55,11 @@ const Register: React.FC = () => {
     const finishRegister = async (values: FormFields): Promise<void> => {
         try {
             if (isDoctor) {
-                let chartNumber, hematology, medicine, neoplasia, parentName;
+                let chartNumber, checkupPhotos, hematology, medicine, medicineEnd, neoplasia, parentName;
                 // @ts-ignore
                 // eslint-disable-next-line prefer-const
-                ({ chartNumber, hematology, medicine, neoplasia, parentName, ...values } = values);
+                ({ chartNumber, checkupPhotos, hematology, medicine, medicineEnd, neoplasia, parentName, ...values } =
+                    values);
 
                 await api.post('/users', values);
             } else {
@@ -119,7 +120,7 @@ const Register: React.FC = () => {
                         <RegisterForm>
                             <FormBody>
                                 <LabelInput>
-                                    <label htmlFor="name">Nome do paciente</label>
+                                    <label htmlFor="name">Nome do {isDoctor ? 'médico' : 'paciente'}</label>
                                     <Field name="name" />
                                 </LabelInput>
                                 {!isDoctor ? (
@@ -146,7 +147,9 @@ const Register: React.FC = () => {
                                             <label htmlFor="appointmentsStart">Início do atendimento</label>
                                             <select
                                                 title="appointmentsStart"
-                                                onChange={e => setFieldValue('appointmentsStart', e.target.value)}
+                                                onChange={e =>
+                                                    setFieldValue('appointmentsStart', Number(e.target.value))
+                                                }
                                             >
                                                 {range(0, 24, 0.5).map((number, index) => {
                                                     return (
@@ -169,22 +172,20 @@ const Register: React.FC = () => {
                                             <label htmlFor="appointmentsEnd">Fim do atendimento</label>
                                             <select
                                                 title="appointmentsEnd"
-                                                onChange={e => setFieldValue('appointmentsEnd', e.target.value)}
+                                                onChange={e => setFieldValue('appointmentsEnd', Number(e.target.value))}
                                             >
                                                 {range(Number(values.appointmentsStart) + 0.5, 24 + 0.5, 0.5).map(
                                                     (number, index) => {
-                                                        const newDate = new Date();
-
                                                         return (
-                                                            <option key={index}>
+                                                            <option value={number} key={index}>
                                                                 {format(
                                                                     new Date(
-                                                                        newDate.setHours(
+                                                                        new Date().setHours(
                                                                             Math.floor(number / 1),
                                                                             (number % 1) * 60,
                                                                         ),
                                                                     ),
-                                                                    'HH:mm',
+                                                                    'H:mm',
                                                                 )}
                                                             </option>
                                                         );

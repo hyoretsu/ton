@@ -31,7 +31,7 @@ export default class CreateUserService {
         phoneNumber,
         ...rest
     }: ICreateUserDTO): Promise<User> {
-        if (!!appointmentsEnd !== !!appointmentsStart) {
+        if (!!appointmentsEnd !== (!!appointmentsStart || appointmentsStart === 0)) {
             throw new AppError('Envie o horário de início e término das consultas.');
         }
 

@@ -63,10 +63,11 @@ const Register: React.FC = () => {
 
                 await api.post('/users', values);
             } else {
-                let appointmentsEnd, appointmentsStart, checkupPhotos;
+                let appointmentsEnd, appointmentsStart, checkupPhotos, hematology, medicine, medicineEnd;
                 // @ts-ignore
                 // eslint-disable-next-line prefer-const
-                ({ appointmentsEnd, appointmentsStart, checkupPhotos, ...values } = values);
+                ({ appointmentsEnd, appointmentsStart, checkupPhotos, hematology, medicine, medicineEnd, ...values } =
+                    values);
 
                 const { data: patient } = await api.post('/users', { ...values, doctorId: user?.id });
 
@@ -80,6 +81,13 @@ const Register: React.FC = () => {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
+                });
+
+                await api.post('/users/periodic_info', {
+                    patientId: patient.id,
+                    hematology,
+                    medicine,
+                    medicineEnd,
                 });
             }
 

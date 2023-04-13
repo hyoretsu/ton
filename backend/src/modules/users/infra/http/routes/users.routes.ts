@@ -38,6 +38,7 @@ usersRouter.post(
             phoneNumber: Joi.string()
                 .required()
                 .regex(/\d{2}9?\d{8}/),
+            treatment: Joi.string(),
         },
     }),
     usersController.create,

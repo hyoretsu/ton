@@ -55,11 +55,10 @@ const Register: React.FC = () => {
     const finishRegister = async (values: FormFields): Promise<void> => {
         try {
             if (isDoctor) {
-                let chartNumber, checkupPhotos, hematology, medicine, medicineEnd, neoplasia, parentName;
+                let chartNumber, checkupPhotos, hematology, medicine, medicineEnd, neoplasia, parentName, treatment;
                 // @ts-ignore
-                // eslint-disable-next-line prefer-const
-                ({ chartNumber, checkupPhotos, hematology, medicine, medicineEnd, neoplasia, parentName, ...values } =
-                    values);
+                // eslint-disable-next-line prefer-const, prettier/prettier
+                ({ chartNumber, checkupPhotos, hematology, medicine, medicineEnd, neoplasia, parentName, treatment, ...values } = values);
 
                 await api.post('/users', values);
             } else {

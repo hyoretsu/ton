@@ -62,6 +62,14 @@ export default class UsersRepository implements IUsersRepository {
         return users;
     }
 
+    public async findByChartNumber(chartNumber: string): Promise<User | null> {
+        const user = await prisma.user.findFirst({
+            where: { chartNumber },
+        });
+
+        return user;
+    }
+
     public async findByEmail(email: string): Promise<User | null> {
         const user = await prisma.user.findFirst({
             where: { email },

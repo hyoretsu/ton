@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { AuthProvider, useAuth } from 'data/contexts/auth';
+import { AuthProvider } from 'data/contexts/auth';
 import { DefaultSeo } from 'next-seo';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
@@ -17,18 +17,17 @@ import 'react-date-picker/dist/DatePicker.css';
 const url = 'https://ton.vercel.app';
 
 const MyApp = ({ Component, pageProps }: AppProps): ReactElement => {
-    const { loading, user } = useAuth();
     const { pathname, replace } = useRouter();
 
     useEffect(() => {
         const execute = async (): Promise<void> => {
-            if (pathname.includes('/admin') && !user && !loading) {
+            if (pathname.includes('/admin') && !localStorage.getItem('@ton:user')) {
                 replace('/login');
             }
         };
 
         execute();
-    }, [loading, pathname, replace, user]);
+    }, [pathname, replace]);
 
     return (
         <AuthProvider>

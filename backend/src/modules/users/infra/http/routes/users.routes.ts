@@ -20,6 +20,7 @@ const sessionsController = new SessionsController();
 usersRouter.get('/', ensureAuthenticated, usersController.show);
 usersRouter.post(
     '/',
+    ensureAuthenticated,
     celebrate({
         body: {
             appointmentsStart: Joi.number().min(0).max(23.5),

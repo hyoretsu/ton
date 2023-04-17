@@ -14,26 +14,19 @@ import api from '@api';
 import { Patient, PatientButtons, PatientInfo, Patients, PatientTextGray, Styling } from '@styles/admin/dashboard';
 
 const Dashboard: React.FC = () => {
-    const { loading, user } = useAuth();
-    const { push, replace } = useRouter();
+    const { push } = useRouter();
 
     const [patients, setPatients] = useState<User[]>([]);
 
     useEffect(() => {
         const execute = async (): Promise<void> => {
-            if (!user) {
-                if (!loading) {
-                    replace('/login');
-                }
-            } else {
-                const { data } = await api.get('/users');
+            const { data } = await api.get('/users');
 
-                setPatients(data);
-            }
+            setPatients(data);
         };
 
         execute();
-    }, [loading, replace, user]);
+    }, []);
 
     return (
         <>

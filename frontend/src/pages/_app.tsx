@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
-import { AuthProvider } from 'data/contexts/auth';
+import { AuthProvider, useAuth } from 'data/contexts/auth';
 import { DefaultSeo } from 'next-seo';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 
 import { siteName as site_name } from './_document';
 
@@ -17,7 +17,18 @@ import 'react-date-picker/dist/DatePicker.css';
 const url = 'https://ton.vercel.app';
 
 const MyApp = ({ Component, pageProps }: AppProps): ReactElement => {
-    const { pathname } = useRouter();
+    const { loading, user } = useAuth();
+    const { pathname, replace } = useRouter();
+
+    useEffect(() => {
+        const execute = async (): Promise<void> => {
+            if (pathname.includes('/admin') && !user && !loading) {
+                replace('/login');
+            }
+        };
+
+        execute();
+    }, [loading, pathname, replace, user]);
 
     return (
         <AuthProvider>

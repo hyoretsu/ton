@@ -92,9 +92,7 @@ const Register: React.FC = () => {
 
             router.push('/admin/dashboard');
         } catch ({ response }) {
-            if (response.status === 400) {
-                setError(response.data.validation?.body.message || response.data.message);
-            }
+            setError(response.data.validation?.body.message || response.data.message);
         }
     };
 

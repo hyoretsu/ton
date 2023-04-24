@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import DatePicker from 'react-date-picker';
 import { FiPlusCircle } from 'react-icons/fi';
+import * as yup from 'yup';
 
 import api from '@api';
 
@@ -120,6 +121,9 @@ const Register: React.FC = () => {
                         phoneNumber: '',
                     }}
                     onSubmit={finishRegister}
+                    validationSchema={yup.object().shape({
+                        phoneNumber: yup.string().matches(/\d{2}9?\d{8}/),
+                    })}
                 >
                     {({ setFieldValue, values }) => (
                         <RegisterForm>

@@ -12,8 +12,8 @@ export const Patients = styled.div`
 
 export const Patient = styled.div`
     display: flex;
+    flex-direction: column;
 
-    height: 10vw;
     width: 30vw;
 
     padding: 0.5vh 1.5vw;
@@ -21,7 +21,7 @@ export const Patient = styled.div`
     border: 1px solid #000;
     border-radius: 1vw;
 
-    svg:hover {
+    button:hover {
         opacity: 0.7;
     }
 `;
@@ -29,21 +29,24 @@ export const Patient = styled.div`
 export const PatientInfo = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
 
     margin: 1vh 0;
 `;
 
 export const PatientButtons = styled.div`
     display: flex;
-    flex-direction: column;
     justify-content: space-around;
 
-    margin-left: auto;
+    button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 `;
 
 export const PatientTextGray = styled.span`
     color: #777;
 
-    margin-top: -1vh;
+    margin-bottom: 1vh;
 `;

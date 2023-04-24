@@ -10,6 +10,7 @@ interface IRequest {
     appointmentsStart?: number;
     appointmentsEnd?: number;
     city?: string;
+    doctorId?: string;
     email?: string;
     password?: string;
     phoneNumber?: string;
@@ -26,10 +27,28 @@ export default class UpdateUserService {
         private hashProvider: IHashProvider,
     ) {}
 
-    public async execute({ appointmentsStart, appointmentsEnd, userId, password, ...data }: IRequest): Promise<User> {
+    public async execute({
+        appointmentsStart,
+        appointmentsEnd,
+        doctorId,
+        password,
+        userId,
+        ...data
+    }: IRequest): Promise<User> {
         const existingUser = await this.usersRepository.findById(userId);
         if (!existingUser) {
             throw new AppError('Este usuário não existe.');
+        }
+
+        if (doctorId) {
+            const existingDoctor = await this.usersRepository.findById(doctorId);
+            if (!existingDoctor) {
+                throw new AppError('Este médico não existe.');
+            }
+
+            if (existingUser.doctorId !== existingDoctor.id) {
+                throw new AppError('Você não pode editar o paciente de outro médico.');
+            }
         }
 
         if (

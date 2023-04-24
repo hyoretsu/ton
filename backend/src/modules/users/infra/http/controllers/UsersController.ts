@@ -43,7 +43,11 @@ export default class UsersController {
 
         const updateUser = container.resolve(UpdateUserService);
 
-        const user = await updateUser.execute({ ...body, userId: req.user.id });
+        const user = await updateUser.execute({
+            ...body,
+            doctorId: body.userId ? req.user.id : '',
+            userId: body.userId || req.user.id,
+        });
 
         return res.json(user);
     }

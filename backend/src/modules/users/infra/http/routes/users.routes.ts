@@ -51,10 +51,13 @@ usersRouter.patch(
         body: {
             appointmentsStart: Joi.number().min(0).max(23.5),
             appointmentsEnd: Joi.number().min(0).max(23.5),
+            chartNumber: Joi.string(),
             city: Joi.string(),
             email: Joi.string(),
             password: Joi.string(),
             phoneNumber: Joi.string().regex(/\d{2}9?\d{8}/),
+            treatment: Joi.string(),
+            userId: Joi.string(),
         },
     }),
     usersController.update,

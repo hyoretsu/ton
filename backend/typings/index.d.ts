@@ -8,6 +8,7 @@ import { CompleteCheckup as Checkup } from '../src/modules/users/repositories/IC
 
 type Appointment = Prisma.AppointmentGetPayload<{ include: { doctor: true; patient: true } }>;
 type Message = Prisma.MessageGetPayload<{ include: { sender: true } }>;
+type ObjectiveNotification = Prisma.ObjectiveNotificationGetPayload<{ include: { objective: true } }>;
 type Progress = Prisma.ProgressGetPayload<{ include: { objective: true } }>;
 
 export {
@@ -20,6 +21,7 @@ export {
     Medicine,
     Message,
     Objective,
+    ObjectiveNotification,
     Progress,
     User,
 };

@@ -118,14 +118,26 @@ model Message {
 }
 
 model Objective {
-    id         String     @id @default(uuid())
-    title      String
-    goal       Int
-    time       Int?
-    isDaily    Boolean
-    progresses Progress[]
-    createdAt  DateTime   @default(now())
-    updatedAt  DateTime   @updatedAt
+    id            String                  @id @default(uuid())
+    title         String
+    goal          Int
+    time          Int?
+    isDaily       Boolean
+    progresses    Progress[]
+    notifications ObjectiveNotification[]
+    createdAt     DateTime                @default(now())
+    updatedAt     DateTime                @updatedAt
+}
+
+model ObjectiveNotification {
+    id          String    @id @default(uuid())
+    time        DateTime
+    objectiveId String
+    objective   Objective @relation(fields: [objectiveId], references: [id])
+    patientId   String?
+    patient     User?     @relation(fields: [patientId], references: [id])
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt @default(now())
 }
 
 model Progress {
@@ -140,7 +152,7 @@ model Progress {
 }
 
 model User {
-    id                String           @id @default(uuid())
+    id                String                 @id @default(uuid())
     name              String
     parentName        String?
     email             String
@@ -152,18 +164,19 @@ model User {
     neoplasia         String?
     treatment         String?
     doctorId          String?
-    doctor            User?            @relation("UsersToUsers", fields: [doctorId], references: [id])
-    chartNumber       String?          @unique
-    patients          User[]           @relation("UsersToUsers")
+    doctor            User?                   @relation("UsersToUsers", fields: [doctorId], references: [id])
+    chartNumber       String?                 @unique
+    patients          User[]                  @relation("UsersToUsers")
     appointmentsStart Float?
     appointmentsEnd   Float?
-    appointments      Appointment[]    @relation("Appointment_doctorIdToUsers")
-    appointmentsMade  Appointment[]    @relation("Appointment_patientIdToUsers")
+    appointments      Appointment[]           @relation("Appointment_doctorIdToUsers")
+    appointmentsMade  Appointment[]           @relation("Appointment_patientIdToUsers")
     hematology        Hematology[]
     medicineRelation  MedicineRelation[]
     progresses        Progress[]
-    sentMessages      Message[]        @relation("Messages_senderIdToUsers")
-    receivedMessages  Message[]        @relation("Messages_recipientIdToUsers")
-    createdAt         DateTime         @default(now())
-    updatedAt         DateTime         @updatedAt
+    sentMessages      Message[]               @relation("Messages_senderIdToUsers")
+    receivedMessages  Message[]               @relation("Messages_recipientIdToUsers")
+    notifications     ObjectiveNotification[]
+    createdAt         DateTime                @default(now())
+    updatedAt         DateTime                @updatedAt
 }

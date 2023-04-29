@@ -10,7 +10,13 @@ export default class ListObjectivesService {
         private objectivesRepository: IObjectivesRepository,
     ) {}
 
-    public async execute(): Promise<Objective[]> {
+    public async execute(id: string): Promise<Objective | null | Objective[]> {
+        if (id) {
+            const objective = await this.objectivesRepository.findById(id);
+
+            return objective;
+        }
+
         const objectives = this.objectivesRepository.findAll();
 
         return objectives;

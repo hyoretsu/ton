@@ -1,4 +1,6 @@
 /* eslint-disable camelcase */
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { AuthProvider } from 'data/contexts/auth';
 import { DefaultSeo } from 'next-seo';
 import { AppProps } from 'next/app';
@@ -53,7 +55,9 @@ const MyApp = ({ Component, pageProps }: AppProps): ReactElement => {
                     site: `${process.env.NEXT_PUBLIC_SITE_OWNER}` || '@hyoretsu',
                 }}
             />
-            <Component {...pageProps} />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Component {...pageProps} />
+            </LocalizationProvider>
         </AuthProvider>
     );
 };

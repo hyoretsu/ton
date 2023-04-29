@@ -2,6 +2,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import mainTheme from '@theme';
+import { ObjectiveNotification } from 'backend';
 import * as BackgroundFetch from 'expo-background-fetch';
 import { useFonts } from 'expo-font';
 import * as Linking from 'expo-linking';
@@ -56,6 +57,48 @@ TaskManager.defineTask('educational-check', async ({ data, error, executionInfo 
     return BackgroundFetch.BackgroundFetchResult.NoData;
 });
 
+// Objective notifications schedule task
+TaskManager.defineTask('notification-schedule', async ({ data, error, executionInfo }) => {
+    const user = await AsyncStorage.getItem('@ton:user');
+    if (!user) return;
+
+    const { data: notifications } = await api.get<ObjectiveNotification[]>(
+        `/objectives/notifications?patientId=${JSON.parse(user).id}`,
+    );
+
+    await Notifications.cancelAllScheduledNotificationsAsync();
+    notifications.map(async notification => {
+        notification.time = new Date(notification.time);
+
+        const date = new Date();
+        date.setHours(notification.time.getHours());
+        date.setMinutes(notification.time.getMinutes());
+
+        await Notifications.scheduleNotificationAsync({
+            content: {
+                body: notification.objective.title,
+                title: 'Está na hora!',
+                data: {
+                    url: 'ton://Diary',
+                },
+            },
+            ...(notification.objective.isDaily
+                ? {
+                      trigger: {
+                          hour: notification.time.getHours(),
+                          minute: notification.time.getMinutes(),
+                          repeats: true,
+                      },
+                  }
+                : {
+                      trigger: { date },
+                  }),
+        });
+    });
+
+    return BackgroundFetch.BackgroundFetchResult.NewData;
+});
+
 const App: React.FC = () => {
     // Load custom fonts
     const [fontsLoaded, fontsError] = useFonts({
@@ -85,7 +128,14 @@ const App: React.FC = () => {
 
             // Register weekly educational content check
             await BackgroundFetch.registerTaskAsync('educational-check', {
-                minimumInterval: 24 * 60 * 60, // 24h
+                minimumInterval: 24 * 60 * 60, // 24h in seconds
+                stopOnTerminate: false,
+                startOnBoot: true,
+            });
+
+            // Register daily objective notification check
+            await BackgroundFetch.registerTaskAsync('notification-schedule', {
+                minimumInterval: 24 * 60 * 60, // 24h in seconds
                 stopOnTerminate: false,
                 startOnBoot: true,
             });

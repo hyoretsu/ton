@@ -44,9 +44,9 @@ const SignIn: React.FC = () => {
 
     const login = async (credentials: FormTypes): Promise<void> => {
         try {
-            const res = await api.post('/users/login', credentials);
+            const { data } = await api.post('/users/login', credentials);
 
-            await finishLogin(res.data);
+            await finishLogin(data);
 
             const notFirstLaunch = await AsyncStorage.getItem('@ton:launchedBefore');
             if (!notFirstLaunch) {
@@ -77,9 +77,10 @@ const SignIn: React.FC = () => {
         } else if (emailError === 'email must be a valid email') {
             setModalMessage('Por favor, corrija seu email.');
         } else {
-            await api.post('/users/forgot_password', { email: emailValue });
+            // await api.post('/users/forgot_password', { email: emailValue });
 
-            setModalMessage('Uma senha temporária foi enviada para o seu email.');
+            // setModalMessage('Uma senha temporária foi enviada para o seu email.');
+            setModalMessage('Por favor, entre em contato com (83) 99613-3794 via WhatsApp.');
         }
 
         setModalVisibility(true);

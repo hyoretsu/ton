@@ -1,0 +1,74 @@
+import { Objective, ObjectiveNotification } from 'backend';
+import { format } from 'date-fns';
+import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { FiTrash2 } from 'react-icons/fi';
+
+import InfoGrid from '@components/InfoGrid';
+
+import api from '@api';
+
+const Notifications: React.FC = () => {
+    const {
+        back,
+        query: { objectiveId },
+    } = useRouter();
+
+    const [notifications, setNotifications] = useState<ObjectiveNotification[]>([]);
+    const [objective, setObjective] = useState<Objective>({} as Objective);
+
+    useEffect(() => {
+        const execute = async (): Promise<void> => {
+            const { data } = await api.get(`/objectives/${objectiveId}`);
+
+            setObjective(data);
+
+            const { data: notificationData } = await api.get(`/objectives/${objectiveId}/notifications`);
+
+            setNotifications(notificationData);
+        };
+
+        execute();
+    }, [objectiveId]);
+
+    return (
+        <>
+            <NextSeo title="Notificações" nofollow noindex />
+            <div>
+                <button type="button" onClick={back} style={{ left: '2vw', position: 'absolute' }}>
+                    Voltar
+                </button>
+
+                <InfoGrid newLink={`/admin/objectives/${objectiveId}/notifications/create`}>
+                    <div>
+                        {notifications.map(notification => (
+                            <>
+                                <span>Notificação às {format(new Date(notification.time), 'HH:mm')}</span>
+                                <p>Global</p>
+                            </>
+                        ))}
+                    </div>
+
+                    <div>
+                        {notifications.map(notification => (
+                            <button
+                                key={notification.id}
+                                type="button"
+                                onClick={() => {
+                                    api.delete(`/objectives/notifications/${notification.id}`);
+                                    setNotifications(old => old.filter(o => o.id !== notification.id));
+                                }}
+                            >
+                                <FiTrash2 size={20} color="#555" />
+                                Excluir
+                            </button>
+                        ))}
+                    </div>
+                </InfoGrid>
+            </div>
+        </>
+    );
+};
+
+export default Notifications;

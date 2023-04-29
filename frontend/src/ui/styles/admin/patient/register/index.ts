@@ -1,9 +1,7 @@
 import { Form } from 'formik';
 import styled from 'styled-components';
 
-export const Styling = styled.div``;
-
-export const RegisterForm = styled(Form)`
+export const FormWrapper = styled(Form)`
     display: flex;
     flex-direction: column;
 

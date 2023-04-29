@@ -1,6 +1,7 @@
 export default interface ICreateObjectiveDTO {
     title: string;
-    goal: string;
+    goal: number;
     time?: number;
     isDaily: boolean;
+    notifications?: Date[];
 }

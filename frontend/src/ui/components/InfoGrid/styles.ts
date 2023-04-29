@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
-export const Styling = styled.div``;
-
-export const Patients = styled.div`
+export const Styling = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 2vw;
@@ -10,9 +8,10 @@ export const Patients = styled.div`
     padding: 2vh 0;
 `;
 
-export const Patient = styled.div`
+export const Info = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
 
     width: 30vw;
 
@@ -21,12 +20,18 @@ export const Patient = styled.div`
     border: 1px solid #000;
     border-radius: 1vw;
 
+    p {
+        color: #777;
+
+        margin-bottom: 1vh;
+    }
+
     button:hover {
         opacity: 0.7;
     }
 `;
 
-export const PatientInfo = styled.div`
+export const InfoText = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -34,7 +39,7 @@ export const PatientInfo = styled.div`
     margin: 1vh 0;
 `;
 
-export const PatientButtons = styled.div`
+export const InfoButtons = styled.div`
     display: flex;
     justify-content: space-around;
 
@@ -43,10 +48,4 @@ export const PatientButtons = styled.div`
         flex-direction: column;
         align-items: center;
     }
-`;
-
-export const PatientTextGray = styled.span`
-    color: #777;
-
-    margin-bottom: 1vh;
 `;

@@ -42,8 +42,6 @@ const Chat: React.FC = () => {
 
         setMessages(data);
         localStorage.setItem(`@ton:messages_${patientId}`, JSON.stringify(data));
-
-        messagesRef!.current!.scrollTop = messagesRef?.current?.scrollHeight as number;
     }, [patientId]);
 
     const sendMessage = async (message: string): Promise<void> => {
@@ -92,6 +90,10 @@ const Chat: React.FC = () => {
                 };
             });
         });
+
+        if (messagesRef?.current) {
+            messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+        }
     }, [messages]);
 
     return (
@@ -102,14 +104,19 @@ const Chat: React.FC = () => {
                     Voltar
                 </button>
                 <ChatBox>
-                    <InputDiv>
+                    <InputDiv
+                        onSubmit={e => {
+                            e.preventDefault();
+                            sendMessage(writtenMessage);
+                        }}
+                    >
                         <input
                             value={writtenMessage}
                             onChange={e => setWrittenMessage(e.target.value)}
                             style={{ width: '100%' }}
                         />
 
-                        <InputSendCircle onClick={() => sendMessage(writtenMessage)}>
+                        <InputSendCircle type="submit">
                             <FiSend size="3vh" />
                         </InputSendCircle>
                     </InputDiv>

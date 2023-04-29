@@ -52,7 +52,7 @@ export const MessageDiv = styled.div<MessageDivProps>`
     }
 `;
 
-export const InputDiv = styled.div`
+export const InputDiv = styled.form`
     display: flex;
 
     margin-top: 2vh;

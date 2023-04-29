@@ -41,7 +41,7 @@ const Chat: React.FC = () => {
         const { data } = await api.get(`/messages?patientId=${patientId}`);
 
         setMessages(data);
-        localStorage.setItem('@ton:messages', JSON.stringify(data));
+        localStorage.setItem(`@ton:messages_${patientId}`, JSON.stringify(data));
 
         messagesRef!.current!.scrollTop = messagesRef?.current?.scrollHeight as number;
     }, [patientId]);
@@ -70,9 +70,12 @@ const Chat: React.FC = () => {
     }, [updateMessages]);
 
     useEffect(() => {
-        if (!socket) return;
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        if (!socket) return () => {};
 
         socket.on('chat', async () => updateMessages());
+
+        return () => socket.removeListener('chat');
     }, [socket, updateMessages]);
 
     useEffect(() => {

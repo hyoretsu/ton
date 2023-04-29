@@ -1,6 +1,6 @@
 import { Link } from '@hyoretsu/react-components';
 import { formatPhoneNumber } from '@hyoretsu/utils';
-import { User } from 'backend';
+import { Message, User } from 'backend';
 import { useAuth } from 'data/contexts/auth';
 import { differenceInYears } from 'date-fns';
 import { NextSeo } from 'next-seo';
@@ -17,14 +17,31 @@ const Dashboard: React.FC = () => {
     const { loading } = useAuth();
     const { push } = useRouter();
 
+    const [newMessages, setNewMessages] = useState<Record<string, boolean>>({});
     const [patients, setPatients] = useState<User[]>([]);
 
     useEffect(() => {
         const execute = async (): Promise<void> => {
             if (!loading) {
-                const { data } = await api.get('/users');
+                const { data } = await api.get<User[]>('/users');
 
                 setPatients(data);
+
+                data.forEach(async patient => {
+                    const { data: messages } = await api.get<Message[]>(`/messages?patientId=${patient.id}`);
+                    if (!messages.length) return;
+
+                    const storedMessages = localStorage.getItem(`@ton:messages_${patient.id}`);
+                    if (storedMessages) {
+                        const parsedMessages = JSON.parse(storedMessages);
+
+                        if (parsedMessages.length === messages.length) {
+                            return;
+                        }
+                    }
+
+                    setNewMessages(old => ({ ...old, [patient.id]: true }));
+                });
             }
         };
 
@@ -70,7 +87,7 @@ const Dashboard: React.FC = () => {
                                 Diário
                             </button>
                             <button type="button" onClick={() => push(`/admin/patient/${patient.id}/chat`)}>
-                                <BsChatLeftTextFill size={20} color="#555" />
+                                <BsChatLeftTextFill size={20} color={newMessages[patient.id] ? '#0f0' : '#555'} />
                                 Chat
                             </button>
                             <button type="button" onClick={() => push(`/admin/patient/${patient.id}/notifications`)}>

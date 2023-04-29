@@ -19,6 +19,7 @@ import BottomBar from '@components/BottomBar';
 import Button from '@components/Button';
 import EducationalHeader from '@components/EducationalHeader';
 import { useAuth } from '@context/auth';
+import { useInfo } from '@context/info';
 
 import api from '@api';
 
@@ -63,6 +64,7 @@ export interface ChatParams {
 
 const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     const { user } = useAuth();
+    const { newMessage, setNewMessage } = useInfo();
 
     const messageListRef = useRef<ScrollView>(null);
     const [messages, setMessages] = useState<Message[]>([]);
@@ -78,7 +80,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
         const { data } = await api.get('/messages');
 
         setMessages(data);
-        AsyncStorage.setItem('@ton:messages', JSON.stringify(data));
+        await AsyncStorage.setItem('@ton:messages', JSON.stringify(data));
     }, []);
 
     const sendMessage = useCallback(
@@ -120,15 +122,21 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     }, [route.params, sendMessage, updateMessages]);
 
     useEffect(() => {
-        if (!socket) return;
+        setNewMessage(false);
+    }, [newMessage, setNewMessage]);
 
-        socket.on('chat', () => updateMessages());
-        socket.on('answer', async (answers: ContentMessage[]) => {
+    useEffect(() => {
+        if (!socket || !user) return () => {};
+
+        socket.on(`chat:${user.id}`, () => updateMessages());
+        socket.on(`answer:${user.id}`, async (answers: ContentMessage[]) => {
             await updateMessages();
             await wait(2000);
             setCurrentAnswers(answers);
         });
-    }, [socket, updateMessages]);
+
+        return () => socket.removeAllListeners();
+    }, [socket, updateMessages, user]);
 
     useEffect(() => {
         messages.forEach(message => {

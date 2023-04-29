@@ -8,6 +8,8 @@ import api from '@api';
 interface InfoContextData {
     currentCheckupStep: number;
     setCurrentCheckupStep: (step: number) => void;
+    newMessage: boolean;
+    setNewMessage: (status: boolean) => void;
     objectives: Objective[];
     progress: Record<string, number>;
     updateProgress: (objectiveId: string, updatedProgress: number) => Promise<void>;
@@ -17,6 +19,7 @@ const InfoContext = createContext<InfoContextData>({} as InfoContextData);
 
 const InfoProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [currentCheckupStep, setCurrentCheckupStep] = useState(0);
+    const [newMessage, setNewMessage] = useState(false);
     const [objectives, setObjectives] = useState<Objective[]>([]);
     const [progress, setProgress] = useState<Record<string, number>>({});
 
@@ -75,8 +78,16 @@ const InfoProvider: React.FC<PropsWithChildren> = ({ children }) => {
     );
 
     const contextData = useMemo(
-        () => ({ currentCheckupStep, setCurrentCheckupStep, objectives, progress, updateProgress }),
-        [currentCheckupStep, setCurrentCheckupStep, objectives, progress, updateProgress],
+        () => ({
+            currentCheckupStep,
+            setCurrentCheckupStep,
+            newMessage,
+            setNewMessage,
+            objectives,
+            progress,
+            updateProgress,
+        }),
+        [currentCheckupStep, setCurrentCheckupStep, newMessage, setNewMessage, objectives, progress, updateProgress],
     );
 
     return <InfoContext.Provider value={contextData}>{children}</InfoContext.Provider>;

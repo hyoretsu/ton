@@ -66,7 +66,7 @@ export default class CreateMessageService {
             );
 
             while (true) {
-                io.emit('chat');
+                io.emit(`chat:${senderId}`);
 
                 await wait(2000);
 
@@ -78,7 +78,7 @@ export default class CreateMessageService {
 
                 if (!nextMessage?.sequelId) {
                     if (nextMessage?.answers) {
-                        io.emit('answer', nextMessage.answers);
+                        io.emit(`answer:${senderId}`, nextMessage.answers);
                     }
 
                     break;
@@ -88,7 +88,8 @@ export default class CreateMessageService {
             }
         }
 
-        io.emit('chat');
+        io.emit(`chat:${senderId}`);
+        io.emit(`chat:${recipientId}`, senderId);
 
         return message;
     }

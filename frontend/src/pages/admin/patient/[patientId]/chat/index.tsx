@@ -70,13 +70,12 @@ const Chat: React.FC = () => {
     }, [updateMessages]);
 
     useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         if (!socket) return () => {};
 
-        socket.on('chat', async () => updateMessages());
+        socket.on(`chat:${patientId}`, async () => updateMessages());
 
-        return () => socket.removeListener('chat');
-    }, [socket, updateMessages]);
+        return () => socket.removeAllListeners();
+    }, [patientId, socket, updateMessages]);
 
     useEffect(() => {
         messages.forEach(message => {

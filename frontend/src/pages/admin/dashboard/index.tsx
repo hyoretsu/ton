@@ -8,20 +8,24 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { BsChatLeftTextFill, BsUpload } from 'react-icons/bs';
 import { FiBell, FiClipboard, FiEdit, FiTarget } from 'react-icons/fi';
+import { io, Socket } from 'socket.io-client';
 
 import InfoGrid from '@components/InfoGrid';
 
 import api from '@api';
 
 const Dashboard: React.FC = () => {
-    const { loading } = useAuth();
+    const { loading, user } = useAuth();
     const { push } = useRouter();
 
     const [newMessages, setNewMessages] = useState<Record<string, boolean>>({});
     const [patients, setPatients] = useState<User[]>([]);
+    const [socket, setSocket] = useState<Socket>(null as unknown as Socket);
 
     useEffect(() => {
         const execute = async (): Promise<void> => {
+            setSocket(io(process.env.NEXT_PUBLIC_SOCKET_URL as string));
+
             if (!loading) {
                 const { data } = await api.get<User[]>('/users');
 
@@ -47,6 +51,14 @@ const Dashboard: React.FC = () => {
 
         execute();
     }, [loading]);
+
+    useEffect(() => {
+        if (!socket || !user) return () => {};
+
+        socket.on(`chat:${user.id}`, async patientId => setNewMessages(old => ({ ...old, [patientId]: true })));
+
+        return () => socket.removeAllListeners();
+    }, [socket, user]);
 
     return (
         <>

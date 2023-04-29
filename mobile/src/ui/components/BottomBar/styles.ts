@@ -24,6 +24,18 @@ export const Button = styled(RectButton)`
     align-items: center;
 `;
 
+export const ButtonNotification = styled.View`
+    position: absolute;
+    top: 10%;
+    right: 10%;
+
+    height: 8px;
+    width: 8px;
+    background-color: #0f0;
+
+    border-radius: 50vw;
+`;
+
 export const ButtonText = styled.Text<ButtonTextProps>`
     font-family: ${({ theme }) => theme.fontFamily.medium};
     font-size: 14px;

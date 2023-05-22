@@ -21,7 +21,12 @@ export default class ContentsRepository implements IContentsRepository {
                 condition: {
                     lte: treatmentProgress,
                 },
-                ...(treatment && { treatment }),
+                OR: [
+                    {
+                        treatment: null,
+                    },
+                    treatment ? { treatment } : {},
+                ],
             },
             include: {
                 firstMessage: true,

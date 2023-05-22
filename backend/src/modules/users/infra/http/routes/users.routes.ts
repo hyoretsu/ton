@@ -30,7 +30,7 @@ usersRouter.post(
             city: Joi.string().required(),
             doctorId: Joi.string().uuid(),
             email: Joi.string().email().required(),
-            hematologyInfo: Joi.object(),
+            hematology: Joi.object(),
             medicine: Joi.array().items(Joi.object()),
             name: Joi.string().required(),
             neoplasia: Joi.string(),

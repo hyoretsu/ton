@@ -20,8 +20,6 @@ export const Title = styled.Text`
     font-size: 5.1em;
     text-transform: lowercase;
     color: ${({ theme }) => theme.colors.purple};
-
-    margin-top: -6vh;
 `;
 
 export const SubTitleFirst = styled.Text`

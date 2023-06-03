@@ -104,7 +104,7 @@ const Checkup: React.FC = () => {
 
                 <MinLogoText
                     height={15 * vh}
-                    width={26 * vw}
+                    width={12.5 * vh}
                     style={{
                         marginBottom: -2.5 * vh,
                         marginTop: 2.5 * vh,

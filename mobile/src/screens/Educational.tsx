@@ -2,7 +2,7 @@ import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import mainTheme from '@theme';
-import { vh } from '@units/viewport';
+import { vh, vw } from '@units/viewport';
 import { Content } from 'backend';
 import { addWeeks, format } from 'date-fns';
 import { useEffect, useState } from 'react';
@@ -90,7 +90,7 @@ const Educational: React.FC = () => {
                                     },
                                 ]}
                             >
-                                <View>
+                                <View style={{ width: '80%' }}>
                                     <ContentTitle style={isRead && { color: mainTheme.colors.purple }}>
                                         {content.title}
                                     </ContentTitle>
@@ -103,6 +103,7 @@ const Educational: React.FC = () => {
                                     name="arrow-right-circle"
                                     size={3.5 * vh}
                                     color={isRead ? mainTheme.colors.purple : '#fff'}
+                                    style={{ marginRight: 3 * vw }}
                                 />
                             </ContentButton>
 

@@ -3,8 +3,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';
 
 export const Container = styled.View`
-    flex: 1;
-
     padding: 5vh 11vw;
 `;
 

@@ -45,7 +45,7 @@ export const StepCircle = styled(TouchableOpacity)`
     justify-content: center;
 
     width: 8.5vw;
-    height: 4vh;
+    height: 8.5vw;
     background-color: #fff;
 
     border-radius: 50vw;

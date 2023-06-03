@@ -18,7 +18,7 @@ export const ContentButton = styled(TouchableOpacity).attrs({
     background-color: ${({ theme }) => theme.colors.purple};
 
     border-radius: 50vw;
-    padding: 1vh 3vw 1vh 10vw;
+    padding: 1vh 0 1vh 10vw;
     margin-bottom: 2vh;
 `;
 
@@ -26,7 +26,6 @@ export const ContentTitle = styled.Text`
     font-family: ${({ theme }) => theme.fontFamily.regular};
     font-size: 1.2em;
     color: #fff;
-    max-width: 90%;
 `;
 
 export const ContentDate = styled.Text`

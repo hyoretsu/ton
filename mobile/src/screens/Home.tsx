@@ -69,9 +69,10 @@ const Home: React.FC = () => {
                         </AppointmentDate>
                     </AppointmentInfo>
                 </AppointmentView>
-
-                <ObjectivesList style={{ marginTop: 3 * vh }} />
             </Container>
+
+            <ObjectivesList style={{ marginBottom: 'auto', marginHorizontal: 11 * vw, marginTop: 3 * vh }} />
+
             <BottomBar />
         </>
     );

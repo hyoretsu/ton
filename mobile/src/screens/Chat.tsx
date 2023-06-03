@@ -1,4 +1,4 @@
-import { API_URL, SOCKET_URL } from '@env';
+// import { API_URL, SOCKET_URL } from '@env';
 import { Feather as Icon } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import mainTheme from '@theme';
@@ -53,6 +53,9 @@ import {
 
 import MinLogo from 'assets/minLogo.svg';
 import Send from 'assets/send.svg';
+
+const API_URL = 'https://odontologiadigital.ccs.ufpb.br/ton';
+const SOCKET_URL = 'https://odontologiadigital.ccs.ufpb.br';
 
 interface DateDict {
     [id: string]: string;

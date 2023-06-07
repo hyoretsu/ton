@@ -62,19 +62,19 @@ const Diary: React.FC = () => {
 
                 <Row style={{ justifyContent: 'space-between', width: '100%' }}>
                     <InfoView>
-                        <InfoCircle>
+                        <InfoCircle onPress={() => navigate('PersonalData')}>
                             <PersonalDataSvg height={4 * vh} />
                         </InfoCircle>
                         <InfoCircleText>Dados pessoais</InfoCircleText>
                     </InfoView>
                     <InfoView>
-                        <InfoCircle>
+                        <InfoCircle onPress={() => navigate('HealthProfile')}>
                             <HealthProfileSvg width={9 * vw} />
                         </InfoCircle>
                         <InfoCircleText>Perfil de saúde</InfoCircleText>
                     </InfoView>
                     <InfoView>
-                        <InfoCircle>
+                        <InfoCircle onPress={() => navigate('Treatment')}>
                             <TreatmentSvg height={4 * vh} />
                         </InfoCircle>
                         <InfoCircleText>Tratamento</InfoCircleText>

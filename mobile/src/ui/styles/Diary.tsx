@@ -1,3 +1,4 @@
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';
 
 export const Header = styled.View`
@@ -57,7 +58,7 @@ export const InfoView = styled.View`
     align-items: center;
 `;
 
-export const InfoCircle = styled.View`
+export const InfoCircle = styled(TouchableOpacity)`
     align-items: center;
     justify-content: center;
 

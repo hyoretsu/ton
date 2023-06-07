@@ -39,6 +39,8 @@ const Treatment: React.FC = () => {
         const execute = async (): Promise<void> => {
             const { data } = await api.get('/users/medicine');
 
+            if (data.length === 0) return;
+
             setMedicine(data[0].medicine);
             setMedicineDate([data[0].createdAt, data[0].endDate]);
         };

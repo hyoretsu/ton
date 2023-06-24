@@ -1,7 +1,12 @@
+import {
+    HashProvider,
+    HashProviderKeys,
+    hashProviders,
+    MailProvider,
+    MailProviderKeys,
+    mailProviders,
+} from '@hyoretsu/providers';
 import { container } from 'tsyringe';
-
-import './providers';
-import '@modules/users/providers';
 
 import AppointmentsRepository from '@modules/appointments/infra/prisma/repositories/AppointmentsRepository';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
@@ -25,3 +30,8 @@ container.registerSingleton<IMessagesRepository>('MessagesRepository', MessagesR
 container.registerSingleton<IObjectivesRepository>('ObjectivesRepository', ObjectivesRepository);
 container.registerSingleton<IProgressRepository>('ProgressRepository', ProgressRepository);
 container.registerSingleton<IUsersRepository>('UsersRepository', UsersRepository);
+container.registerSingleton<HashProvider>('HashProvider', hashProviders[process.env.HASH_DRIVER as HashProviderKeys]);
+container.registerInstance<MailProvider>(
+    'MailProvider',
+    new mailProviders[process.env.MAIL_DRIVER as MailProviderKeys](),
+);

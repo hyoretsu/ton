@@ -1,3 +1,4 @@
+import { MailProvider } from '@hyoretsu/providers';
 import { Appointment } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
@@ -12,6 +13,9 @@ export default class CreateAppointmentService {
     constructor(
         @inject('AppointmentsRepository')
         private appointmentsRepository: IAppointmentsRepository,
+
+        @inject('MailProvider')
+        private mailProvider: MailProvider,
 
         @inject('UsersRepository')
         private usersRepository: IUsersRepository,
@@ -42,6 +46,12 @@ export default class CreateAppointmentService {
             doctorId,
             patientId,
             time,
+        });
+
+        await this.mailProvider.sendMail({
+            to: existingDoctor.email,
+            subject: '[TON] Um paciente marcou uma nova consulta',
+            body: `Olá doutor!\n\n Seu paciente ${existingPatient.name} acabou de agendar uma nova consulta com você.`,
         });
 
         return appointment;

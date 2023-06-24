@@ -1,9 +1,9 @@
+import { HashProvider } from '@hyoretsu/providers';
 import { User } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
@@ -24,7 +24,7 @@ export default class UpdateUserService {
         private usersRepository: IUsersRepository,
 
         @inject('HashProvider')
-        private hashProvider: IHashProvider,
+        private hashProvider: HashProvider,
     ) {}
 
     public async execute({

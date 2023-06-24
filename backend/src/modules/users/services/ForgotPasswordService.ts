@@ -1,10 +1,9 @@
+import { HashProvider, MailProvider } from '@hyoretsu/providers';
 import crypto from 'crypto';
 import { inject, injectable } from 'tsyringe';
 
-import IMailProvider from '@shared/containers/providers/MailProvider/models/IMailProvider';
 import AppError from '@shared/errors/AppError';
 
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 @injectable()
@@ -14,10 +13,10 @@ export default class ForgotPasswordService {
         private usersRepository: IUsersRepository,
 
         @inject('HashProvider')
-        private hashProvider: IHashProvider,
+        private hashProvider: HashProvider,
 
         @inject('MailProvider')
-        private mailProvider: IMailProvider,
+        private mailProvider: MailProvider,
     ) {}
 
     public async execute(email: string): Promise<void> {
@@ -34,10 +33,7 @@ export default class ForgotPasswordService {
         });
 
         await this.mailProvider.sendMail({
-            to: {
-                email,
-                name: foundUser.parentName || foundUser.name,
-            },
+            to: email,
             subject: 'TON - Senha Temporária',
             body: `Olá! Sua nova senha é:\n${newPassword}\n\nPor favor, ao entrar, redefina sua senha na tela de Dados Pessoais.`,
         });

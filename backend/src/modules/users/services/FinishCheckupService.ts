@@ -1,6 +1,5 @@
+import { MailProvider } from '@hyoretsu/providers';
 import { inject, injectable } from 'tsyringe';
-
-import IMailProvider from '@shared/containers/providers/MailProvider/models/IMailProvider';
 
 import ICheckupsRepository from '../repositories/ICheckupsRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -18,7 +17,7 @@ export default class FinishCheckupService {
         private checkupsRepository: ICheckupsRepository,
 
         @inject('MailProvider')
-        private mailProvider: IMailProvider,
+        private mailProvider: MailProvider,
 
         @inject('UsersRepository')
         private usersRepository: IUsersRepository,
@@ -60,10 +59,7 @@ export default class FinishCheckupService {
         }
 
         await this.mailProvider.sendMail({
-            to: {
-                email: doctor.email,
-                name: doctor.name,
-            },
+            to: doctor.email,
             subject: '[TON] Um paciente acabou de finalizar um checkup',
             body: 'Acesse o painel administrativo para checar as fotos assim que puder.',
         });

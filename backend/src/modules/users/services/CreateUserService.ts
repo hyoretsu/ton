@@ -1,3 +1,4 @@
+import { HashProvider } from '@hyoretsu/providers';
 import { User } from '@prisma/client';
 import { getYear, isBefore } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
@@ -5,7 +6,6 @@ import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 @injectable()
@@ -15,7 +15,7 @@ export default class CreateUserService {
         private usersRepository: IUsersRepository,
 
         @inject('HashProvider')
-        private hashProvider: IHashProvider,
+        private hashProvider: HashProvider,
     ) {}
 
     public async execute({

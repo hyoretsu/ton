@@ -1,3 +1,4 @@
+import { HashProvider } from '@hyoretsu/providers';
 import { User } from '@prisma/client';
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
@@ -5,7 +6,6 @@ import { injectable, inject } from 'tsyringe';
 import authConfig from '@config/auth';
 import AppError from '@shared/errors/AppError';
 
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
@@ -25,7 +25,7 @@ export default class AuthenticateUserService {
         private usersRepository: IUsersRepository,
 
         @inject('HashProvider')
-        private hashProvider: IHashProvider,
+        private hashProvider: HashProvider,
     ) {}
 
     public async execute({ email, password }: IRequest): Promise<IResponse> {

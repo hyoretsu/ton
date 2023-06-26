@@ -1,5 +1,5 @@
 import { Objective, Progress } from 'backend';
-import { differenceInDays, isWithinInterval } from 'date-fns';
+import { differenceInDays, isSameDay, isWithinInterval } from 'date-fns';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -21,17 +21,24 @@ const Objectives: React.FC = () => {
     } = useRouter();
 
     const [objectives, setObjectives] = useState<Record<string, Objective>>({});
+    const [progressCache, setProgressCache] = useState<Progress[]>([]);
     const [progresses, setProgresses] = useState<Record<string, ProgressInfo>>({});
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
 
     useEffect(() => {
         const execute = async (): Promise<void> => {
-            const { data } = await api.get<Progress[]>(`/objectives/progress?userId=${patientId}`);
-            const days = differenceInDays(new Date(endDate), new Date(startDate));
+            if (progressCache.length === 0) {
+                const { data } = await api.get<Progress[]>(`/objectives/progress?userId=${patientId}`);
+                setProgressCache(data);
+            }
+
+            const days = differenceInDays(new Date(endDate), new Date(startDate)) + 1;
+
             setProgresses(
-                data.reduce((compound, progress) => {
+                progressCache.reduce((compound, progress) => {
                     if (
+                        isSameDay(new Date(progress.createdAt), new Date(startDate)) ||
                         isWithinInterval(new Date(progress.createdAt), {
                             start: startDate,
                             end: endDate,
@@ -63,7 +70,7 @@ const Objectives: React.FC = () => {
         };
 
         execute();
-    }, [endDate, patientId, startDate]);
+    }, [endDate, patientId, progressCache, startDate]);
 
     return (
         <>

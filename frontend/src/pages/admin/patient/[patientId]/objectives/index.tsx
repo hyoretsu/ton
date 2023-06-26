@@ -1,5 +1,5 @@
 import { Objective, Progress } from 'backend';
-import { isWithinInterval } from 'date-fns';
+import { differenceInDays, isWithinInterval } from 'date-fns';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -20,7 +20,7 @@ const Objectives: React.FC = () => {
         query: { patientId },
     } = useRouter();
 
-    const [objectives, setObjectives] = useState<Record<string, Objective>>([]);
+    const [objectives, setObjectives] = useState<Record<string, Objective>>({});
     const [progresses, setProgresses] = useState<Record<string, ProgressInfo>>({});
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -28,6 +28,7 @@ const Objectives: React.FC = () => {
     useEffect(() => {
         const execute = async (): Promise<void> => {
             const { data } = await api.get<Progress[]>(`/objectives/progress?userId=${patientId}`);
+            const days = differenceInDays(new Date(endDate), new Date(startDate));
             setProgresses(
                 data.reduce((compound, progress) => {
                     if (
@@ -40,7 +41,7 @@ const Objectives: React.FC = () => {
                             ...compound,
                             [progress.objectiveId]: {
                                 quantity: (compound[progress.objectiveId]?.quantity || 0) + progress.progress,
-                                total: (compound[progress.objectiveId]?.total || 0) + progress.objective.goal,
+                                total: days * progress.objective.goal,
                             },
                         };
                     }
@@ -74,12 +75,12 @@ const Objectives: React.FC = () => {
                 <Row style={{ marginBottom: '4vh', marginTop: '4vh' }}>
                     <Column>
                         <label htmlFor="startDate">Data da consulta passada</label>
-                        <DatePicker name="startDate" onChange={(date: Date) => setStartDate(date)} value={startDate} />
+                        <DatePicker name="startDate" onChange={date => setStartDate(date as Date)} value={startDate} />
                     </Column>
 
                     <Column style={{ marginLeft: '2vw' }}>
                         <label htmlFor="endDate">Data da próxima consulta</label>
-                        <DatePicker name="endDate" onChange={(date: Date) => setEndDate(date)} value={endDate} />
+                        <DatePicker name="endDate" onChange={date => setEndDate(date as Date)} value={endDate} />
                     </Column>
                 </Row>
                 <ObjectivesList>

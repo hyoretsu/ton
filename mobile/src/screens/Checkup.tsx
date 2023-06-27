@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';
 import { range } from '@utils';
+import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -38,7 +39,8 @@ const Checkup: React.FC = () => {
 
     const [infoModalVisible, setInfoModalVisibility] = useState(false);
     const [symptomQuestionsVisible, setSymptomQuestionsVisibility] = useState(false);
-    const [thanksModalVisible, setThanksModalVisibility] = useState(false);
+    const [finishModalText, setFinishModalText] = useState('');
+    const [finishModalVisible, setFinishModalVisibility] = useState(false);
 
     const continueCheckup = (): void => {
         if (Object.entries(checkupProgress).length === titles.length) {
@@ -65,6 +67,7 @@ const Checkup: React.FC = () => {
     };
 
     const finishCheckup = async (): Promise<void> => {
+        let checkupResponse = {} as AxiosResponse;
         const formData = new FormData();
 
         // Analisar como enviar as respostas da sintomatologia
@@ -77,16 +80,31 @@ const Checkup: React.FC = () => {
         );
         formData.append('answers', JSON.stringify(symptomAnswers));
 
-        await api.post('/checkup', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
+        try {
+            checkupResponse = await api.post('/checkup', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+        } catch {
+            setFinishModalText('Houve um erro inesperado! Tente novamente.');
+            setFinishModalVisibility(true);
+            return;
+        }
+
+        if (checkupResponse.status !== 200) {
+            setFinishModalText('Houve um erro inesperado! Tente novamente.');
+            setFinishModalVisibility(true);
+            return;
+        }
 
         await storeValue('checkupProgress', {});
         await storeValue('symptomAnswers', {});
 
-        setThanksModalVisibility(true);
+        setFinishModalText(
+            'Fim do exame desta semana! 😄\n\nObrigado por sua ajuda, vamos avaliar as fotos e damos notícias pelo chat.\n\nQualquer coisa, fique à vontade para entrar em contato conosco por lá também.',
+        );
+        setFinishModalVisibility(true);
     };
 
     return (
@@ -218,7 +236,7 @@ const Checkup: React.FC = () => {
                 <SymptomQuestions icon={false} onConfirm={() => setSymptomQuestionsVisibility(false)} width={90} />
             )}
 
-            {thanksModalVisible && (
+            {finishModalVisible && (
                 <Modal
                     buttonBackground={mainTheme.colors.purple}
                     buttonBold
@@ -227,9 +245,7 @@ const Checkup: React.FC = () => {
                     onConfirm={goBack}
                     width={80}
                 >
-                    {
-                        'Fim do exame desta semana! 😄\n\nObrigado por sua ajuda, vamos avaliar as fotos e damos notícias pelo chat.\n\nQualquer coisa, fique à vontade para entrar em contato conosco por lá também.'
-                    }
+                    {finishModalText}
                 </Modal>
             )}
         </>

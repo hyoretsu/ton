@@ -20,7 +20,13 @@ export default class ListContentsService {
 
     public async execute(auth?: string): Promise<CompleteContent[]> {
         if (auth) {
-            const { sub: userId } = verify(auth.split(' ')[1], authConfig.jwt.secret);
+            let userId: string;
+            try {
+                const { sub } = verify(auth.split(' ')[1], authConfig.jwt.secret);
+                userId = sub as string;
+            } catch {
+                throw new AppError('Por favor, entre na sua conta novamente.');
+            }
 
             const user = await this.usersRepository.findById(userId as string);
             if (!user) {
@@ -29,7 +35,7 @@ export default class ListContentsService {
 
             const contents = await this.contentsRepository.filter(
                 differenceInWeeks(new Date(), user.createdAt),
-                user.treatment,
+                user.treatment || '',
             );
 
             return contents;

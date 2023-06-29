@@ -41,6 +41,9 @@ export default class ContentsRepository implements IContentsRepository {
             include: {
                 firstMessage: true,
             },
+            orderBy: {
+                condition: 'asc',
+            },
         });
 
         return contents;

@@ -79,13 +79,6 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     const [socket, setSocket] = useState<Socket>(null as unknown as Socket);
     const [voice, setTtsVoice] = useState('');
 
-    const updateMessages = useCallback(async () => {
-        const { data } = await api.get('/messages');
-
-        setMessages(data);
-        await AsyncStorage.setItem('@ton:messages', JSON.stringify(data));
-    }, []);
-
     const sendMessage = useCallback(
         async (message: string, sequelId?: string | null) => {
             await api.post('/messages', {
@@ -107,7 +100,10 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                 setMessages(JSON.parse(storedMessages));
             }
 
-            await updateMessages();
+            const { data } = await api.get('/messages');
+            setMessages(data);
+            await AsyncStorage.setItem('@ton:messages', JSON.stringify(data));
+
             setLoading(false);
 
             setSocket(io(SOCKET_URL));
@@ -122,7 +118,7 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
         };
 
         execute();
-    }, [route.params, sendMessage, updateMessages]);
+    }, [route.params, sendMessage]);
 
     useEffect(() => {
         setNewMessage(false);
@@ -131,15 +127,18 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     useEffect(() => {
         if (!socket || !user) return () => {};
 
-        socket.on(`chat:${user.id}`, () => updateMessages());
+        socket.on(`chat:${user.id}`, (message?: Message) => {
+            if (!message) return;
+
+            setMessages(old => [...old, message]);
+        });
         socket.on(`answer:${user.id}`, async (answers: ContentMessage[]) => {
-            await updateMessages();
             await wait(2000);
             setCurrentAnswers(answers);
         });
 
         return () => socket.removeAllListeners();
-    }, [socket, updateMessages, user]);
+    }, [socket, user]);
 
     useEffect(() => {
         messages.forEach(message => {

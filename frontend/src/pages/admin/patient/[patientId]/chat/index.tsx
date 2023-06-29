@@ -70,7 +70,11 @@ const Chat: React.FC = () => {
     useEffect(() => {
         if (!socket) return () => {};
 
-        socket.on(`chat:${patientId}`, async () => updateMessages());
+        socket.on(`chat:${patientId}`, (message?: Message) => {
+            if (!message) return;
+
+            setMessages(old => [...old, message]);
+        });
 
         return () => socket.removeAllListeners();
     }, [patientId, socket, updateMessages]);

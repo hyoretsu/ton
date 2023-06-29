@@ -64,7 +64,7 @@ const SignIn: React.FC = () => {
 
                 await AsyncStorage.setItem('@ton:launchedBefore', 'true');
             }
-        } catch {
+        } catch (e) {
             setModalMessage('E-mail e/ou senha incorretos.');
 
             setModalVisibility(true);
@@ -77,10 +77,9 @@ const SignIn: React.FC = () => {
         } else if (emailError === 'email must be a valid email') {
             setModalMessage('Por favor, corrija seu email.');
         } else {
-            // await api.post('/users/forgot_password', { email: emailValue });
+            await api.post('/users/forgot_password', { email: emailValue });
 
-            // setModalMessage('Uma senha temporária foi enviada para o seu email.');
-            setModalMessage('Por favor, entre em contato com (83) 99613-3794 via WhatsApp.');
+            setModalMessage('Uma senha temporária foi enviada para o seu email.');
         }
 
         setModalVisibility(true);

@@ -49,7 +49,7 @@ export default class CreateMessageService {
 
         let bot: User | null = null;
         if (!recipientId) {
-            bot = await this.usersRepository.findByEmail(process.env.MAIL_DEFAULT_ADDRESS as string);
+            bot = await this.usersRepository.findByEmail(process.env.MAIL_USER as string);
         }
 
         const message = await this.messagesRepository.create({
@@ -57,6 +57,9 @@ export default class CreateMessageService {
             recipientId: bot?.id || (recipientId as string),
             senderId,
         });
+
+        io.emit(`chat:${senderId}`, message);
+        recipientId && io.emit(`chat:${recipientId}`, senderId);
 
         const foundContent = await this.contentsRepository.findByTitle(body);
 
@@ -66,8 +69,6 @@ export default class CreateMessageService {
             );
 
             while (true) {
-                io.emit(`chat:${senderId}`);
-
                 await wait(2000);
 
                 await this.messagesRepository.create({
@@ -75,6 +76,8 @@ export default class CreateMessageService {
                     recipientId: senderId,
                     senderId: bot?.id as string,
                 });
+
+                io.emit(`chat:${senderId}`, nextMessage);
 
                 if (!nextMessage?.sequelId) {
                     if (nextMessage?.answers) {
@@ -87,9 +90,6 @@ export default class CreateMessageService {
                 nextMessage = await this.contentsRepository.findMessageById(nextMessage.sequelId);
             }
         }
-
-        io.emit(`chat:${senderId}`);
-        io.emit(`chat:${recipientId}`, senderId);
 
         return message;
     }

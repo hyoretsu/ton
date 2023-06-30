@@ -6,7 +6,12 @@ import { prisma } from '@shared/infra/http/server';
 
 export default class MessagesRepository implements IMessagesRepository {
     public async create(data: ICreateMessageDTO): Promise<Message> {
-        const message = await prisma.message.create({ data });
+        const message = await prisma.message.create({
+            data,
+            include: {
+                sender: true,
+            },
+        });
 
         return message;
     }

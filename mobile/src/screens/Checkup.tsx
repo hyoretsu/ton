@@ -70,7 +70,6 @@ const Checkup: React.FC = () => {
         let checkupResponse = {} as AxiosResponse;
         const formData = new FormData();
 
-        // Analisar como enviar as respostas da sintomatologia
         Object.entries(checkupProgress).forEach(([key, uri]) =>
             formData.append(key, {
                 uri,

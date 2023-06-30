@@ -8,7 +8,8 @@
         "preview:android": "eas build -p android --profile preview --local",
         "preview:ios": "eas build -p ios --profile preview --local",
         "release": "eas build -p all",
-        "start": "expo start --tunnel"
+        "start": "expo start --tunnel",
+        "start:prod": "expo start --no-dev --minify --tunnel"
     },
     "dependencies": {
         "@babel/preset-env": "^7.20.2",

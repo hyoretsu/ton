@@ -18,7 +18,10 @@ export default {
 
     multer: {
         fileFilter(req, file, cb) {
-            file.fieldname = Buffer.from(file.fieldname, 'latin1').toString('utf8');
+            file.fieldname = Buffer.from(file.fieldname, 'latin1')
+                .toString('utf8')
+                .replace('lngua', 'língua')
+                .replace('Cu', 'Céu');
             file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
 
             return cb(null, true);

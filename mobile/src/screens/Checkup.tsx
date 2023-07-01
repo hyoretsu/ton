@@ -74,7 +74,7 @@ const Checkup: React.FC = () => {
             formData.append(key, {
                 uri,
                 type: 'image/jpeg',
-                name: (uri.match(/cache\/(?:.*\/)Camera\/(.*.jpg)/) as string[])[1],
+                name: (uri.match(/cache\/(?:.*\/)?Camera\/(.*.jpg)/) as string[])[1],
             }),
         );
         formData.append('answers', JSON.stringify(symptomAnswers));

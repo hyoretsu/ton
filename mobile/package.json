@@ -9,7 +9,7 @@
         "preview:ios": "eas build -p ios --profile preview --local",
         "release": "eas build -p all",
         "start": "expo start --tunnel",
-        "start:prod": "expo start --no-dev --minify --tunnel"
+        "start:prod": "expo start --dev-client --tunnel"
     },
     "dependencies": {
         "@babel/preset-env": "^7.20.2",
@@ -23,7 +23,7 @@
         "axios": "^1.4.0",
         "backend": "workspace:*",
         "date-fns": "^2.29.3",
-        "expo": "~48.0.15",
+        "expo": "~48.0.18",
         "expo-asset": "^8.9.1",
         "expo-av": "~13.2.1",
         "expo-background-fetch": "~11.1.1",

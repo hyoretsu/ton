@@ -1,5 +1,5 @@
 import { MailProvider } from '@hyoretsu/providers';
-import { isSameDay } from 'date-fns';
+import { differenceInMinutes, isSameDay } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 
 import ICheckupsRepository from '../repositories/ICheckupsRepository';
@@ -32,7 +32,11 @@ export default class FinishCheckupService {
 
         const latestCheckup = await this.checkupsRepository.findLatestCheckup(patientId);
         // This will avoid creating multiple checkups
-        if (latestCheckup && isSameDay(new Date(latestCheckup.createdAt), new Date())) {
+        if (
+            latestCheckup &&
+            (differenceInMinutes(new Date(latestCheckup.createdAt), new Date()) < 5 ||
+                isSameDay(new Date(latestCheckup.createdAt), new Date()))
+        ) {
             return;
         }
 

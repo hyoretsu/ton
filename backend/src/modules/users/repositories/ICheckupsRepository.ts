@@ -16,6 +16,7 @@ export default interface ICheckupsRepository {
     create(data: ICreateCheckupDTO): Promise<Checkup>;
     findById(checkupId: string): Promise<CompleteCheckup | null>;
     findCheckups(patientId: string): Promise<Array<CompleteCheckup | null>>;
+    findLatestCheckup(patientId: string): Promise<Checkup | null>;
     findPhoto(data: IFindPhotoDTO): Promise<DentalPhoto | null>;
     registerAnswer(data: ICreateCheckupAnswerDTO): Promise<CheckupAnswer>;
     registerPhoto(data: IRegisterPhotoDTO): Promise<DentalPhoto>;

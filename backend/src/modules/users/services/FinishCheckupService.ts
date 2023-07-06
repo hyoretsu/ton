@@ -1,4 +1,5 @@
 import { MailProvider } from '@hyoretsu/providers';
+import { isSameDay } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 
 import ICheckupsRepository from '../repositories/ICheckupsRepository';
@@ -27,6 +28,12 @@ export default class FinishCheckupService {
         const user = await this.usersRepository.findById(patientId);
         if (!user) {
             throw new Error('User not found');
+        }
+
+        const latestCheckup = await this.checkupsRepository.findLatestCheckup(patientId);
+        // This will avoid creating multiple checkups
+        if (latestCheckup && isSameDay(new Date(latestCheckup.createdAt), new Date())) {
+            return;
         }
 
         const checkup = await this.checkupsRepository.create({

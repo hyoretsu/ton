@@ -45,6 +45,17 @@ export default class CheckupsRepository implements ICheckupsRepository {
         return checkups;
     }
 
+    public async findLatestCheckup(patientId: string): Promise<Checkup | null> {
+        const checkup = await prisma.checkup.findFirst({
+            where: { patientId },
+            orderBy: {
+                createdAt: 'desc',
+            },
+        });
+
+        return checkup;
+    }
+
     public async findPhoto({ category, checkupId }: IFindPhotoDTO): Promise<DentalPhoto | null> {
         const photo = await prisma.dentalPhoto.findFirst({
             where: {

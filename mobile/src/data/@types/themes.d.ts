@@ -3,6 +3,7 @@ import 'rn-css';
 
 import mainTheme from '@theme';
 
+// declare module 'styled-components' {
 declare module 'rn-css' {
     type MainTheme = typeof mainTheme;
 

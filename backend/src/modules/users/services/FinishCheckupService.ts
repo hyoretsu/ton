@@ -32,11 +32,7 @@ export default class FinishCheckupService {
 
         const latestCheckup = await this.checkupsRepository.findLatestCheckup(patientId);
         // This will avoid creating multiple checkups
-        if (
-            latestCheckup &&
-            (differenceInMinutes(new Date(latestCheckup.createdAt), new Date()) < 5 ||
-                isSameDay(new Date(latestCheckup.createdAt), new Date()))
-        ) {
+        if (latestCheckup && differenceInMinutes(new Date(), new Date(latestCheckup.createdAt)) < 5) {
             return;
         }
 

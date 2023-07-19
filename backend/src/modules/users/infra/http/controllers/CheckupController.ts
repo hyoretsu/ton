@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
+import DeleteCheckupService from '@modules/users/services/DeleteCheckupService';
 import FinishCheckupService from '@modules/users/services/FinishCheckupService';
 import ListCheckupsService from '@modules/users/services/ListCheckupsService';
 import UpdateCheckupService from '@modules/users/services/UpdateCheckupService';
@@ -21,6 +22,18 @@ export default class CheckupController {
         });
 
         return res.json(checkup);
+    }
+
+    public async delete(req: Request, res: Response): Promise<Response> {
+        const {
+            body: { checkupId },
+        } = req;
+
+        const deleteCheckup = container.resolve(DeleteCheckupService);
+
+        await deleteCheckup.execute(checkupId);
+
+        return res.json();
     }
 
     public async show(req: Request, res: Response): Promise<Response> {

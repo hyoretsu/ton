@@ -24,6 +24,21 @@ export const CheckupDiv = styled.div`
     span {
         text-align: center;
     }
+
+    div:first-child {
+        display: flex;
+        justify-content: center;
+        position: relative;
+
+        width: 100%;
+
+        padding: 0 2vw;
+
+        button {
+            position: absolute;
+            right: 0;
+        }
+    }
 `;
 
 export const PhotosDiv = styled.div`

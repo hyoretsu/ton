@@ -14,6 +14,14 @@ export default class CheckupsRepository implements ICheckupsRepository {
         return checkup;
     }
 
+    public async delete(checkupId: string): Promise<void> {
+        await prisma.$transaction([
+            prisma.dentalPhoto.deleteMany({ where: { checkupId } }),
+            prisma.checkupAnswer.deleteMany({ where: { checkupId } }),
+            prisma.checkup.delete({ where: { id: checkupId } }),
+        ]);
+    }
+
     public async findById(id: string): Promise<CompleteCheckup | null> {
         const checkup = await prisma.checkup.findUnique({
             where: { id },

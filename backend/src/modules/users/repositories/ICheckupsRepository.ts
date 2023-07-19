@@ -14,6 +14,7 @@ export type CompleteCheckup = Prisma.CheckupGetPayload<{
 
 export default interface ICheckupsRepository {
     create(data: ICreateCheckupDTO): Promise<Checkup>;
+    delete(checkupId: string): Promise<void>;
     findById(checkupId: string): Promise<CompleteCheckup | null>;
     findCheckups(patientId: string): Promise<Array<CompleteCheckup | null>>;
     findLatestCheckup(patientId: string): Promise<Checkup | null>;

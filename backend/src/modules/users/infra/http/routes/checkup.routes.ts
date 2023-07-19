@@ -48,6 +48,16 @@ checkupRouter.patch(
     }),
     checkupController.update,
 );
+checkupRouter.delete(
+    '/',
+    ensureAuthenticated,
+    celebrate({
+        body: {
+            checkupId: Joi.string().uuid(),
+        },
+    }),
+    checkupController.delete,
+);
 
 checkupRouter.post(
     '/photos/find',

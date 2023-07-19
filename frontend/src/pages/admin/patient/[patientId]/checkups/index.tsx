@@ -4,6 +4,7 @@ import { NextSeo } from 'next-seo';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { BsTrashFill } from 'react-icons/bs';
 
 import api from '@api';
 
@@ -36,7 +37,18 @@ const Checkups: React.FC = () => {
                 {checkups.map(checkup => {
                     return (
                         <CheckupDiv key={checkup.id}>
-                            <span>Exame de {format(new Date(checkup.createdAt), 'dd/MM/yyyy')}</span>
+                            <div>
+                                <span>Exame de {format(new Date(checkup.createdAt), 'dd/MM/yyyy')}</span>
+                                <button
+                                    type="button"
+                                    onClick={async () => {
+                                        await api.delete('/checkup', { data: { checkupId: checkup.id } });
+                                        setCheckups(old => old.filter(stateCheckup => stateCheckup.id !== checkup.id));
+                                    }}
+                                >
+                                    <BsTrashFill width={30} height={30} />
+                                </button>
+                            </div>
 
                             <br />
 

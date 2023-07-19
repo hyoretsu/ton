@@ -35,7 +35,7 @@ interface FormFields {
     phoneNumber: string;
 }
 
-const checkupSteps = [
+export const checkupSteps = [
     'Sorriso aparente',
     'Por dentro da bochecha direita',
     'Por dentro da bochecha esquerda',
@@ -68,6 +68,10 @@ const Register: React.FC = () => {
                 // eslint-disable-next-line prefer-const
                 ({ appointmentsEnd, appointmentsStart, checkupPhotos, hematology, medicine, medicineEnd, ...values } =
                     values);
+
+                if (Object.entries(checkupPhotos).length !== 8) {
+                    return;
+                }
 
                 const { data: patient } = await api.post('/users', { ...values, doctorId: user?.id });
 

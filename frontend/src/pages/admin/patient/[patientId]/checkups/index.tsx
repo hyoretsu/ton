@@ -13,6 +13,7 @@ import { CheckupDiv, PhotoCategoryDiv, PhotosDiv, Styling } from '@styles/admin/
 const Checkups: React.FC = () => {
     const {
         back,
+        push,
         query: { patientId },
     } = useRouter();
     const [checkups, setCheckups] = useState<Checkup[]>([]);
@@ -32,6 +33,13 @@ const Checkups: React.FC = () => {
             <Styling>
                 <button type="button" onClick={back} style={{ left: '2vw', position: 'absolute' }}>
                     Voltar
+                </button>
+                <button
+                    type="button"
+                    onClick={() => push(`/admin/patient/${patientId}/checkups/create`)}
+                    style={{ margin: '0 auto' }}
+                >
+                    Criar
                 </button>
 
                 {checkups.map(checkup => {

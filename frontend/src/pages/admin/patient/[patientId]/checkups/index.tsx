@@ -46,7 +46,7 @@ const Checkups: React.FC = () => {
                     return (
                         <CheckupDiv key={checkup.id}>
                             <div>
-                                <span>Exame de {format(new Date(checkup.createdAt), 'dd/MM/yyyy')}</span>
+                                <span>Exame de {format(new Date(checkup.createdAt), 'dd/MM/yyyy')}</span>{' '}
                                 <button
                                     type="button"
                                     onClick={async () => {
@@ -57,6 +57,8 @@ const Checkups: React.FC = () => {
                                     <BsTrashFill width={30} height={30} />
                                 </button>
                             </div>
+
+                            <span style={{ color: '#777' }}>{checkup.id}</span>
 
                             <br />
 

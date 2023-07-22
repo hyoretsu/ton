@@ -1,6 +1,8 @@
 import { MailProvider } from '@hyoretsu/providers';
-import { differenceInMinutes, isSameDay } from 'date-fns';
+import { differenceInMinutes } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
+
+import AppError from '@shared/errors/AppError';
 
 import ICheckupsRepository from '../repositories/ICheckupsRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -27,13 +29,13 @@ export default class FinishCheckupService {
     public async execute({ answers, photos, patientId }: IRequest): Promise<void> {
         const user = await this.usersRepository.findById(patientId);
         if (!user) {
-            throw new Error('User not found');
+            throw new AppError('User not found', 404);
         }
 
         const latestCheckup = await this.checkupsRepository.findLatestCheckup(patientId);
         // This will avoid creating multiple checkups
         if (latestCheckup && differenceInMinutes(new Date(), new Date(latestCheckup.createdAt)) < 5) {
-            return;
+            throw new AppError("Checkup's being made too often", 403);
         }
 
         const checkup = await this.checkupsRepository.create({
@@ -55,10 +57,6 @@ export default class FinishCheckupService {
                 fileName: photo.filename,
             });
         });
-
-        if (Object.entries(answers).length === 0) {
-            return;
-        }
 
         const doctor = await this.usersRepository.findDoctorByPatientId(patientId);
         if (!doctor) {

@@ -84,6 +84,7 @@ const Checkup: React.FC = () => {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
+                timeout: 60000,
             });
         } catch {
             setFinishModalText('Houve um erro inesperado! Tente novamente.');
@@ -91,7 +92,11 @@ const Checkup: React.FC = () => {
             return;
         }
 
-        if (checkupResponse.status !== 200) {
+        if (checkupResponse.status === 403) {
+            setFinishModalText('Aguarde 5min para fazer outro exame.');
+            setFinishModalVisibility(true);
+            return;
+        } else if (checkupResponse.status !== 200) {
             setFinishModalText('Houve um erro inesperado! Tente novamente.');
             setFinishModalVisibility(true);
             return;

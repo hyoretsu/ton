@@ -1,6 +1,7 @@
-import { vh } from '@units/viewport';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';
+
+import { vh } from '@units/viewport';
 
 export const Container = styled.View`
     flex: 1;

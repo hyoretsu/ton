@@ -4,8 +4,14 @@ import { createContext, PropsWithChildren, useCallback, useContext, useEffect, u
 type Keys = 'checkupHistory' | 'checkupProgress' | 'symptomAnswers';
 type Dict = Record<string, string>;
 
+export interface CheckupHistory {
+    answers: Dict;
+    date: string;
+    photos: Dict;
+}
+
 interface StorageContext {
-    checkupHistory: Dict[];
+    checkupHistory: CheckupHistory[];
     checkupProgress: Dict;
     storeValue: (key: Keys, value: any) => Promise<void>;
     symptomAnswers: Dict;

@@ -1,5 +1,4 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import mainTheme from '@theme';
 import Appointments from 'screens/Appointments';
 import Chat, { ChatParams } from 'screens/Chat';
 import Checkup from 'screens/Checkup';
@@ -10,12 +9,15 @@ import Diary from 'screens/Diary';
 import EditProfile from 'screens/EditProfile';
 import Educational from 'screens/Educational';
 import HealthProfile from 'screens/HealthProfile';
+import History from 'screens/History';
 import Home from 'screens/Home';
 import PersonalData from 'screens/PersonalData';
 import Profile from 'screens/Profile';
 import Treatment from 'screens/Treatment';
 
 import { InfoProvider } from '@context/info';
+
+import mainTheme from '@theme';
 
 export type RootStackParamList = {
     Appointments: undefined;
@@ -28,6 +30,7 @@ export type RootStackParamList = {
     EditProfile: undefined;
     Educational: undefined;
     HealthProfile: undefined;
+    History: undefined;
     Home: undefined;
     Profile: undefined;
     PersonalData: undefined;
@@ -58,6 +61,7 @@ const AppRoutes: React.FC = () => {
                 <App.Screen name="EditProfile" component={EditProfile} />
                 <App.Screen name="Educational" component={Educational} />
                 <App.Screen name="HealthProfile" component={HealthProfile} />
+                <App.Screen name="History" component={History} />
                 <App.Screen name="Home" component={Home} />
                 <App.Screen name="Profile" component={Profile} />
                 <App.Screen name="PersonalData" component={PersonalData} />

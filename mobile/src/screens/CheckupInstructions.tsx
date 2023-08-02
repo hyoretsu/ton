@@ -1,8 +1,6 @@
 import { API_URL } from '@env';
 import { Feather as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import mainTheme from '@theme';
-import { vh, vw } from '@units/viewport';
 import { DentalPhoto } from 'backend';
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
@@ -16,6 +14,8 @@ import { useInfo } from '@context/info';
 import api from '@api';
 
 import { Container, Example, Header, Instructions, InstructionsText, StepTitle } from '@styles/CheckupInstructions';
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
 
 import { instructions, titles } from 'assets/checkup.json';
 import MinLogoText from 'assets/minLogoText.svg';

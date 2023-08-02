@@ -1,6 +1,4 @@
 import { Feather as Icon } from '@expo/vector-icons';
-import mainTheme from '@theme';
-import { vh, vw } from '@units/viewport';
 import { useRef, useState } from 'react';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -8,6 +6,9 @@ import Button from '@components/Button';
 import Modal, { ModalProps } from '@components/Modal';
 import Row from '@components/Row';
 import { useStorage } from '@context/storage';
+
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
 
 import FacePain from 'assets/facePain.svg';
 import FaceSad from 'assets/faceSad.svg';

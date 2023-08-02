@@ -1,8 +1,9 @@
-import { vh, vw } from '@units/viewport';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';
 
 import Button from '@components/Button';
+
+import { vh, vw } from '@units/viewport';
 
 interface SelectionItemProps {
     horizontal?: boolean;

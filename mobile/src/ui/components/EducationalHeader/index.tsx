@@ -1,8 +1,9 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { vh, vw } from '@units/viewport';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Row from '@components/Row';
+
+import { vh, vw } from '@units/viewport';
 
 import Close from 'assets/close.svg';
 import MinLogoWhite from 'assets/minLogoWhite.svg';

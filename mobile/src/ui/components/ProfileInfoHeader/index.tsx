@@ -1,8 +1,9 @@
-import { vh } from '@units/viewport';
 import { ViewStyle } from 'react-native';
 
 import BackButton from '@components/BackButton';
 import Row from '@components/Row';
+
+import { vh } from '@units/viewport';
 
 import { Border, Container, Title } from './styles';
 

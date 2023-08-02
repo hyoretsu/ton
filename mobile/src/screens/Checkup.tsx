@@ -1,8 +1,5 @@
 import { Feather as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import mainTheme from '@theme';
-import { vh, vw } from '@units/viewport';
-import { range } from '@utils';
 import { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -13,6 +10,7 @@ import Modal from '@components/Modal';
 import SymptomQuestions from '@components/SymptomQuestions';
 import { useInfo } from '@context/info';
 import { useStorage } from '@context/storage';
+import { range } from '@utils';
 
 import api from '@api';
 
@@ -26,6 +24,8 @@ import {
     StepView,
     SymptomsButton,
 } from '@styles/Checkup';
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
 
 import Checkmark from 'assets/checkmark.svg';
 import { titles } from 'assets/checkup.json';
@@ -81,15 +81,16 @@ const Checkup: React.FC = () => {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
+            timeout: 120000,
         });
 
         await storeValue('checkupHistory', [
-            ...checkupHistory,
             {
                 photos: checkupProgress,
                 answers: symptomAnswers,
                 date: new Date(),
             },
+            ...checkupHistory,
         ]);
 
         await storeValue('checkupProgress', {});

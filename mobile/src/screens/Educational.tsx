@@ -1,8 +1,6 @@
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import mainTheme from '@theme';
-import { vh, vw } from '@units/viewport';
 import { Content } from 'backend';
 import { addWeeks, format } from 'date-fns';
 import { useEffect, useState } from 'react';
@@ -15,6 +13,8 @@ import { useAuth } from '@context/auth';
 import api from '@api';
 
 import { Container, ContentButton, ContentDate, ContentTitle, NewNotification } from '@styles/Educational';
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
 
 const Educational: React.FC = () => {
     const { user } = useAuth();

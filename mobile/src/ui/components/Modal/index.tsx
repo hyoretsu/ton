@@ -1,12 +1,13 @@
 import { Feather as Icon } from '@expo/vector-icons';
-import mainTheme from '@theme';
-import { vh, vw } from '@units/viewport';
 import { ReactNode } from 'react';
 import { ViewProps } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Button from '@components/Button';
 import OpacityFilter from '@components/OpacityFilter';
+
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
 
 import MinLogo from 'assets/minLogo.svg';
 

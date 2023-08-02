@@ -1,6 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import mainTheme from '@theme';
-import { vh, vw } from '@units/viewport';
 import { StatusBar } from 'react-native';
 
 import BottomBar from '@components/BottomBar';
@@ -20,6 +18,8 @@ import {
     InfoCircleText,
     InfoView,
 } from '@styles/Diary';
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
 
 import HealthProfileSvg from 'assets/healthProfile.svg';
 import PersonalDataSvg from 'assets/personalData.svg';

@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import mainTheme from '@theme';
 import SignIn from 'screens/SignIn';
+
+import mainTheme from '@theme';
 
 const Auth = createStackNavigator();
 

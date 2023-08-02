@@ -1,9 +1,10 @@
 import { Feather as Icon } from '@expo/vector-icons';
-import mainTheme from '@theme';
-import { vw } from '@units/viewport';
 import { GestureResponderEvent, Image, StyleProp, ViewStyle } from 'react-native';
 
 import { useAuth } from '@context/auth';
+
+import mainTheme from '@theme';
+import { vw } from '@units/viewport';
 
 import { PatientPhotoCircle } from './styles';
 

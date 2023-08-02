@@ -1,7 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import mainTheme from '@theme';
-import { vh, vw } from '@units/viewport';
-import { RouteParams } from 'data/@types/navigation';
 import { useEffect } from 'react';
 import { BackHandler, StatusBar, View } from 'react-native';
 
@@ -9,9 +6,12 @@ import BackButton from '@components/BackButton';
 import Button from '@components/Button';
 import { useInfo } from '@context/info';
 import { useStorage } from '@context/storage';
+import { RouteParams } from 'data/@types/navigation';
 
 import { ConfirmationPrompt, ConfirmationText, Container, Photo } from '@styles/CheckupConfirm';
 import { Header } from '@styles/CheckupInstructions';
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
 
 import checkup from 'assets/checkup.json';
 import MinLogoText from 'assets/minLogoText.svg';

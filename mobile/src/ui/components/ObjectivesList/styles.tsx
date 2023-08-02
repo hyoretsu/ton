@@ -1,9 +1,10 @@
 import { Feather as Icon } from '@expo/vector-icons';
-import mainTheme from '@theme';
-import { vw } from '@units/viewport';
 import { ViewProps } from 'react-native';
 import { RectButton, RectButtonProps, TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';
+
+import mainTheme from '@theme';
+import { vw } from '@units/viewport';
 
 interface ObjectiveProps {
     completed: boolean;

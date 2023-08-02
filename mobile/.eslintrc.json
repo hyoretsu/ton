@@ -9,9 +9,9 @@
                 "newlinesBetween": "always",
                 "groups": [
                     "module",
-                    ["/^@components/", "/^@context/"],
+                    ["/^@components/", "/^data/", "/^@context/", "/^@utils/"],
                     "/^@api/",
-                    "/^@styles/",
+                    ["/^@styles/", "/^@theme/", "/^@units/"],
                     "/assets/",
                     ["/^@config/", "/^@modules/", "/^@shared/"],
                     ["parent", "sibling"]
@@ -51,6 +51,7 @@
                 ],
                 "@typescript-eslint/no-use-before-define": ["error"],
                 "@typescript-eslint/no-shadow": ["error"],
+                "no-labels": "off",
                 "react/function-component-definition": [
                     "error",
                     { "namedComponents": "arrow-function" }

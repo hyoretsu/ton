@@ -1,6 +1,7 @@
-import { vw } from '@units/viewport';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';
+
+import { vw } from '@units/viewport';
 
 export const Container = styled(ScrollView)`
     flex: 1;

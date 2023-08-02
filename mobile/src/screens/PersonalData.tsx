@@ -1,4 +1,3 @@
-import { vw } from '@units/viewport';
 import { format } from 'date-fns';
 import { View } from 'react-native';
 
@@ -8,6 +7,7 @@ import ProfileInfoHeader from '@components/ProfileInfoHeader';
 import { useAuth } from '@context/auth';
 
 import { Container, InfoText, InfoTitle, InfosView } from '@styles/PersonalData';
+import { vw } from '@units/viewport';
 
 import MinLogoPurple from 'assets/minLogoPurple.svg';
 

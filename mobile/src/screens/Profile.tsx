@@ -1,8 +1,6 @@
 import { Feather as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import mainTheme from '@theme';
-import { vw } from '@units/viewport';
-import { StatusBar } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import BottomBar from '@components/BottomBar';
@@ -21,6 +19,8 @@ import {
     ProfileOption,
     ProfileOptionText,
 } from '@styles/Profile';
+import mainTheme from '@theme';
+import { vw } from '@units/viewport';
 
 const Profile: React.FC = () => {
     const { signOut, user } = useAuth();
@@ -65,10 +65,17 @@ const Profile: React.FC = () => {
                     <Icon name="chevron-right" size={8 * vw} color={mainTheme.colors.purple} />
                 </ProfileOption>
 
-                <LogoutButton onPress={signOut}>
-                    <LogoutText>Desconectar</LogoutText>
-                    <Icon name="log-out" size={4 * vw} color={mainTheme.colors.gold} />
-                </LogoutButton>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <LogoutButton onPress={() => navigate('History')}>
+                        <LogoutText>Histórico</LogoutText>
+                        <Icon name="clock" size={4 * vw} color={mainTheme.colors.gold} />
+                    </LogoutButton>
+
+                    <LogoutButton onPress={signOut}>
+                        <LogoutText>Desconectar</LogoutText>
+                        <Icon name="log-out" size={4 * vw} color={mainTheme.colors.gold} />
+                    </LogoutButton>
+                </View>
             </Container>
 
             <BottomBar />

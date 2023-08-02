@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Feather as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import mainTheme from '@theme';
-import { vh, vw } from '@units/viewport';
 import { Formik } from 'formik';
 import { useRef, useState } from 'react';
 import { StatusBar } from 'react-native';
@@ -28,6 +26,8 @@ import {
     MinLogoView,
     PhotoView,
 } from '@styles/EditProfile';
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
 
 import EditSvg from 'assets/edit.svg';
 import MinLogoPurple from 'assets/minLogoPurple.svg';

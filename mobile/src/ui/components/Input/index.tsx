@@ -1,9 +1,10 @@
 import { Feather as Icon } from '@expo/vector-icons';
-import mainTheme from '@theme';
-import { vw } from '@units/viewport';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { TextInputProps } from 'react-native';
 import { SvgProps } from 'react-native-svg';
+
+import mainTheme from '@theme';
+import { vw } from '@units/viewport';
 
 import { Container, CustomInput } from './styles';
 

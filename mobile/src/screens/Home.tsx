@@ -1,6 +1,5 @@
 import { Feather as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { vh, vw } from '@units/viewport';
 import { Appointment } from 'backend';
 import { format, isAfter } from 'date-fns';
 import { useEffect, useState } from 'react';
@@ -25,6 +24,7 @@ import {
     PatientInfo,
     PatientName,
 } from '@styles/Home';
+import { vh, vw } from '@units/viewport';
 
 const Home: React.FC = () => {
     const { user } = useAuth();

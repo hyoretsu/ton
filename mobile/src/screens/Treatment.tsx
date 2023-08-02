@@ -1,5 +1,3 @@
-import mainTheme from '@theme';
-import { vh, vw } from '@units/viewport';
 import { Medicine } from 'backend';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
@@ -28,6 +26,8 @@ import {
     MedicineDosage,
     MedicineList,
 } from '@styles/Treatment';
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
 
 const Treatment: React.FC = () => {
     const { user } = useAuth();

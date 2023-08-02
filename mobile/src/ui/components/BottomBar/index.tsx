@@ -1,12 +1,13 @@
 import { SOCKET_URL } from '@env';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import mainTheme from '@theme';
-import { vh, vw } from '@units/viewport';
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 import { useAuth } from '@context/auth';
 import { useInfo } from '@context/info';
+
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
 
 import Chat from 'assets/chat.svg';
 import Diary from 'assets/diary.svg';

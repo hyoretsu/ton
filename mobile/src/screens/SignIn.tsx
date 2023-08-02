@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { vh, vw } from '@units/viewport';
 import * as Notifications from 'expo-notifications';
 import { Formik } from 'formik';
 import { useRef, useState } from 'react';
@@ -24,6 +23,7 @@ import {
     SubTitleSecond,
     Title,
 } from '@styles/SignIn';
+import { vh, vw } from '@units/viewport';
 
 import Lock from 'assets/lock.svg';
 import Logo from 'assets/logo.svg';

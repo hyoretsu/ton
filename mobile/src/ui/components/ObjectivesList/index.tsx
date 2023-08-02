@@ -1,6 +1,4 @@
 import { FlatListIndicator } from '@fanchenbao/react-native-scroll-indicator';
-import mainTheme from '@theme';
-import { vh, vw } from '@units/viewport';
 import { Objective } from 'backend';
 import { useState } from 'react';
 import { View, ViewStyle } from 'react-native';
@@ -10,6 +8,9 @@ import OpacityFilter from '@components/OpacityFilter';
 import ProgressCircle from '@components/ProgressCircle';
 import Row from '@components/Row';
 import { useInfo } from '@context/info';
+
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
 
 import {
     ObjectiveCheck,

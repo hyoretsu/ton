@@ -1,11 +1,7 @@
 // import { API_URL, SOCKET_URL } from '@env';
 import { Feather as Icon } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import mainTheme from '@theme';
-import { vh, vw } from '@units/viewport';
-import { wait } from '@utils';
 import { ContentMessage, Message } from 'backend';
-import { RouteParams } from 'data/@types/navigation';
 import { format } from 'date-fns';
 import { ResizeMode, Video } from 'expo-av';
 import * as Speech from 'expo-speech';
@@ -20,6 +16,8 @@ import Button from '@components/Button';
 import EducationalHeader from '@components/EducationalHeader';
 import { useAuth } from '@context/auth';
 import { useInfo } from '@context/info';
+import { wait } from '@utils';
+import { RouteParams } from 'data/@types/navigation';
 
 import api from '@api';
 
@@ -50,6 +48,8 @@ import {
     AnswerSelectionLine,
     MessageSpeaker,
 } from '@styles/Chat';
+import mainTheme from '@theme';
+import { vh, vw } from '@units/viewport';
 
 import MinLogo from 'assets/minLogo.svg';
 import Send from 'assets/send.svg';

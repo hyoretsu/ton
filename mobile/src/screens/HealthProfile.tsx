@@ -1,5 +1,4 @@
 import { Feather as Icon } from '@expo/vector-icons';
-import { vh, vw } from '@units/viewport';
 import { Hematology } from 'backend';
 import { format } from 'date-fns';
 import { useEffect, useMemo, useState } from 'react';
@@ -23,6 +22,7 @@ import {
     HealthProfileYear,
     ShareButtonText,
 } from '@styles/HealthProfile';
+import { vh, vw } from '@units/viewport';
 
 const HealthProfile: React.FC = () => {
     const { user } = useAuth();

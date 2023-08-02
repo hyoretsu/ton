@@ -1,6 +1,7 @@
-import { vw } from '@units/viewport';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';
+
+import { vw } from '@units/viewport';
 
 export const PatientPhotoCircle = styled(TouchableOpacity).attrs({
     containerStyle: {

@@ -34,7 +34,7 @@ export const StorageProvider: React.FC<PropsWithChildren> = ({ children }) => {
                 setSymptomAnswers(JSON.parse(storedAnswers));
             }
 
-            const storedHistory = await AsyncStorage.getItem('@ton:symptomAnswers');
+            const storedHistory = await AsyncStorage.getItem('@ton:checkupHistory');
             if (storedHistory) {
                 setCheckupHistory(JSON.parse(storedHistory));
             }

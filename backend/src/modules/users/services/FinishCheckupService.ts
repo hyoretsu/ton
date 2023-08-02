@@ -34,7 +34,7 @@ export default class FinishCheckupService {
 
         const latestCheckup = await this.checkupsRepository.findLatestCheckup(patientId);
         // This will avoid creating multiple checkups
-        if (latestCheckup && differenceInMinutes(new Date(), new Date(latestCheckup.createdAt)) < 1) {
+        if (latestCheckup && differenceInMinutes(new Date(), new Date(latestCheckup.createdAt)) < 2) {
             throw new AppError("Checkup's being made too often", 403);
         }
 

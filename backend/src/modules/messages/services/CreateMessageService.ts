@@ -71,13 +71,13 @@ export default class CreateMessageService {
             while (true) {
                 await wait(2000);
 
-                await this.messagesRepository.create({
+                const nextMessageCreated = await this.messagesRepository.create({
                     body: nextMessage?.body as string,
                     recipientId: senderId,
                     senderId: bot?.id as string,
                 });
 
-                io.emit(`chat:${senderId}`, nextMessage);
+                io.emit(`chat:${senderId}`, nextMessageCreated);
 
                 if (!nextMessage?.sequelId) {
                     if (nextMessage?.answers) {

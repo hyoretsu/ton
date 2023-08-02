@@ -15,7 +15,7 @@ export const Container = styled.View`
     margin-bottom: 3vh;
 `;
 
-export const Header = styled.View`
+export const ChatHeader = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: center;

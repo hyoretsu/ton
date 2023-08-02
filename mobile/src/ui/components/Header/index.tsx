@@ -8,16 +8,20 @@ import { vh, vw } from '@units/viewport';
 import Close from 'assets/close.svg';
 import MinLogoWhite from 'assets/minLogoWhite.svg';
 
-import { Header, HeaderTitle } from './styles';
+import { Container, Title } from './styles';
 
-const EducationalHeader: React.FC = () => {
+interface HeaderProps {
+    children: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ children }) => {
     const { navigate } = useNavigation();
     const { name } = useRoute();
 
     return (
-        <Header>
+        <Container>
             <Row>
-                <HeaderTitle>Educação</HeaderTitle>
+                <Title>{children}</Title>
                 {name === 'Educational' && <MinLogoWhite width={8 * vw} />}
             </Row>
 
@@ -27,8 +31,8 @@ const EducationalHeader: React.FC = () => {
             >
                 <Close height={5 * vh} width={5 * vh} />
             </TouchableOpacity>
-        </Header>
+        </Container>
     );
 };
 
-export default EducationalHeader;
+export default Header;

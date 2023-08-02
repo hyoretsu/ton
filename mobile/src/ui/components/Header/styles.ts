@@ -1,6 +1,6 @@
 import styled from 'rn-css';
 
-export const Header = styled.View`
+export const Container = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -11,7 +11,7 @@ export const Header = styled.View`
     padding: 0 5vw 0 8vw;
 `;
 
-export const HeaderTitle = styled.Text`
+export const Title = styled.Text`
     font-family: ${({ theme }) => theme.fontFamily.bold};
     font-size: 1.8em;
     color: #fff;

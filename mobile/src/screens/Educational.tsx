@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { StatusBar, View } from 'react-native';
 
 import BottomBar from '@components/BottomBar';
-import EducationalHeader from '@components/EducationalHeader';
+import Header from '@components/Header';
 import { useAuth } from '@context/auth';
 
 import api from '@api';
@@ -55,7 +55,7 @@ const Educational: React.FC = () => {
         <>
             <StatusBar backgroundColor={mainTheme.colors.purple} />
 
-            <EducationalHeader />
+            <Header>Educação</Header>
 
             <Container showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 20, paddingBottom: 0 }}>
                 {contents.map((content, index) => {

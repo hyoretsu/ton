@@ -1,7 +1,7 @@
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'rn-css';
 
-import { vw } from '@units/viewport';
+import { vh, vw } from '@units/viewport';
 
 export const Container = styled(ScrollView)`
     flex: 1;
@@ -10,6 +10,7 @@ export const Container = styled(ScrollView)`
 export const ContentButton = styled(TouchableOpacity).attrs({
     containerStyle: {
         borderRadius: 50 * vw,
+        marginBottom: 2 * vh,
     },
 })`
     flex-direction: row;
@@ -20,7 +21,6 @@ export const ContentButton = styled(TouchableOpacity).attrs({
 
     border-radius: 50vw;
     padding: 1vh 0 1vh 10vw;
-    margin-bottom: 2vh;
 `;
 
 export const ContentTitle = styled.Text`

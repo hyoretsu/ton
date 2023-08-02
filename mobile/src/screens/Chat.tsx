@@ -13,7 +13,7 @@ import { io, Socket } from 'socket.io-client';
 import BackButton from '@components/BackButton';
 import BottomBar from '@components/BottomBar';
 import Button from '@components/Button';
-import EducationalHeader from '@components/EducationalHeader';
+import Header from '@components/Header';
 import { useAuth } from '@context/auth';
 import { useInfo } from '@context/info';
 import { wait } from '@utils';
@@ -22,11 +22,11 @@ import { RouteParams } from 'data/@types/navigation';
 import api from '@api';
 
 import {
+    ChatHeader,
     Container,
     DateSection,
     DateSectionMark,
     DateSectionText,
-    Header,
     HeaderTitle,
     InputView,
     LogoTitle,
@@ -305,15 +305,15 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
                         </MessageList>
 
                         {route.params?.content ? (
-                            <EducationalHeader />
+                            <Header>Educação</Header>
                         ) : (
-                            <Header>
+                            <ChatHeader>
                                 <BackButton size={9 * vw} style={{ left: 3 * vw, position: 'absolute' }} />
                                 <LogoTitle>
                                     <MinLogo width={9 * vw} style={{ marginTop: 0.8 * vh }} />
                                     <HeaderTitle>TON</HeaderTitle>
                                 </LogoTitle>
-                            </Header>
+                            </ChatHeader>
                         )}
                     </Container>
                 </>

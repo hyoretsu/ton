@@ -3,7 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 import mainTheme from '@theme';
 import { vh, vw } from '@units/viewport';
 import { range } from '@utils';
-import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -35,7 +34,7 @@ import MinLogoText from 'assets/minLogoText.svg';
 const Checkup: React.FC = () => {
     const { setCurrentCheckupStep } = useInfo();
     const { goBack, navigate } = useNavigation();
-    const { checkupProgress, storeValue, symptomAnswers } = useStorage();
+    const { checkupHistory, checkupProgress, storeValue, symptomAnswers } = useStorage();
 
     const [infoModalVisible, setInfoModalVisibility] = useState(false);
     const [symptomQuestionsVisible, setSymptomQuestionsVisibility] = useState(false);
@@ -67,7 +66,6 @@ const Checkup: React.FC = () => {
     };
 
     const finishCheckup = async (): Promise<void> => {
-        let checkupResponse = {} as AxiosResponse;
         const formData = new FormData();
 
         Object.entries(checkupProgress).forEach(([key, uri]) =>
@@ -79,28 +77,20 @@ const Checkup: React.FC = () => {
         );
         formData.append('answers', JSON.stringify(symptomAnswers));
 
-        try {
-            checkupResponse = await api.post('/checkup', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                timeout: 60000,
-            });
-        } catch {
-            setFinishModalText('Houve um erro inesperado! Tente novamente.');
-            setFinishModalVisibility(true);
-            return;
-        }
+        api.post('/checkup', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
 
-        if (checkupResponse.status === 403) {
-            setFinishModalText('Aguarde 5min para fazer outro exame.');
-            setFinishModalVisibility(true);
-            return;
-        } else if (checkupResponse.status !== 200) {
-            setFinishModalText('Houve um erro inesperado! Tente novamente.');
-            setFinishModalVisibility(true);
-            return;
-        }
+        await storeValue('checkupHistory', [
+            ...checkupHistory,
+            {
+                photos: checkupProgress,
+                answers: symptomAnswers,
+                date: new Date(),
+            },
+        ]);
 
         await storeValue('checkupProgress', {});
         await storeValue('symptomAnswers', {});

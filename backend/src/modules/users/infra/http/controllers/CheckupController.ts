@@ -15,13 +15,13 @@ export default class CheckupController {
 
         const FinishCheckup = container.resolve(FinishCheckupService);
 
-        const checkup = await FinishCheckup.execute({
+        await FinishCheckup.execute({
             answers: answers ? JSON.parse(answers) : {},
             photos: files as Express.Multer.File[],
             patientId: patientId || req.user.id,
         });
 
-        return res.json(checkup);
+        return res.json();
     }
 
     public async delete(req: Request, res: Response): Promise<Response> {

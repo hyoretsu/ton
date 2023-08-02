@@ -9,7 +9,7 @@ import UpdateCheckupService from '@modules/users/services/UpdateCheckupService';
 export default class CheckupController {
     public async create(req: Request, res: Response): Promise<Response> {
         const {
-            body: { answers, patientId },
+            body: { answers, createdAt, patientId },
             files,
         } = req;
 
@@ -17,6 +17,7 @@ export default class CheckupController {
 
         await FinishCheckup.execute({
             answers: answers ? JSON.parse(answers) : {},
+            createdAt: new Date(createdAt),
             photos: files as Express.Multer.File[],
             patientId: patientId || req.user.id,
         });

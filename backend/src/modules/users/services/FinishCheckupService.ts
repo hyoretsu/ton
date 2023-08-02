@@ -9,6 +9,7 @@ import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
     answers: Record<string, string>;
+    createdAt?: Date;
     photos: Express.Multer.File[];
     patientId: string;
 }
@@ -26,7 +27,7 @@ export default class FinishCheckupService {
         private usersRepository: IUsersRepository,
     ) {}
 
-    public async execute({ answers, photos, patientId }: IRequest): Promise<void> {
+    public async execute({ answers, createdAt, photos, patientId }: IRequest): Promise<void> {
         const user = await this.usersRepository.findById(patientId);
         if (!user) {
             throw new AppError('User not found', 404);
@@ -39,6 +40,7 @@ export default class FinishCheckupService {
         }
 
         const checkup = await this.checkupsRepository.create({
+            createdAt,
             patientId,
         });
 

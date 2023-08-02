@@ -32,6 +32,7 @@ checkupRouter.post(
         body: {
             // answers: Joi.object().required(),
             answers: Joi.string(),
+            createdAt: Joi.string(),
             patientId: Joi.string(),
         },
     }),

@@ -25,6 +25,10 @@ export default class ForgotPasswordService {
             throw new AppError('There is no user with the given email');
         }
 
+        if (foundUser.email === 'teste@gmail.com') {
+            return;
+        }
+
         const newPassword = crypto.randomBytes(3).toString('hex');
         const hashedPassword = await this.hashProvider.generateHash(newPassword);
 

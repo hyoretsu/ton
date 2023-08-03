@@ -70,9 +70,7 @@ const Chat: React.FC = () => {
     useEffect(() => {
         if (!socket) return () => {};
 
-        socket.on(`chat:${patientId}`, (message?: Message) => {
-            if (!message) return;
-
+        socket.on(`chat:${patientId}`, (message: Message) => {
             setMessages(old => [...old, message]);
         });
 

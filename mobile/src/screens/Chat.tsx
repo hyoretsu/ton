@@ -127,12 +127,12 @@ const Chat: React.FC<RouteParams<ChatParams>> = ({ route }) => {
     useEffect(() => {
         if (!socket || !user) return () => {};
 
-        socket.on(`chat:${user.id}`, (message?: Message) => {
-            if (!message) return;
-
+        socket.on(`chat:${user.id}`, (message: Message) => {
+            console.log(message);
             setMessages(old => [...old, message]);
         });
         socket.on(`answer:${user.id}`, async (answers: ContentMessage[]) => {
+            console.log(answers);
             await wait(2000);
             setCurrentAnswers(answers);
         });

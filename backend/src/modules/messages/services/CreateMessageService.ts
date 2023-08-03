@@ -59,7 +59,7 @@ export default class CreateMessageService {
         });
 
         io.emit(`chat:${senderId}`, message);
-        recipientId && io.emit(`chat:${recipientId}`, senderId);
+        recipientId && io.emit(`chat:${recipientId}`, message);
 
         const foundContent = await this.contentsRepository.findByTitle(body);
 

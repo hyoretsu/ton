@@ -53,7 +53,7 @@ const History: React.FC = () => {
         formData.append('answers', JSON.stringify(checkup.answers));
         formData.append('createdAt', checkup.date);
 
-        api.post('/checkup', formData, {
+        await api.post('/checkup', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -87,7 +87,7 @@ const History: React.FC = () => {
                                 {format(new Date(date), 'HH:mm')}
                             </ContentTitle>
 
-                            {sentCheckups.at(index) && <Text style={{ color: '#ddd' }}>Enviado</Text>}
+                            {sentCheckups[index] && <Text style={{ color: '#ddd' }}>Enviado</Text>}
                         </ContentButton>
                     );
                 })}

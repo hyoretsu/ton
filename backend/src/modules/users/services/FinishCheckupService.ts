@@ -1,5 +1,5 @@
 import { MailProvider } from '@hyoretsu/providers';
-import { differenceInMinutes } from 'date-fns';
+import { differenceInDays, differenceInMinutes } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
@@ -35,13 +35,13 @@ export default class FinishCheckupService {
 
         const latestCheckup = await this.checkupsRepository.findLatestCheckup(patientId);
         if (latestCheckup) {
-            // This will avoid creating the same checkup a second time
-            if (createdAt && differenceInMinutes(new Date(createdAt), new Date(latestCheckup.createdAt)) === 0) {
-                return;
-            }
+            const latestCheckupDate = new Date(latestCheckup.createdAt);
 
             // This will avoid creating multiple checkups
-            if (differenceInMinutes(new Date(), new Date(latestCheckup.createdAt)) < 2) {
+            if (
+                differenceInDays(new Date(), latestCheckupDate) === 0 &&
+                differenceInMinutes(new Date(), latestCheckupDate) < 2
+            ) {
                 throw new AppError("Checkup's being made too often", 403);
             }
         }

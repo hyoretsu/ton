@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
-import mainTheme from '@theme';
 import { ObjectiveNotification } from 'backend';
 import * as BackgroundFetch from 'expo-background-fetch';
 import { useFonts } from 'expo-font';
@@ -18,6 +17,8 @@ import { AuthProvider } from '@context/auth';
 import { StorageProvider } from '@context/storage';
 
 import api from '@api';
+
+import mainTheme from '@theme';
 
 import Routes from './routes';
 

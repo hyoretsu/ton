@@ -40,7 +40,7 @@ export default class CheckupController {
     public async show(req: Request, res: Response): Promise<Response> {
         const findPhotos = container.resolve(ListCheckupsService);
 
-        const photos = await findPhotos.execute((req.query.patientId as string) || req.user.id);
+        const photos = await findPhotos.execute((req.query.patientId || req.user.id) as string);
 
         return res.json(photos);
     }

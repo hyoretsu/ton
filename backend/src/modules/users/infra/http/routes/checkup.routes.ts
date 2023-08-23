@@ -14,16 +14,7 @@ const checkupPhotosController = new CheckupPhotosController();
 
 const upload = multer(uploadConfig.multer);
 
-checkupRouter.get(
-    '/',
-    ensureAuthenticated,
-    celebrate({
-        body: {
-            patientId: Joi.string(),
-        },
-    }),
-    checkupController.show,
-);
+checkupRouter.get('/', ensureAuthenticated, checkupController.show);
 checkupRouter.post(
     '/',
     ensureAuthenticated,

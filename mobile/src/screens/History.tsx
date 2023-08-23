@@ -5,7 +5,8 @@ import { StatusBar, Text } from 'react-native';
 
 import BottomBar from '@components/BottomBar';
 import Header from '@components/Header';
-import { CheckupHistory, useStorage } from '@context/storage';
+import Modal from '@components/Modal';
+import { useStorage } from '@context/storage';
 
 import api from '@api';
 
@@ -14,6 +15,7 @@ import mainTheme from '@theme';
 
 const History: React.FC = () => {
     const [sentCheckups, setSentCheckups] = useState<boolean[]>([]);
+    const [modalVisible, showModal] = useState(false);
     const { checkupHistory } = useStorage();
 
     useEffect(() => {
@@ -45,7 +47,7 @@ const History: React.FC = () => {
     const sendCheckup = async (index: number): Promise<void> => {
         const formData = new FormData();
 
-        const checkup = checkupHistory.at(index) as CheckupHistory;
+        const checkup = checkupHistory[index];
 
         Object.entries(checkup.photos).forEach(([key, uri]) =>
             formData.append(key, {
@@ -63,6 +65,8 @@ const History: React.FC = () => {
             },
             timeout: 120000,
         });
+
+        showModal(true);
 
         const newSentCheckups = [...sentCheckups];
         newSentCheckups[index] = true;
@@ -91,6 +95,19 @@ const History: React.FC = () => {
             </Container>
 
             <BottomBar />
+
+            {modalVisible && (
+                <Modal
+                    buttonBackground={mainTheme.colors.purple}
+                    buttonBold
+                    buttonText="Fechar"
+                    buttonTextColor="#fff"
+                    onConfirm={() => showModal(false)}
+                    width={80}
+                >
+                    O exame foi enviado com sucesso
+                </Modal>
+            )}
         </>
     );
 };

@@ -20,19 +20,23 @@ const History: React.FC = () => {
         const execute = async (): Promise<void> => {
             const { data: checkups } = await api.get<Checkup[]>('/checkup');
 
-            outerLoop: for (const savedCheckup of checkupHistory) {
-                for (const checkup of checkups) {
-                    if (
-                        isSameDay(new Date(savedCheckup.date), new Date(checkup.createdAt)) &&
-                        Math.abs(differenceInMinutes(new Date(savedCheckup.date), new Date(checkup.createdAt))) <= 1
-                    ) {
-                        setSentCheckups(old => [...old, true]);
-                        continue outerLoop;
-                    }
-                }
+            setSentCheckups(
+                checkupHistory.map(savedCheckup => {
+                    let checkupWasSent = false;
 
-                setSentCheckups(old => [...old, false]);
-            }
+                    for (const checkup of checkups) {
+                        if (
+                            isSameDay(new Date(savedCheckup.date), new Date(checkup.createdAt)) &&
+                            Math.abs(differenceInMinutes(new Date(savedCheckup.date), new Date(checkup.createdAt))) <= 1
+                        ) {
+                            checkupWasSent = true;
+                            break;
+                        }
+                    }
+
+                    return checkupWasSent;
+                }),
+            );
         };
 
         execute();
@@ -74,14 +78,7 @@ const History: React.FC = () => {
             <Container showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 20, paddingBottom: 0 }}>
                 {checkupHistory.map(({ date }, index) => {
                     return (
-                        <ContentButton
-                            key={date}
-                            onPress={() => {
-                                if (!sentCheckups.at(index)) {
-                                    sendCheckup(index);
-                                }
-                            }}
-                        >
+                        <ContentButton key={date} onPress={() => sendCheckup(index)}>
                             <ContentTitle>
                                 Exame do dia {format(new Date(date), 'dd/MM/yyyy')}, às{' '}
                                 {format(new Date(date), 'HH:mm')}

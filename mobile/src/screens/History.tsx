@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { Checkup } from 'backend';
 import { differenceInMinutes, format, isSameDay } from 'date-fns';
 import { useEffect, useState } from 'react';
@@ -15,6 +16,7 @@ import mainTheme from '@theme';
 
 const History: React.FC = () => {
     const [sentCheckups, setSentCheckups] = useState<boolean[]>([]);
+    const [modalText, setModalText] = useState('');
     const [modalVisible, showModal] = useState(false);
     const { checkupHistory } = useStorage();
 
@@ -59,12 +61,25 @@ const History: React.FC = () => {
         formData.append('answers', JSON.stringify(checkup.answers));
         formData.append('createdAt', checkup.date);
 
-        await api.post('/checkup', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            timeout: 120000,
-        });
+        try {
+            await api.post('/checkup', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                timeout: 120000,
+            });
+        } catch (e) {
+            const error = e as AxiosError;
+            console.log(error.code);
+            console.log(error.message);
+
+            setModalText(`${error.code}\n${error.message}`);
+            showModal(true);
+
+            return;
+        }
+
+        setModalText('O exame foi enviado com sucesso');
 
         showModal(true);
 
@@ -105,7 +120,7 @@ const History: React.FC = () => {
                     onConfirm={() => showModal(false)}
                     width={80}
                 >
-                    O exame foi enviado com sucesso
+                    {modalText}
                 </Modal>
             )}
         </>

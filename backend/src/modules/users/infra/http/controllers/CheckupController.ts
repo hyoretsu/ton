@@ -17,7 +17,7 @@ export default class CheckupController {
 
         await FinishCheckup.execute({
             answers: answers ? JSON.parse(answers) : {},
-            createdAt: new Date(createdAt),
+            createdAt: createdAt && new Date(createdAt),
             photos: files as Express.Multer.File[],
             patientId: patientId || req.user.id,
         });

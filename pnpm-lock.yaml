@@ -81,7 +81,7 @@ importers:
   backend:
     dependencies:
       '@hyoretsu/providers':
-        specifier: ^1.0.5
+        specifier: 1.0.5
         version: 1.0.5
       '@hyoretsu/utils':
         specifier: ^1.3.1

@@ -8,7 +8,7 @@
         "start": "node dist/shared/infra/http/server.js"
     },
     "dependencies": {
-        "@hyoretsu/providers": "^1.0.5",
+        "@hyoretsu/providers": "1.0.5",
         "@hyoretsu/utils": "^1.3.1",
         "@prisma/client": "^4.9.0",
         "bcryptjs": "^2.4.3",

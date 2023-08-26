@@ -33,6 +33,14 @@ export default class FinishCheckupService {
             throw new AppError('User not found', 404);
         }
 
+        if (createdAt) {
+            const existingCheckup = await this.checkupsRepository.findCheckup(new Date(createdAt));
+
+            if (existingCheckup) {
+                throw new AppError('Esse exame já foi enviado', 403);
+            }
+        }
+
         const latestCheckup = await this.checkupsRepository.findLatestCheckup(patientId);
         if (latestCheckup) {
             const latestCheckupDate = new Date(latestCheckup.createdAt);

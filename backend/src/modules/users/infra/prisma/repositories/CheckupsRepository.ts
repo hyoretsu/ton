@@ -34,6 +34,16 @@ export default class CheckupsRepository implements ICheckupsRepository {
         return checkup;
     }
 
+    public async findCheckup(createdAt: Date): Promise<Checkup | null> {
+        const checkup = await prisma.checkup.findFirst({
+            where: {
+                createdAt,
+            },
+        });
+
+        return checkup;
+    }
+
     public async findCheckups(patientId: string): Promise<CompleteCheckup[]> {
         const checkups = await prisma.checkup.findMany({
             where: { patientId },

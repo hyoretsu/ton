@@ -55,7 +55,7 @@ const History: React.FC = () => {
             formData.append(key, {
                 uri,
                 type: 'image/jpeg',
-                name: (uri.match(/cache\/(?:.*\/)?Camera\/(.*.jpg)/) as string[])[1],
+                name: (uri.match(/(?:cache|Caches)\/(?:.*\/)?Camera\/(.*.jpg)/) as string[])[1],
             }),
         );
         formData.append('answers', JSON.stringify(checkup.answers));
@@ -70,10 +70,9 @@ const History: React.FC = () => {
             });
         } catch (e) {
             const error = e as AxiosError;
-            console.log(error.code);
-            console.log(error.message);
 
-            setModalText(`${error.code}\n${error.message}`);
+            // @ts-ignore
+            setModalText(`${error.code}\n${error.message}\n\n${error.response.data.message}`);
             showModal(true);
 
             return;

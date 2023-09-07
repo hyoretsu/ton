@@ -2,6 +2,7 @@
 import { PrismaClient } from '@prisma/client';
 import { errors } from 'celebrate';
 import cors from 'cors';
+import { format } from 'date-fns';
 import express, { Request, Response, NextFunction } from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
@@ -28,6 +29,15 @@ export const prisma = new PrismaClient({ log: ['error', 'info', 'warn'] });
 
 app.use(cors());
 app.use(express.json());
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+    console.log('-----');
+    console.log(`Rota: ${req.method} '${req.url}'`);
+    Object.entries(req.body || {}).length > 0 && console.log('Corpo', req.body);
+
+    next();
+});
+
 app.use(`${process.env.NODE_ENV === 'production' ? '/ton' : ''}/files`, express.static(uploadConfig.uploadsFolder));
 app.use(process.env.NODE_ENV === 'production' ? '/ton' : '', routes);
 
@@ -39,11 +49,15 @@ io.on('connection', socket => {
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof AppError) {
+        console.log(`${format(new Date(), "d/M/Y, 'às' k:mm:ss")} ${err.message} (Error ${err.statusCode})`);
+
         return res.status(err.statusCode).json({
             status: 'error',
             message: err.message,
         });
     }
+
+    console.log(err);
 
     return res.status(500).json({
         status: 'error',

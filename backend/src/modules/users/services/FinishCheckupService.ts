@@ -30,7 +30,7 @@ export default class FinishCheckupService {
     public async execute({ answers, createdAt, photos, patientId }: IRequest): Promise<void> {
         const user = await this.usersRepository.findById(patientId);
         if (!user) {
-            throw new AppError('User not found', 404);
+            throw new AppError('Usuário não encontrado', 404);
         }
 
         if (createdAt) {
@@ -50,7 +50,7 @@ export default class FinishCheckupService {
                 differenceInDays(new Date(), latestCheckupDate) === 0 &&
                 differenceInMinutes(new Date(), latestCheckupDate) < 2
             ) {
-                throw new AppError("Checkup's being made too often", 403);
+                throw new AppError('O exame está sendo feito muito rápido', 403);
             }
         }
 

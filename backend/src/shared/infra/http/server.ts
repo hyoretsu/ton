@@ -32,9 +32,13 @@ app.use(express.json());
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     console.log('-----');
-    console.log(format(new Date(), 'd/M/Y - k:mm:ss.T'));
+    console.log(`\x1b[32m${format(new Date(), 'd/M/Y - k:mm:ss.T')}\x1b[0m`);
+    console.log(`IP \x1b[33m${req.ip}\x1b[0m`);
+    console.log(`Dispositivo \x1b[33m${req.headers['user-agent']}\x1b[0m`);
     console.log(`${req.method} '${req.url}'`);
-    Object.entries(req.body || {}).length > 0 && console.log(req.body);
+    if (req.url !== '/users/login' && Object.entries(req.body || {}).length > 0) {
+        console.log(req.body);
+    }
 
     next();
 });

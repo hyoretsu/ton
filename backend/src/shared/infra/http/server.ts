@@ -32,8 +32,9 @@ app.use(express.json());
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     console.log('-----');
-    console.log(`Rota: ${req.method} '${req.url}'`);
-    Object.entries(req.body || {}).length > 0 && console.log('Corpo', req.body);
+    console.log(format(new Date(), 'd/M/Y - k:mm:ss.T'));
+    console.log(`${req.method} '${req.url}'`);
+    Object.entries(req.body || {}).length > 0 && console.log(req.body);
 
     next();
 });
@@ -49,7 +50,7 @@ io.on('connection', socket => {
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof AppError) {
-        console.log(`${format(new Date(), "d/M/Y, 'às' k:mm:ss")} ${err.message} (Error ${err.statusCode})`);
+        console.log(`\x1b[31m${err.message} (Error ${err.statusCode})\x1b[0m`);
 
         return res.status(err.statusCode).json({
             status: 'error',

@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import * as FileSystem from 'expo-file-system';
 import { useEffect } from 'react';
 import { BackHandler, StatusBar, View } from 'react-native';
 
@@ -37,10 +38,29 @@ const CheckupConfirm: React.FC<RouteParams<CheckupConfirmParams>> = ({ route }) 
     }, [navigate]);
 
     const handleYes = async (): Promise<void> => {
-        await storeValue('checkupProgress', {
-            ...checkupProgress,
-            [checkup.titles[currentCheckupStep]]: route.params?.filePath,
-        });
+        if (route.params && route.params.filePath) {
+            const destination = `${FileSystem.documentDirectory}checkup_photos`;
+
+            const destinationInfo = await FileSystem.getInfoAsync(destination);
+            if (!destinationInfo.exists) {
+                FileSystem.makeDirectoryAsync(destination);
+            }
+
+            // @ts-ignore
+            const fullDestination = `${destination}/${
+                (route.params.filePath.match(/Camera\/(.*\.jpg)/) as string[])[1]
+            }`;
+
+            await FileSystem.moveAsync({
+                from: route.params.filePath,
+                to: fullDestination,
+            });
+
+            await storeValue('checkupProgress', {
+                ...checkupProgress,
+                [checkup.titles[currentCheckupStep]]: fullDestination,
+            });
+        }
 
         navigate('Checkup');
     };

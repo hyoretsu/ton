@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { Checkup } from 'backend';
 import { differenceInMinutes, format, isSameDay } from 'date-fns';
+import * as FileSystem from 'expo-file-system';
 import { useEffect, useState } from 'react';
 import { StatusBar, Text } from 'react-native';
 
@@ -51,13 +52,33 @@ const History: React.FC = () => {
 
         const checkup = checkupHistory[index];
 
-        Object.entries(checkup.photos).forEach(([key, uri]) =>
+        for (const [key, uri] of Object.entries(checkup.photos)) {
+            try {
+                const fileInfo = await FileSystem.getInfoAsync(uri);
+
+                if (!fileInfo.exists) {
+                    setModalText(
+                        'Lamentamos informar, mas ocorreu um erro com uma das fotos desse exame e ele não pode ser enviado.',
+                    );
+                    showModal(true);
+
+                    return;
+                }
+            } catch {
+                setModalText('Houve um erro ao recuperar as fotos desse exame.');
+                showModal(true);
+
+                return;
+            }
+
             formData.append(key, {
                 uri,
                 type: 'image/jpeg',
-                name: (uri.match(/(?:cache|Caches)\/(?:.*\/)?Camera\/(.*.jpg)/) as string[])[1],
-            }),
-        );
+                // @ts-ignore
+                name: uri.match(/(?:Camera|checkup_photos)\/(.*\.jpg)/)[1],
+            });
+        }
+
         formData.append('answers', JSON.stringify(checkup.answers));
         formData.append('createdAt', checkup.date);
 
@@ -69,12 +90,17 @@ const History: React.FC = () => {
                 timeout: 120000,
             });
         } catch (e) {
-            const error = e as AxiosError;
+            if (e instanceof AxiosError) {
+                setModalText(
+                    // @ts-ignore
+                    `Mande print disso para o suporte:\n\n${e.code}\n${e.message}\n\n${e.response.data.message}`,
+                );
+            }
+            // else {
+            //     setModalText(JSON.stringify(e));
+            // }
 
-            // @ts-ignore
-            setModalText(`${error.code}\n${error.message}\n\n${error.response.data.message}`);
             showModal(true);
-
             return;
         }
 

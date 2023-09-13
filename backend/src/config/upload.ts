@@ -9,7 +9,7 @@ interface IUploadConfig {
     multer: multer.Options;
 }
 
-const uploadsFolder = path.resolve(process.env.NODE_ENV === 'production' ? 'storage' : 'tmp/uploads');
+const uploadsFolder = path.resolve(process.env.NODE_ENV === 'production' ? '/srv/ton/backend/storage' : 'tmp/uploads');
 
 export default {
     driver: process.env.STORAGE_DRIVER,

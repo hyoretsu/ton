@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-type Keys = 'checkupHistory' | 'checkupProgress' | 'symptomAnswers';
+type Keys = 'checkupHistory' | 'checkupProgress' | 'sentCheckups' | 'symptomAnswers';
 type Dict = Record<string, string>;
 
 export interface CheckupHistory {
@@ -13,6 +13,7 @@ export interface CheckupHistory {
 interface StorageContext {
     checkupHistory: CheckupHistory[];
     checkupProgress: Dict;
+    sentCheckups: boolean[];
     storeValue: (key: Keys, value: any) => Promise<void>;
     symptomAnswers: Dict;
     setSymptomAnswers: (param: Dict | ((answers: Dict) => Dict)) => void;
@@ -22,7 +23,8 @@ const StorageContext = createContext<StorageContext>({} as StorageContext);
 
 export const StorageProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [symptomAnswers, setSymptomAnswers] = useState({});
-    const [checkupHistory, setCheckupHistory] = useState([]);
+    const [checkupHistory, setCheckupHistory] = useState<CheckupHistory[]>([]);
+    const [sentCheckups, setSentCheckups] = useState<boolean[]>([]);
     const [checkupProgress, setCheckupProgress] = useState({});
 
     useEffect(() => {
@@ -44,6 +46,11 @@ export const StorageProvider: React.FC<PropsWithChildren> = ({ children }) => {
             if (storedHistory) {
                 setCheckupHistory(JSON.parse(storedHistory));
             }
+
+            const storedSentCheckups = await AsyncStorage.getItem('@ton:sentCheckups');
+            if (storedSentCheckups) {
+                setSentCheckups(JSON.parse(storedSentCheckups));
+            }
         };
 
         execute();
@@ -55,9 +62,13 @@ export const StorageProvider: React.FC<PropsWithChildren> = ({ children }) => {
         switch (key) {
             case 'checkupHistory':
                 setCheckupHistory(value);
+                setSentCheckups(old => [false, ...old]);
                 break;
             case 'checkupProgress':
                 setCheckupProgress(value);
+                break;
+            case 'sentCheckups':
+                setSentCheckups(value);
                 break;
             case 'symptomAnswers':
                 setSymptomAnswers(value);
@@ -66,8 +77,8 @@ export const StorageProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }, []);
 
     const storage: StorageContext = useMemo(
-        () => ({ checkupHistory, checkupProgress, storeValue, symptomAnswers, setSymptomAnswers }),
-        [checkupHistory, checkupProgress, storeValue, symptomAnswers, setSymptomAnswers],
+        () => ({ checkupHistory, checkupProgress, sentCheckups, storeValue, symptomAnswers, setSymptomAnswers }),
+        [checkupHistory, checkupProgress, sentCheckups, storeValue, symptomAnswers, setSymptomAnswers],
     );
 
     return <StorageContext.Provider value={storage}>{children}</StorageContext.Provider>;

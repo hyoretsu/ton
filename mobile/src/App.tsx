@@ -2,7 +2,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { ObjectiveNotification } from 'backend';
+import { differenceInDays, differenceInMinutes, isSameDay } from 'date-fns';
 import * as BackgroundFetch from 'expo-background-fetch';
+import * as FileSystem from 'expo-file-system';
 import { useFonts } from 'expo-font';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
@@ -14,7 +16,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from 'rn-css';
 
 import { AuthProvider } from '@context/auth';
-import { StorageProvider } from '@context/storage';
+import { CheckupHistory, StorageProvider } from '@context/storage';
 
 import api from '@api';
 
@@ -56,6 +58,103 @@ TaskManager.defineTask('educational-check', async ({ data, error, executionInfo 
     }
 
     return BackgroundFetch.BackgroundFetchResult.NoData;
+});
+
+// Daily checkup sender
+TaskManager.defineTask('checkup-send', async ({ data, error, executionInfo }) => {
+    const storedSentCheckups = await AsyncStorage.getItem('@ton:sentCheckups');
+    let sentCheckups: boolean[] = [];
+
+    if (storedSentCheckups) {
+        sentCheckups = JSON.parse(storedSentCheckups);
+    }
+
+    const unsentCheckups: number[] = [];
+
+    sentCheckups.forEach((sent, index) => {
+        if (!sent) {
+            unsentCheckups.push(index);
+        }
+    });
+
+    if (unsentCheckups.length === 0) {
+        return BackgroundFetch.BackgroundFetchResult.NoData;
+    }
+
+    const storedCheckupHistory = await AsyncStorage.getItem('@ton:checkupHistory');
+    let checkupHistory: CheckupHistory[] = [];
+
+    if (storedCheckupHistory) {
+        checkupHistory = JSON.parse(storedCheckupHistory);
+    }
+
+    const { data: checkups } = await api.get('/checkup');
+
+    unsentCheckupsLoop: for (const index of unsentCheckups) {
+        const savedCheckup = checkupHistory[index];
+        const savedCheckupDate = new Date(savedCheckup.date);
+
+        // Check if it was a mistake and the checkup's already been sent
+        for (const checkup of checkups) {
+            const checkupDate = new Date(checkup.createdAt);
+
+            // If we passed the savedCheckup's date, it definitely wasn't sent
+            if (differenceInDays(savedCheckupDate, checkupDate) < 0) {
+                break;
+            }
+
+            if (
+                isSameDay(savedCheckupDate, checkupDate) &&
+                Math.abs(differenceInMinutes(savedCheckupDate, checkupDate)) <= 1
+            ) {
+                sentCheckups[index] = true;
+                break;
+            }
+        }
+
+        if (sentCheckups[index]) {
+            continue;
+        }
+
+        const formData = new FormData();
+
+        const checkup = checkupHistory[index];
+
+        for (const [key, uri] of Object.entries(checkup.photos)) {
+            try {
+                const fileInfo = await FileSystem.getInfoAsync(uri);
+
+                if (!fileInfo.exists) {
+                    continue unsentCheckupsLoop;
+                }
+            } catch {
+                continue unsentCheckupsLoop;
+            }
+
+            formData.append(key, {
+                uri,
+                type: 'image/jpeg',
+                // @ts-ignore
+                name: uri.match(/(?:Camera|checkup_photos)\/(.*\.jpg)/)[1],
+            });
+        }
+
+        formData.append('answers', JSON.stringify(checkup.answers));
+        formData.append('createdAt', checkup.date);
+
+        await api.post('/checkup', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            timeout: 120000,
+        });
+
+        sentCheckups[index] = true;
+    }
+
+    await AsyncStorage.setItem('@ton:sentCheckups', JSON.stringify(sentCheckups));
+
+    return BackgroundFetch.BackgroundFetchResult.NewData;
 });
 
 // Objective notifications schedule task
@@ -127,7 +226,14 @@ const App: React.FC = () => {
                 }
             }
 
-            // Register weekly educational content check
+            // Register daily unsent checkups check
+            await BackgroundFetch.registerTaskAsync('checkup-send', {
+                minimumInterval: 24 * 60 * 60, // 24h in seconds
+                stopOnTerminate: false,
+                startOnBoot: true,
+            });
+
+            // Register daily educational content check
             await BackgroundFetch.registerTaskAsync('educational-check', {
                 minimumInterval: 24 * 60 * 60, // 24h in seconds
                 stopOnTerminate: false,

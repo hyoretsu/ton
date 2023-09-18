@@ -16,36 +16,39 @@ import { Container, ContentButton, ContentTitle } from '@styles/History';
 import mainTheme from '@theme';
 
 const History: React.FC = () => {
-    const [sentCheckups, setSentCheckups] = useState<boolean[]>([]);
     const [modalText, setModalText] = useState('');
     const [modalVisible, showModal] = useState(false);
-    const { checkupHistory } = useStorage();
+    const { checkupHistory, sentCheckups, storeValue } = useStorage();
 
     useEffect(() => {
         const execute = async (): Promise<void> => {
             const { data: checkups } = await api.get<Checkup[]>('/checkup');
 
-            setSentCheckups(
-                checkupHistory.map(savedCheckup => {
-                    let checkupWasSent = false;
+            storeValue(
+                'sentCheckups',
+                sentCheckups.map((sent, index) => {
+                    if (!sent) {
+                        const savedCheckupDate = new Date(checkupHistory[index].date);
 
-                    for (const checkup of checkups) {
-                        if (
-                            isSameDay(new Date(savedCheckup.date), new Date(checkup.createdAt)) &&
-                            Math.abs(differenceInMinutes(new Date(savedCheckup.date), new Date(checkup.createdAt))) <= 1
-                        ) {
-                            checkupWasSent = true;
-                            break;
+                        for (const checkup of checkups) {
+                            const checkupDate = new Date(checkup.createdAt);
+
+                            if (
+                                isSameDay(savedCheckupDate, checkupDate) &&
+                                Math.abs(differenceInMinutes(savedCheckupDate, checkupDate)) <= 1
+                            ) {
+                                return true;
+                            }
                         }
                     }
 
-                    return checkupWasSent;
+                    return sent;
                 }),
             );
         };
 
         execute();
-    }, [checkupHistory]);
+    }, [checkupHistory, sentCheckups, storeValue]);
 
     const sendCheckup = async (index: number): Promise<void> => {
         const formData = new FormData();
@@ -110,7 +113,7 @@ const History: React.FC = () => {
 
         const newSentCheckups = [...sentCheckups];
         newSentCheckups[index] = true;
-        setSentCheckups(newSentCheckups);
+        storeValue('sentCheckups', newSentCheckups);
     };
 
     return (

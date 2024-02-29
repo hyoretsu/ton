@@ -12,7 +12,7 @@ import * as yup from 'yup';
 
 import api from '@api';
 
-import { FormBody, FormWrapper, HematologyDiv, LabelInput } from '@styles/admin/patient/register';
+import { ErrorText, FormBody, FormWrapper, HematologyDiv, LabelInput } from '@styles/admin/patient/register';
 
 interface FormFields {
     appointmentsEnd: number;
@@ -125,10 +125,16 @@ const Register: React.FC = () => {
                 }}
                 onSubmit={finishRegister}
                 validationSchema={yup.object().shape({
-                    phoneNumber: yup.string().matches(/\d{2}9?\d{8}/),
+                    phoneNumber: yup
+                        .string()
+                        .matches(
+                            /\d{2}9?\d{8}/,
+                            'Por favor, inclua o DDD e o 9 adicional no começo do número (apenas dígitos)',
+                        )
+                        .required('É necessário um nº de telefone'),
                 })}
             >
-                {({ setFieldValue, values }) => (
+                {({ errors, setFieldValue, touched, values }) => (
                     <FormWrapper>
                         <FormBody>
                             <LabelInput>
@@ -224,6 +230,9 @@ const Register: React.FC = () => {
                             <LabelInput>
                                 <label htmlFor="phoneNumber">Telefone</label>
                                 <Field name="phoneNumber" />
+                                {touched.phoneNumber && errors.phoneNumber && (
+                                    <ErrorText>{errors.phoneNumber}</ErrorText>
+                                )}
                             </LabelInput>
 
                             <LabelInput>

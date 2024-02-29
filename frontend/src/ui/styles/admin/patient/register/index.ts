@@ -23,6 +23,10 @@ export const LabelInput = styled.div`
     flex-direction: column;
 `;
 
+export const ErrorText = styled.p`
+    color: #f00;
+`;
+
 export const HematologyDiv = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);

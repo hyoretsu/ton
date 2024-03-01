@@ -70,6 +70,7 @@ const Register: React.FC = () => {
                     values);
 
                 if (Object.entries(checkupPhotos).length !== 8) {
+                    setError('Você precisa enviar todas as 8 fotos para cadastrar um paciente.');
                     return;
                 }
 

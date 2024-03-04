@@ -240,7 +240,8 @@ const Register: React.FC = () => {
                                 <label htmlFor="birthDate">Data de nascimento</label>
                                 <DatePicker
                                     name="birthDate"
-                                    onChange={(date: Date) => setFieldValue('birthDate', date)}
+                                    locale="pt-BR"
+                                    onChange={value => setFieldValue('birthDate', value)}
                                     value={values.birthDate}
                                 />
                             </LabelInput>
@@ -358,7 +359,8 @@ const Register: React.FC = () => {
                                         <label htmlFor="medicineEnd">Término do regime quimioterápico</label>
                                         <DatePicker
                                             name="medicineEnd"
-                                            onChange={(date: Date) => setFieldValue('medicineEnd', date)}
+                                            locale="pt-BR"
+                                            onChange={date => setFieldValue('medicineEnd', date)}
                                             value={values.medicineEnd}
                                         />
                                     </LabelInput>

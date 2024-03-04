@@ -82,12 +82,22 @@ const Objectives: React.FC = () => {
                 <Row style={{ marginBottom: '4vh', marginTop: '4vh' }}>
                     <Column>
                         <label htmlFor="startDate">Data da consulta passada</label>
-                        <DatePicker name="startDate" onChange={date => setStartDate(date as Date)} value={startDate} />
+                        <DatePicker
+                            name="startDate"
+                            locale="pt-BR"
+                            onChange={date => setStartDate(date as Date)}
+                            value={startDate}
+                        />
                     </Column>
 
                     <Column style={{ marginLeft: '2vw' }}>
                         <label htmlFor="endDate">Data da próxima consulta</label>
-                        <DatePicker name="endDate" onChange={date => setEndDate(date as Date)} value={endDate} />
+                        <DatePicker
+                            name="endDate"
+                            locale="pt-BR"
+                            onChange={date => setEndDate(date as Date)}
+                            value={endDate}
+                        />
                     </Column>
                 </Row>
                 <ObjectivesList>

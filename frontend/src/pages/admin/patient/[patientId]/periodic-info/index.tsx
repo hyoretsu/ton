@@ -133,6 +133,7 @@ const PeriodicInfo: React.FC = () => {
                             <label htmlFor="medicineEnd">Término do regime quimioterápico</label>
                             <DatePicker
                                 name="medicineEnd"
+                                locale="pt-BR"
                                 onChange={(date: Date) => setFieldValue('medicineEnd', date)}
                                 value={values.medicineEnd}
                             />

@@ -43,8 +43,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
-app.use(`${process.env.NODE_ENV === 'production' ? '/ton' : ''}/files`, express.static(uploadConfig.uploadsFolder));
-app.use(process.env.NODE_ENV === 'production' ? '/ton' : '', routes);
+app.use('/files', express.static(uploadConfig.uploadsFolder));
+app.use(routes);
 
 app.use(errors());
 

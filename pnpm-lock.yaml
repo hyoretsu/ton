@@ -403,6 +403,9 @@ importers:
       expo-linking:
         specifier: ~4.0.1
         version: 4.0.1(expo@48.0.20)
+      expo-location:
+        specifier: ~15.1.1
+        version: 15.1.1(expo@48.0.20)
       expo-modules-autolinking:
         specifier: ~1.1.2
         version: 1.1.2
@@ -9375,6 +9378,14 @@ packages:
     transitivePeerDependencies:
       - expo
       - supports-color
+    dev: false
+
+  /expo-location@15.1.1(expo@48.0.20):
+    resolution: {integrity: sha512-hoKRlmi6Ya+NeZ72Zt385SDcSsIDpJI60TCBVO+Hc9xfKA9Hyminyyo5WiwI8J03igmPTCl8Y37MxBNKY9AWkg==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 48.0.20(@babel/core@7.22.9)
     dev: false
 
   /expo-manifests@0.5.2:

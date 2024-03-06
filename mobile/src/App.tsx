@@ -7,6 +7,7 @@ import * as BackgroundFetch from 'expo-background-fetch';
 import * as FileSystem from 'expo-file-system';
 import { useFonts } from 'expo-font';
 import * as Linking from 'expo-linking';
+import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
 import * as TaskManager from 'expo-task-manager';
@@ -227,24 +228,18 @@ const App: React.FC = () => {
             }
 
             // Register daily unsent checkups check
-            await BackgroundFetch.registerTaskAsync('checkup-send', {
-                minimumInterval: 24 * 60 * 60, // 24h in seconds
-                stopOnTerminate: false,
-                startOnBoot: true,
+            await Location.startLocationUpdatesAsync('checkup-send', {
+                timeInterval: 24 * 60 * 60 * 1000, // 24h in ms
             });
 
             // Register daily educational content check
-            await BackgroundFetch.registerTaskAsync('educational-check', {
-                minimumInterval: 24 * 60 * 60, // 24h in seconds
-                stopOnTerminate: false,
-                startOnBoot: true,
+            await Location.startLocationUpdatesAsync('educational-check', {
+                timeInterval: 24 * 60 * 60 * 1000, // 24h in ms
             });
 
             // Register daily objective notification check
-            await BackgroundFetch.registerTaskAsync('notification-schedule', {
-                minimumInterval: 24 * 60 * 60, // 24h in seconds
-                stopOnTerminate: false,
-                startOnBoot: true,
+            await Location.startLocationUpdatesAsync('notification-schedule', {
+                timeInterval: 24 * 60 * 60 * 1000, // 24h in ms
             });
         };
 

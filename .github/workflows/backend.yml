@@ -1,58 +1,58 @@
 name: Backend CI/CD
 
 on:
-  push:
-    paths: ["backend/**"]
-  workflow_dispatch:
+    push:
+        paths: ["backend/**"]
+    workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🏗 Checkout repo
-        uses: actions/checkout@v3
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: 🏗 Checkout repo
+              uses: actions/checkout@v3
 
-      - name: 🏗 Enable PNPM
-        uses: pnpm/action-setup@v2
-        with:
-          version: "latest"
+            - name: 🏗 Enable PNPM
+              uses: pnpm/action-setup@v2
+              with:
+                  version: "latest"
 
-      - name: 🏗 Setup Node.js environment
-        uses: actions/setup-node@main
-        with:
-          node-version: "lts/*"
-          cache: "pnpm"
+            - name: 🏗 Setup Node.js environment
+              uses: actions/setup-node@main
+              with:
+                  node-version: "lts/*"
+                  cache: "pnpm"
 
-      - name: 📦 Install dependencies
-        run: pnpm i --no-frozen-lockfile
+            - name: 📦 Install dependencies
+              run: pnpm i --no-frozen-lockfile
 
-      - name: 🚀 Build the app
-        run: pnpm -F backend build
+            - name: 🚀 Build the app
+              run: pnpm -F backend build
 
-      - name: 🏗 Install sshpass
-        run: sudo apt-get install sshpass
+            - name: 🏗 Install sshpass
+              run: sudo apt-get install sshpass
 
-      - name: 📝 Copy relevant files to deploy server
-        run: sshpass -p ${{ secrets.SSH_PASS }} scp -o StrictHostKeyChecking=no -r backend/dist backend/prisma ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton/backend
+            - name: 📝 Copy relevant files to deploy server
+              run: sshpass -p ${{ secrets.SSH_PASS }} scp -o StrictHostKeyChecking=no -r backend/dist backend/prisma ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/srv/ton/backend
 
-      - name: 🏗 Run DB migrations
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          password: ${{ secrets.SSH_PASS }}
-          port: ${{ secrets.SSH_PORT }}
-          username: ${{ secrets.SSH_USER }}
-          script: |
-            cd /srv/ton/backend
-            pnpm prisma migrate deploy
+            - name: 🏗 Run DB migrations
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  password: ${{ secrets.SSH_PASS }}
+                  port: ${{ secrets.SSH_PORT }}
+                  username: ${{ secrets.SSH_USER }}
+                  script: |
+                      cd /srv/ton/backend
+                      sudo pnpx prisma migrate deploy
 
-      - name: 🔄️ Restart backend
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          password: ${{ secrets.SSH_PASS }}
-          port: ${{ secrets.SSH_PORT }}
-          username: ${{ secrets.SSH_USER }}
-          script: |
-            cd /srv/ton
-            sudo pnpx pm2 restart ton --update-env
+            - name: 🔄️ Restart backend
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  password: ${{ secrets.SSH_PASS }}
+                  port: ${{ secrets.SSH_PORT }}
+                  username: ${{ secrets.SSH_USER }}
+                  script: |
+                      cd /srv/ton
+                      sudo pnpx pm2 restart ton --update-env

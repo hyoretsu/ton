@@ -5,6 +5,7 @@
     "scripts": {
         "build": "swc src --out-dir dist",
         "dev": "tsx watch --ignore /node_modules/ src/shared/infra/http/server.ts",
+        "prepare": "prisma generate",
         "start": "node dist/shared/infra/http/server.js"
     },
     "dependencies": {

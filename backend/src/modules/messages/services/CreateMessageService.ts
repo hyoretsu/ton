@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { wait } from '@hyoretsu/utils';
+import { sleep } from '@hyoretsu/utils';
 import { Message, User } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
@@ -69,7 +69,7 @@ export default class CreateMessageService {
             );
 
             while (true) {
-                await wait(2000);
+                await sleep(2000);
 
                 const nextMessageCreated = await this.messagesRepository.create({
                     body: nextMessage?.body as string,

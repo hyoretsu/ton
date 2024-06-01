@@ -82,7 +82,7 @@ export default class FinishCheckupService {
 
         await this.mailProvider.sendMail({
             to: doctor.email,
-            subject: '[TON] Um paciente acabou de finalizar um checkup',
+            subject: `[TON] ${user.name} acabou de finalizar um exame`,
             body: 'Acesse o painel administrativo para checar as fotos assim que puder.',
         });
     }

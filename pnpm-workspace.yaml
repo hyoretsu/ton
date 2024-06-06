@@ -1,5 +1,4 @@
 packages:
-  - "@shared/*"
-  - "backend"
-  - "frontend"
-  - "mobile"
+    - "@shared/*"
+    - "backend"
+    - "frontend"

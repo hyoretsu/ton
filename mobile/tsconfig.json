@@ -5,27 +5,23 @@
         "jsx": "react-native",
         "noEmit": true,
         "paths": {
-            "@api": ["data/services/api"],
-            "@components/*": ["ui/components/*"],
-            "@context/*": ["data/context/*"],
-            "@styles/*": ["ui/styles/*"],
-            "@theme": ["ui/theme/main"],
-            "@units/*": ["data/units/*"],
-            "@utils": ["data/utils"]
+            "@api": ["services/api"],
+            "@assets/*": ["assets/*"],
+            "@components/*": ["components/*"],
+            "@context/*": ["context/*"],
+            "@theme": ["themes/main"],
+            "@units/*": ["units/*"],
+            "@utils": ["utils"]
         },
         "rootDir": "./src",
         "target": "esnext",
-        "typeRoots": [
-            "../node_modules/@types",
-            "./node_modules/@types",
-            "./src/data/@types"
-        ]
+        "typeRoots": ["./node_modules/@types", "./src/@types"]
     },
-    "include": ["src/**/*", "src/screens"],
+    "include": ["src/**/*", ".expo/types/**/*.ts", "expo-env.d.ts"],
     "exclude": [
-      "node_modules",
-      "babel.config.js",
-      "metro.config.js",
-      "jest.config.js"
+        "node_modules",
+        "babel.config.js",
+        "metro.config.js",
+        "jest.config.js"
     ]
 }

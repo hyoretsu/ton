@@ -4,7 +4,7 @@ tmp/
 mobile/.expo
 **/.pnpm-store
 **/dist
-bun.lockb
+/bun.lockb
 
 # Android/IntelliJ
 build/

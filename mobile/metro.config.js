@@ -22,11 +22,10 @@ module.exports = (async () => {
         resolver: {
             ...resolver,
             assetExts: resolver.assetExts.filter(ext => ext !== 'svg'),
-            extraNodeModules: {
-                assets: path.resolve(__dirname, 'src', 'assets'),
-                screens: path.resolve(__dirname, 'src', 'screens'),
-            },
-            nodeModulesPaths: ['../node_modules', './node_modules'],
+            // extraNodeModules: {
+            //     assets: path.resolve(__dirname, 'src', 'assets'),
+            //     screens: path.resolve(__dirname, 'src', 'screens'),
+            // },
             resolveRequest: (context, moduleName, platform) => {
                 if (moduleName.startsWith('@')) {
                     // eslint-disable-next-line no-restricted-syntax
@@ -47,6 +46,5 @@ module.exports = (async () => {
             },
             sourceExts: [...resolver.sourceExts, 'svg'],
         },
-        watchFolders: [path.resolve(`${__dirname}/..`)],
     };
 })();

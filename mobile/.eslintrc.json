@@ -1,7 +1,24 @@
 {
-    "extends": ["airbnb", "@shared/eslint"],
+    "env": {
+        "es6": true
+    },
+    "extends": ["plugin:prettier/recommended", "prettier", "airbnb"],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "plugins": ["import", "import-helpers", "prettier"],
     "rules": {
-        "import/no-unresolved": ["error", { "ignore": ["@env"] }],
+        "default-case": "off",
+        "import/no-duplicates": "off",
+        "import/no-extraneous-dependencies": [
+            "off",
+            { "devDependencies": ["backend", "frontend", "mobile"] }
+        ],
+        "import/order": "off",
         "import/prefer-default-export": "off",
         "import-helpers/order-imports": [
             "warn",
@@ -22,40 +39,76 @@
                 }
             }
         ],
+        "lines-between-class-members": [
+            "error",
+            "always",
+            { "exceptAfterSingleLine": true }
+        ],
+        "no-await-in-loop": "warn",
+        "no-continue": "off",
+        "no-param-reassign": "off",
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "no-restricted-syntax": "off",
         "no-shadow": "off",
-        "no-undef": "off"
+        "no-undef": "off",
+        "no-unused-expressions": ["off", { "allowShortCircuit": true }],
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_|next" }],
+        "no-use-before-define": "off",
+        "one-var": ["error", { "uninitialized": "always" }],
+        "prefer-destructuring": "warn",
+        "prettier/prettier": [
+            "error",
+            {
+                "arrowParens": "avoid",
+                "printWidth": 120,
+                "singleQuote": true,
+                "tabWidth": 4,
+                "trailingComma": "all"
+            }
+        ]
     },
     "overrides": [
         {
             "files": ["**/*.ts", "**/*.tsx"],
+            "env": {
+                "react-native/react-native": true
+            },
             "extends": [
+                "plugin:@typescript-eslint/recommended",
                 "@react-native-community",
                 "plugin:react/recommended",
                 "plugin:react-native/all"
             ],
-            "env": {
-                "browser": true,
-                "react-native/react-native": true
-            },
-            "plugins": ["react", "react-hooks", "react-native"],
+            "parser": "@typescript-eslint/parser",
             "parserOptions": {
                 "ecmaFeatures": {
                     "jsx": true
-                }
+                },
+                "ecmaVersion": "latest"
             },
+            "plugins": [
+                "@typescript-eslint",
+                "react",
+                "react-hooks",
+                "react-native"
+            ],
             "rules": {
                 "@typescript-eslint/ban-ts-comment": "off",
-                "@typescript-eslint/explicit-function-return-type": [
+                "@typescript-eslint/no-empty-function": "off",
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/no-non-null-assertion": "off",
+                "@typescript-eslint/no-unused-vars": "off",
+                "@typescript-eslint/no-use-before-define": "error",
+                "@typescript-eslint/no-shadow": "error",
+                "import/extensions": [
                     "error",
-                    { "allowExpressions": true }
+                    "ignorePackages",
+                    {
+                        "ts": "never",
+                        "tsx": "never"
+                    }
                 ],
-                "@typescript-eslint/no-use-before-define": ["error"],
-                "@typescript-eslint/no-shadow": ["error"],
                 "no-labels": "off",
-                "react/function-component-definition": [
-                    "error",
-                    { "namedComponents": "arrow-function" }
-                ],
                 "react/jsx-filename-extension": [
                     "warn",
                     { "extensions": [".tsx"] }
@@ -66,12 +119,36 @@
                 "react/jsx-props-no-spreading": "off",
                 "react/no-array-index-key": "warn",
                 "react/prop-types": "off",
+                "react/function-component-definition": "off",
                 "react/react-in-jsx-scope": "off",
                 "react-hooks/exhaustive-deps": "error",
                 "react-hooks/rules-of-hooks": "error",
                 "react-native/no-color-literals": "off",
                 "react-native/no-inline-styles": "off",
                 "react-native/no-raw-text": "off"
+            },
+            "settings": {
+                "import/resolver": {
+                    "typescript": {
+                        "project": [
+                            "../tsconfig.json",
+                            "backend/tsconfig.json",
+                            "frontend/tsconfig.json",
+                            "mobile/tsconfig.json"
+                        ]
+                    },
+                    "node": {
+                        "project": [
+                            "../tsconfig.json",
+                            "../../backend/tsconfig.json",
+                            "../../frontend/tsconfig.json",
+                            "../../mobile/tsconfig.json"
+                        ]
+                    }
+                },
+                "node": {
+                    "extensions": [".js", ".jsx", ".ts", ".tsx"]
+                }
             }
         }
     ]

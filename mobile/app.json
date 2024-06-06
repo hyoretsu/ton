@@ -12,6 +12,9 @@
                 "android.permission.RECORD_AUDIO"
             ]
         },
+        "experiments": {
+            "typedRoutes": true
+        },
         "extra": {
             "eas": {
                 "projectId": "1bcb1358-4fa3-4259-8967-d12b22862066"
@@ -23,6 +26,7 @@
         },
         "name": "Ton",
         "plugins": [
+            "expo-asset",
             [
                 "expo-camera",
                 {

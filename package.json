@@ -1,12 +1,6 @@
 {
     "name": "ton",
     "private": true,
-    "workspaces": [
-        "@shared/*",
-        "backend",
-        "frontend",
-        "mobile"
-    ],
     "scripts": {
         "prepare": "husky install && chmod ug+x .husky/*"
     },
